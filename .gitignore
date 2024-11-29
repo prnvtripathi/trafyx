@@ -1,0 +1,9 @@
+# Node Modules
+*/node_modules/*
+node_modules/
+
+# Build
+apps/backend/tmp/
+apps/backend/dist/
+
+.turbo/

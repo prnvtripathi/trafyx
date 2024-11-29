@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+
+@layer base {
+  :root {
+    --background: 270 8% 95%;
+    --foreground: 240 8% 5%;
+
+    --card: 260 10% 94%;
+    --card-foreground: 240 8% 5%;
+
+    --popover: 260 10% 94%;
+    --popover-foreground: 240 8% 5%;
+
+    --primary: 261 100% 61%;
+    --primary-foreground: 300 9% 98%;
+
+    --secondary: 260 12% 91%;
+    --secondary-foreground: 240 8% 5%;
+
+    --muted: 255 8% 91%;
+    --muted-foreground: 263 9% 45%;
+
+    --accent: 255 8% 91%;
+    --accent-foreground: 240 8% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 260 9% 87%;
+    --input: 260 9% 80%;
+    --ring: 262 36% 72%;
+
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    --background: 300 4% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 3% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 3% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 261 100% 61%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 2% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 270 2% 18%;
+    --muted-foreground: 264 2% 49%;
+
+    --accent: 262 18% 12%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 2% 12%;
+    --input: 270 2% 18%;
+    --ring: 261 100% 40%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html::-webkit-scrollbar-track {
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+  /* background-color: #191919; */
+  @apply bg-transparent border shadow-sm
+  /* border-radius: 2px; */
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+  /* background-color: #191919; */
+  @apply bg-secondary
+}
+
+html::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  /* background-color: #e3e3e3; */
+  @apply bg-primary border rounded
+}
+
+
+
+
+
+/* Static Background Patterns */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(0,0,0,0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-cross-pattern {
+  background-image: 
+    linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply backdrop-blur-xl bg-white/10 border border-white/10;
+}
+
+.glass-light {
+  @apply backdrop-blur-xl bg-white/60 border border-white/20;
+}
+
+.glass-dark {
+  @apply backdrop-blur-xl bg-black/50 border border-white/10;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-blue-600 dark:from-violet-400 dark:to-blue-400;
+}
+
