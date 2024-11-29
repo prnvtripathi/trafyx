@@ -1,230 +1,155 @@
-"use client";
-import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useFormState } from "react-dom";
-import { signup } from "@/lib/actions";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+'use client'
 
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { motion } from 'framer-motion'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+// import { Icons } from "@/components/ui/icons"
+import Link from 'next/link'
+import { GitlabIcon, Loader2Icon } from 'lucide-react'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import { Card, CardContent } from '@/components/ui/card'
 
-export default function SignInForm() {
-  const [state, formAction] = useFormState(signup, undefined);
-  const [date, setDate] = React.useState<Date>();
+// Define the schema for form validation
+const signUpSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters long" }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters long" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    }),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+})
+
+type SignUpFormValues = z.infer<typeof signUpSchema>
+
+export function SignUpForm() {
+  const [isLoading, setIsLoading] = useState(false)
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
+  })
+
+  async function onSubmit(data: SignUpFormValues) {
+    setIsLoading(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    console.log(data)
+    setIsLoading(false)
+  }
+
   return (
-    <form action={formAction}>
-      {/* Sign Up Card */}
-      <Card className="mx-auto max-w-fit">
-        <CardHeader>
-          {/* Card Title */}
-          <CardTitle className="text-xl">Sign Up</CardTitle>
-          {/* Card Description */}
-          <CardDescription>
-            Enter your information to create an account. All fields are required
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <div className="grid gap-2">
-                {/* Username Input */}
-                <Label htmlFor="username">Name</Label>
-                <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                {/* Password Input */}
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="******"
-                />
-              </div>
-              <div className="grid gap-2">
-                {/* Email Input */}
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  {" "}
-                  {/* Phone Input */}
-                  <Label htmlFor="phone">Contact</Label>
-                  <Input
-                    id="phone"
-                    type="number"
-                    name="phone"
-                    placeholder="1234567890"
-                    required
-                  />
-                </div>
-                <div>
-                  {" "}
-                  {/* Phone Input */}
-                  <Label htmlFor="phone">Alternate contact</Label>
-                  <Input
-                    id="phone"
-                    type="number"
-                    name="phone"
-                    placeholder="1234567890"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {/* Address Line 1 Input */}
-              <div>
-                {" "}
-                <Label htmlFor="addressLine1">Address Line 1</Label>
-                <Input
-                  id="addressLine1"
-                  name="addressLine1"
-                  type="text"
-                  placeholder="123 Main St"
-                  required
-                />
-              </div>
-
-              <div>
-                {/* Address Line 2 Input */}
-                <Label htmlFor="addressLine2">Address Line 2</Label>
-                <Input
-                  id="addressLine2"
-                  name="addressLine2"
-                  type="text"
-                  placeholder="Apt 4B"
-                />
-              </div>
-              <div className="flex flex-col ">
-                <Label htmlFor="addressLine2">Date of Birth </Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[280px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground mt-1"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {date ? format(date, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                      required
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="hidden items-center space-x-2">
-                {/* Is Admin Select */}
-                <label
-                  htmlFor="isAdmin"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Is Admin
-                </label>
-                <Select name="isAdmin" defaultValue="true">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {/* Is Admin Select Options */}
-                      <SelectItem value="true">Yes</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  {" "}
-                  {/* City Input */}
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    name="city"
-                    type="text"
-                    placeholder="New York"
-                    required
-                  />
-                </div>
-
-                <div>
-                  {/* Zip Code Input */}
-                  <Label htmlFor="zipCode">Zip Code</Label>
-                  <Input
-                    id="zipCode"
-                    name="zipCode"
-                    type="text"
-                    placeholder="10001"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">Create an Account</h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          Enter your information to get started
+        </p>
+      </div>
+      <Card className=''>
+        <CardContent className='space-y-4'>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" placeholder="John Doe" {...register("name")} />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="username">Username</Label>
+          <Input
+            id="username"
+            placeholder="johndoe"
+            {...register("username")}
+          />
+          {errors.username && (
+            <p className="text-sm text-red-500">{errors.username.message}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            placeholder="john@example.com"
+            type="email"
+            {...register("email")}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
+        </div>
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password"  className='w-full' type="password" {...register("password")} />
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
           </div>
-          {/* Create Account Button */}
-          <Button type="submit" className="flex max-w-md mx-auto justify-center my-4">
-            Create an account
-          </Button>
-
-          <div className="mt-4 text-center text-sm">
-            {/* Already have an account? */}
-            Already have an account?{" "}
-            <Link href="/login" className="underline">
-              Log in
-            </Link>
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword" className='w-full'
+              type="password"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
-        </CardContent>
-      </Card>
-      {/* Display form state */}
-      {state && state}
-    </form>
+        </div>
+        <Button className="w-full" type="submit" disabled={isLoading}>
+          {isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+          Sign Up
+        </Button>
+      </form>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        <Button variant="outline" type="button" disabled={isLoading}>
+          <GitHubLogoIcon className="mr-2 h-4 w-4" />
+          GitHub
+        </Button>
+        <Button variant="outline" type="button" disabled={isLoading}>
+          <GitHubLogoIcon className="mr-2 h-4 w-4" />
+          Google
+        </Button>
+        <Button variant="outline" type="button" disabled={isLoading}>
+          <GitlabIcon className="mr-2 h-4 w-4" />
+          GitLab
+        </Button>
+      </div>
+      </CardContent></Card>
+      <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        Already have an account?{" "}
+        <Link
+          href="/login"
+          className="font-semibold text-violet-600 hover:text-violet-500 dark:text-violet-400 dark:hover:text-violet-300"
+        >
+          Log in
+        </Link>
+      </p>
+    </div>
   );
 }
+

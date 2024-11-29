@@ -105,21 +105,7 @@ const GridLines = () => {
   )
 }
 
-// Decorative SVG Components
-const CircuitPattern = () => (
-  <svg className="absolute inset-0 w-full h-full opacity-[0.15]" viewBox="0 0 100 100">
-    <pattern id="circuit" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path
-        d="M 10 0 L 10 10 M 0 10 L 20 10"
-        stroke="currentColor"
-        strokeWidth="0.5"
-        fill="none"
-      />
-      <circle cx="10" cy="10" r="1.5" fill="currentColor" />
-    </pattern>
-    <rect x="0" y="0" width="100" height="100" fill="url(#circuit)" />
-  </svg>
-)
+
 
 // Stats Component
 const Stats = () => (
@@ -157,8 +143,7 @@ const IntegrationLogos = () => (
       {[GitBranch, Terminal, Database, Lock, RefreshCcw, Cpu].map((Icon, index) => (
         <motion.div
           key={index}
-          className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800"
-          whileHover={{ scale: 1.05 }}
+          className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 hover:scale-105 transition-transform"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -499,7 +484,7 @@ export default function LandingPage() {
               variants={fadeIn}
               className="text-3xl md:text-4xl font-bold mb-4"
             >
-              How Apilex Works
+              How Apilux Works
             </motion.h2>
             <motion.p 
               variants={fadeIn}
@@ -622,7 +607,7 @@ export default function LandingPage() {
                   variants={fadeIn}
                   className="text-lg text-gray-600 dark:text-gray-200"
                 >
-                  Join thousands of developers who trust Apilex for their API testing needs.
+                  Join thousands of developers who trust Apilux for their API testing needs.
                 </motion.p>
                 <motion.ul 
                   variants={staggerChildren}
