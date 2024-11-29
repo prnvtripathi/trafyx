@@ -1,13 +1,13 @@
 package models
 
-import "gorm.io/gorm"
+import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type TestCase struct {
-	gorm.Model
-	Name        string `json:"name"`
-	Method      string `json:"method"`
-	URL         string `json:"url"`
-	Headers     string `json:"headers"` // JSON string for headers
-	Payload     string `json:"payload"` // JSON string for request body
-	Description string `json:"description"`
+	ID          primitive.ObjectID `bson:"_id,omitempty"` // MongoDB's ObjectId
+	Name        string             `bson:"name"`
+	Method      string             `bson:"method"`
+	URL         string             `bson:"url"`
+	Headers     string             `bson:"headers"`
+	Payload     string             `bson:"payload"`
+	Description string             `bson:"description"`
 }
