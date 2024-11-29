@@ -2,6 +2,8 @@ import { ModeToggle } from "@/components/theme-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LandingPage from "@/components/landing";
+import { buttonVariants } from "@/components/ui/button";
+import { PageRoutes } from "@/lib/pageroutes";
 
 export default function Home() {
   return (
@@ -21,6 +23,12 @@ export default function Home() {
             <Link href="/signup">
               <Button>Signup</Button>
             </Link>
+            <Link
+          href={`/docs${PageRoutes[0].href}`}
+          className={buttonVariants({ className: "px-6", size: "lg" })}
+        >
+          Get Started
+        </Link>
           </nav>
         </div>
       </header>
