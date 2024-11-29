@@ -3,24 +3,44 @@ package handlers
 import (
 	"backend/api/models"
 	"backend/config"
-	"github.com/gin-gonic/gin"
-	"net/http"
+	"context"
+	"log"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
-// CreateTestCase handles creating a new test case
-func CreateTestCase(c *gin.Context) {
-	var testCase models.TestCase
-	if err := c.ShouldBindJSON(&testCase); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+func AddTestCase(tc models.TestCase) error {
+	collection := config.MongoDB.Collection("test_cases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := collection.InsertOne(ctx, tc)
+	if err != nil {
+		log.Printf("Failed to insert test case: %v", err)
+		return err
 	}
-	config.DB.Create(&testCase)
-	c.JSON(http.StatusCreated, testCase)
+
+	return nil
 }
 
-// ListTestCases fetches all test cases
-func ListTestCases(c *gin.Context) {
+func GetAllTestCases() ([]models.TestCase, error) {
+	collection := config.MongoDB.Collection("test_cases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	cursor, err := collection.Find(ctx, bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
 	var testCases []models.TestCase
-	config.DB.Find(&testCases)
-	c.JSON(http.StatusOK, testCases)
+	if err = cursor.All(ctx, &testCases); err != nil {
+		return nil, err
+	}
+
+	return testCases, nil
 }
