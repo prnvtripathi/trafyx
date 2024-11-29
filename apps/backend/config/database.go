@@ -40,7 +40,7 @@ func ConnectDatabase() {
 		log.Fatalf("Failed to ping MongoDB: %v", err)
 	}
 
-	MongoDB = client.Database("api_testing") // Replace with your database name
+	MongoDB = client.Database("apilux")
 	log.Println("Connected to MongoDB!")
 }
 
