@@ -15,29 +15,12 @@ type Props = {};
 export default async function page({}: Props) {
   const cards = [
     {
-      link: "link1",
+      link: "/dashboard/workspace",
       title: "Start a New Application",
-      description: "Begin the process of applying for a scholarship",
+      description: "New API",
       icon: <FormInputIcon className="size-8 text-muted-foreground" />,
     },
-    {
-      link: "link2",
-      title: "Upload Documents",
-      description: "Upload the required documents for your application",
-      icon: <UploadCloudIcon className="size-8 text-muted-foreground" />,
-    },
-    {
-      link: "link2",
-      title: "Check Scholarship Status",
-      description: "View the status of your scholarship application",
-      icon: <ArrowRightFromLineIcon className="size-8 text-muted-foreground" />,
-    },
-    {
-      link: "link2",
-      title: "Receive Disbursement",
-      description: "Receive the scholarship disbursement and update payment details",
-      icon: <CheckIcon className="size-8 text-muted-foreground" />,
-    },
+
     // Add more card objects as needed
   ];
 

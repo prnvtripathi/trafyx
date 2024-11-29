@@ -26,14 +26,7 @@ import {
 import { auth, signOut } from "@/auth";
 import DynamicBreadcrumb from "./breadcrumbs";
 
-import {
-
-  Table,
-  LogOut,
-  Shield,
-  Mail,
-  User,
-} from "lucide-react";
+import { Table, LogOut, Shield, Mail, User } from "lucide-react";
 
 export default async function Header() {
   const { user } = await auth();
@@ -107,7 +100,8 @@ export default async function Header() {
         <div className="hidden md:flex items-center space-x-4">
           {" "}
           {/* This div is for breadcrumbs */}
-          <LayoutDashboardIcon className="h-8 w-8 bg-primary text-white p-1 rounded-full inline mx-2 md:mx-0" />   <DynamicBreadcrumb separator={"/"} />
+          <LayoutDashboardIcon className="h-8 w-8 bg-primary text-white p-1 rounded-full inline mx-2 md:mx-0" />{" "}
+          <DynamicBreadcrumb separator={"/"} />
         </div>
 
         <div className="relative ml-auto flex-1 md:grow-0">
@@ -118,29 +112,66 @@ export default async function Header() {
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
           />
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="cursor-pointer size-9">
+            <Avatar className="cursor-pointer size-7">
               <AvatarImage src={user.img || "/noavatar.png"} />
-              <AvatarFallback>EU</AvatarFallback>
+              {user.name ? (
+                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              ) : (
+                <AvatarFallback>
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              )}
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>
-              {/* <span className="text-primary/70">Username: </span> */}
-              {user.name}
-            </DropdownMenuLabel>
-            <DropdownMenuLabel>
-              {/* <span className="text-primary/70">Email:</span> */}
-              {user.email}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/dashboard/profile/${user.id}`}>Profile</Link>
-            </DropdownMenuItem>
+
+          <DropdownMenuContent className="w-fit p-0" align="end">
+            <div className="flex items-center space-x-4 p-4 border-b">
+              <Avatar className="h-16 w-16 border-2 border-primary">
+                <AvatarImage src={user.img} alt={user.name} />
+                {user.name ? (
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                ) : (
+                  <AvatarFallback>
+                    <User className="h-4 w-4" />
+                  </AvatarFallback>
+                )}
+              </Avatar>
+              <div>
+                <p className="text-lg font-semibold">{user.name}</p>
+                <p className="text-sm text-muted-foreground">{user.email}</p>
+              </div>
+            </div>
+            <div className="py-4 px-2 space-y-3">
+              <DropdownMenuLabel className="flex items-center cursor-default">
+                <User className="mr-3 h-4 w-4 text-primary" />
+                <p className="text-sm font-medium">Username: {user.username}</p>
+              </DropdownMenuLabel>
+              <DropdownMenuLabel className="flex items-center cursor-default">
+                <Mail className="mr-3 h-4 w-4 text-primary" />
+                <span className="text-sm font-medium">Email: {user.email}</span>
+              </DropdownMenuLabel>
+              {/* <DropdownMenuLabel className="flex items-center cursor-default">
+                  <Shield className="mr-3 h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">Role: {userRole}</span>
+                </DropdownMenuLabel> */}
+            </div>
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            {/* <div className="p-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    logout();
+                  }}
+                  className="w-full font-bold hover:text-primary transition-colors"
+                >
+                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                </Button>
+              </div> */}
+            <DropdownMenuItem className="p-2 m-1">
               <form
                 className="w-full"
                 action={async () => {
@@ -156,86 +187,6 @@ export default async function Header() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-
-
-
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer size-7">
-              <AvatarImage src={user.img || "/noavatar.png"} />
-                {user.name ? (
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                ) : (
-                  <AvatarFallback>
-                    <User className="h-4 w-4" />
-                  </AvatarFallback>
-                )}
-              </Avatar>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent className="w-fit p-0" align="end">
-              <div className="flex items-center space-x-4 p-4 border-b">
-                <Avatar className="h-16 w-16 border-2 border-primary">
-                  <AvatarImage src={user.img} alt={user.name} />
-                  {user.name ? (
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  ) : (
-                    <AvatarFallback>
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  )}
-                </Avatar>
-                <div>
-                  <p className="text-lg font-semibold">{user.name}</p>
-                  <p className="text-sm text-muted-foreground">{user.email}</p>
-                </div>
-              </div>
-              <div className="py-4 px-2 space-y-3">
-                <DropdownMenuLabel className="flex items-center cursor-default">
-                  <User className="mr-3 h-4 w-4 text-primary" />
-                  <p className="text-sm font-medium">Username: {user.name}</p>
-                </DropdownMenuLabel>
-                <DropdownMenuLabel className="flex items-center cursor-default">
-                  <Mail className="mr-3 h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">
-                    Email: {user.email}
-                  </span>
-                </DropdownMenuLabel>
-                {/* <DropdownMenuLabel className="flex items-center cursor-default">
-                  <Shield className="mr-3 h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">Role: {userRole}</span>
-                </DropdownMenuLabel> */}
-              </div>
-
-              <DropdownMenuSeparator />
-              {/* <div className="p-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    logout();
-                  }}
-                  className="w-full font-bold hover:text-primary transition-colors"
-                >
-                  <LogOut className="mr-2 h-4 w-4" /> Logout
-                </Button>
-              </div> */}
-              <DropdownMenuItem className="p-2 m-1">
-              <form
-                className="w-full"
-                action={async () => {
-                  "use server";
-                  await signOut();
-                }}
-              >
-                <button className="w-full text-left hover:text-red-500 transition">
-                  {" "}
-                  Logout
-                </button>
-              </form>
-            </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         <ModeToggle />
       </nav>
     </>

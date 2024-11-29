@@ -78,7 +78,7 @@ export const {
       if (token) {
         session.user = {
           ...session.user,
-          name: token.username,
+          username: token.username,
           img: token.img,
           id: token.sub,
           role: token.role,
