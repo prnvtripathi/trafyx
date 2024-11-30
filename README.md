@@ -23,7 +23,7 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 5. [Installation](#-installation)
 6. [Usage](#-usage)
 7. [License](#-license)
-8. [Future-Enhancements](#-Future Enhancements)
+8. [Future-Enhancements](#-Future-Enhancements)
 9. [Contributing](#-contributing)
 
 ---
