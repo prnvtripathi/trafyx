@@ -44,10 +44,36 @@ Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) to ensure 
 
 ## Development Workflow
 
+### Fork and Clone the Repository
+1. Fork the repository to your GitHub account.
+2. Clone your forked repository locally:
+```bash
+git clone https://github.com/prnvtripathi/apilux.git
+cd apilux
+```
 
-## Set Up the Environment
+### Set Up the Environment
+#### Install dependencies:
+```bash
+npm install
+````
+- Set up any required environment variables (refer to .env.example for guidance).
 
-### Install dependencies:
+#### Run the application locally:
+```bash
+npm run dev
+```
+#### Create a New Branch
+- Use a descriptive branch name that reflects the scope of your work:
+```bash
+git checkout -b feature/your-feature-name
+```
+#### Make Changes
+- Follow the project's coding standards and style guides.
+- Write clear and concise commit messages:
+```bash
+git commit -m "Add feature: description of the feature"
+```
 
 ## Coding Standards
 
@@ -117,7 +143,7 @@ Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) to ensure 
    - Be respectful and constructive when reviewing others' code.
    - Provide actionable feedback and suggestions.
 
-   ### Licensing
+   ## Licensing
 
    By contributing to this repository, you agree that your contributions will be licensed under the MIT License.
 

@@ -27,22 +27,10 @@ export const Documents: Paths[] = [
     title: "Contributing",
     href: "/contributing",
     heading: "Community",
-  },
-  {
-    title: "Structure",
-    href: "/structure",
-    items: [
-      {
-        title: "Deeper",
-        href: "/deeper",
-        items : [
-          {
-            title: "Even deeper",
-            href: "/even-deeper",
-          },
-        ]
-      },
-    ],
+  }, {
+    title: "Code of Conduct",
+    href: "/code_of_conduct",
+    
   },
   {
     spacer: true,
