@@ -13,6 +13,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
+        }, {
+            url: 'https://apilux.vercel.app/login',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        }, {
+            url: 'https://apilux.vercel.app/signup',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: 'https://apilux.vercel.app/docs',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
         },
     ]
 }
