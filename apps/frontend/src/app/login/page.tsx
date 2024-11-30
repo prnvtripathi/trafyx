@@ -6,6 +6,7 @@ import { BackgroundStyle } from "@/components/ui/background-style";
 // import { GearIcon } from "@radix-ui/react-icons";
 import SpinningLogo from "@/components/spinningLogo";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
+import Footer from "@/components/ui/footer";
 
 export const metadata = {
   title: "Login | App",
@@ -44,6 +45,7 @@ export default function Login() {
         </div>
         <FloatingShapes/>
       </div>
+      <Footer/>
     </div>
   );
 }
