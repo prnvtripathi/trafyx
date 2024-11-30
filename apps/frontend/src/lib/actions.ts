@@ -10,67 +10,67 @@ import { signIn, auth, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
 // Function to add a new user
-export const addUser = async (formData: any) => {
-  // Extract user data from form
-  const { username, email, password, phone, address, img, isAdmin, isActive } =
-    Object.fromEntries(formData);
+// export const addUser = async (formData: any) => {
+//   // Extract user data from form
+//   const { name, username, email, password, phone, address, img, isAdmin, isActive } =
+//     Object.fromEntries(formData);
 
-  try {
-    connectToDB();
+//   try {
+//     connectToDB();
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+//     // Hash the password
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user object
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-      phone,
-      img,
-      address,
-      isAdmin,
-      isActive,
-      companyID,
-    });
+//     // Create new user object
+//     const newUser = new User({
+//       name,
+//       username,
+//       email,
+//       password: hashedPassword,
+//       phone,
+//       img,
+//       address,
+//       // isAdmin,
+//       // isActive,
+//       // companyID,
+//     });
 
-    // Save user to database
-    await newUser.save();
-  } catch (err) {
-    console.log(err);
-    throw new Error("Failed to create user!");
-  }
+//     // Save user to database
+//     await newUser.save();
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Failed to create user!");
+//   }
 
-  // Revalidate the users page and redirect
-  revalidatePath("/dashboard/users");
-  redirect("/dashboard/users");
-};
+//   // Revalidate the users page and redirect
+//   revalidatePath("/dashboard/users");
+//   redirect("/dashboard/users");
+// };
 
 // Function to update an existing user
 export const updateUser = async (formData: any) => {
   // Extract updated user data from form
-  const { id, username, email, password, phone, address, isAdmin, isActive } =
+  const { id, username, email, password, img, name } =
     Object.fromEntries(formData);
 
   try {
     connectToDB();
 
     // Prepare update fields
-    const updateFields = {
+    const updateFields: { [key: string]: any } = {
       username,
       email,
       password,
-      phone,
-      address,
-      isAdmin,
-      isActive,
+      name,
+      img,
+      id,
     };
 
     // Remove empty fields
     Object.keys(updateFields).forEach(
       (key) =>
-        (updateFields[key] === "" || undefined) && delete updateFields[key]
+        (updateFields[key] === "" || updateFields[key] === undefined) && delete updateFields[key]
     );
 
     // Update user in database
@@ -80,9 +80,11 @@ export const updateUser = async (formData: any) => {
     throw new Error("Failed to update user!");
   }
 
+
+  console.log(id, "revalidate hogi")
   // Revalidate the users page and redirect
-  revalidatePath("/dashboard/users");
-  redirect("/dashboard/users");
+  revalidatePath(`/dashboard/`);
+  redirect(`/dashboard/`);
 };
 
 // Function to delete a user
@@ -124,8 +126,9 @@ export const authenticate = async (prevState: any, formData: any) => {
 // Function to sign up a new user
 export const signup = async (prevState: any, formData: any) => {
   // Extract signup data from form
-  const { username, email, password, isAdmin } =
+  const { username, email, password, name } =
     Object.fromEntries(formData);
+    console.log ("name", name)
   console.log("username", username);
   console.log("email", email);
   console.log("password", password)
@@ -141,7 +144,7 @@ export const signup = async (prevState: any, formData: any) => {
       username,
       email,
       password: hashedPassword,
-      isAdmin,
+      name,
     });
 
     // Save user to database

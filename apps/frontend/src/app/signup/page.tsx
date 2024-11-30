@@ -6,6 +6,7 @@ import { FloatingShapes } from "@/components/ui/floating-shapes";
 import { SunIcon, MoonIcon } from "lucide-react";
 import Image from "next/image";
 import { BackgroundStyle } from '@/components/ui/background-style'
+import SpinningLogo from "@/components/spinningLogo";
 
 export const metadata = {
   title: "Sign Up | Apilux",
@@ -33,13 +34,14 @@ export default function Signin() {
 
               {/* Right column: Image */}
               <div className="w-full md:w-1/2 relative hidden md:block">
-                <Image
+                {/* <Image
                   src="/placeholder.svg?height=800&width=600"
                   alt="Sign up illustration"
                   width={600}
                   height={800}
                   className="object-cover w-full h-full"
-                />
+                /> */}
+                <SpinningLogo/>
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-blue-600/20 mix-blend-overlay" />
               </div>
             </div>

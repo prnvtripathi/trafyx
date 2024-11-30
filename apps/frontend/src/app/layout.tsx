@@ -33,7 +33,7 @@ export default async function RootLayout({
           >
             <TooltipProvider>
               {children}
-              <Footer />
+              {/* <Footer /> */}
               <Toaster />
             </TooltipProvider>
           </ThemeProvider>
