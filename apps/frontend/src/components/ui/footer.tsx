@@ -10,7 +10,7 @@ export default async function Footer() {
   const footerLinks = [
     { href: "#", label: "About" },
     { href: "/sitemap.xml", label: "Sitemap" },
-    // { href: "#", label: "Projects" },
+    { href: "https://github.com/prnvtripathi/apilux ", label: "GitHub" },
     // { href: "#", label: "Blog" },
   ];
 
