@@ -10,10 +10,10 @@ function SpinningLogo({}: Props) {
       initial={{ x: 0 }}
       animate={{ rotate: 360 }}
       transition={{ duration: 20, ease:"easeInOut", repeat: Infinity, repeatType: "reverse" }}
-      className="flex items-center justify-center"
+      className="flex items-center justify-center h-full w-full"
     >
-      <div className="bg-primary rounded-full shadow-xl text-white h-full w-full p-1">
-        <GearIcon className=" m-0 h-full w-full p-0 rounded-full " />
+      <div className="bg-primary rounded-full shadow-xl text-white  p-1">
+        <GearIcon className=" m-0 h-80 p-0 rounded-full w-full" />
       </div>
     </motion.div>
   );

@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowRightFromLineIcon, CheckIcon, Clock, FormInputIcon, UploadCloudIcon } from "lucide-react";
+import { BackgroundStyle } from "@/components/ui/background-style";
 
 type Props = {};
 
@@ -26,6 +27,7 @@ export default async function page({}: Props) {
 
   return (
     <div className="space-y-4 h-screen">
+      <BackgroundStyle/>
       <HomePageGreeting />
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 overflow-auto">
       {cards.map((card, index) => (

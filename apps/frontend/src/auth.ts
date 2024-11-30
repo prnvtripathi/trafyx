@@ -65,24 +65,23 @@ export const {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        const typedUser = user as User;
-        token.username = typedUser.name;
-        token.img = typedUser.img;
-        token.sub = typedUser._id;
-        token.role = typedUser.isAdmin;
+        // const typedUser = user as User;
+        token.name = user.name;
+        // token.username = user.username;
+        // token.img = user.img;
+        token.id = user.id;
+        // token.role = user.isAdmin;
       }
       console.log(token, "is the token");
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user = {
-          ...session.user,
-          username: token.username,
-          img: token.img,
-          id: token.sub,
-          role: token.role,
-        };
+        session.user.name = token.name;
+        // session.user.username = token.username;
+        // session.user.img = token.img;
+        // session.user.role = token.role;
+        session.user.id = token.id as string;
       }
       console.log(session, "is the session");
       return session;

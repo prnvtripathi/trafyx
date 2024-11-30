@@ -2,6 +2,7 @@ import { Bot, Cookie, Laptop, Play, Terminal } from 'lucide-react'
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
+import { Badge } from './ui/badge'
 
 export function Footer() {
   return (
@@ -21,9 +22,9 @@ export function Footer() {
         </Button>
       </div>
       <div className="flex items-center space-x-4">
-        <Link href="#" className="text-sm text-muted-foreground hover:underline">
+        <Badge variant="secondary" className="text-sm text-green-500">
           Online
-        </Link>
+        </Badge>
         <Button variant="ghost" size="sm">
           <Laptop className="mr-2 h-4 w-4" />
           Auto-select agent

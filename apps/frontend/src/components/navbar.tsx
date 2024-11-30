@@ -1,6 +1,5 @@
 import { Bell, ChevronDown, Search, Settings, User } from 'lucide-react'
 import Link from "next/link"
-
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,9 +13,6 @@ export function Navbar() {
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-background px-6">
       <div className="flex items-center gap-4">
-        <Link href="/" className="font-semibold">
-          Home
-        </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="gap-2">
@@ -48,7 +44,7 @@ export function Navbar() {
           <Input placeholder="Search APIs" className="pl-8" />
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon">
           <Bell className="h-4 w-4" />
         </Button>
@@ -59,7 +55,7 @@ export function Navbar() {
           <User className="h-4 w-4" />
         </Button>
         <Button>Upgrade</Button>
-      </div>
+      </div> */}
     </header>
   )
 }

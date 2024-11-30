@@ -5,6 +5,7 @@ import { BackgroundStyle } from "@/components/ui/background-style";
 // import { FloatingShapes } from "@/components/ui/floating-shapes";
 // import { GearIcon } from "@radix-ui/react-icons";
 import SpinningLogo from "@/components/spinningLogo";
+import { FloatingShapes } from "@/components/ui/floating-shapes";
 
 export const metadata = {
   title: "Login | App",
@@ -20,7 +21,7 @@ export default function Login() {
         <ModeToggle />
       </div>
       {/* LoginForm component */}
-      <div className=" bg-gray-50 dark:bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <BackgroundStyle />
         <div className="w-full max-w-6xl relative z-10">
           <div className="bg-white/80 dark:bg-gray-800/80 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm border border-white/20 dark:border-gray-700/20">
@@ -41,7 +42,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        {/* <FloatingShapes /> */}
+        <FloatingShapes/>
       </div>
     </div>
   );

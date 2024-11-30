@@ -13,6 +13,9 @@ import Link from 'next/link'
 import { GitlabIcon, Loader2Icon } from 'lucide-react'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Card, CardContent } from '@/components/ui/card'
+import { useFormState } from "react-dom";
+import { signup } from "@/lib/actions";
+
 
 // Define the schema for form validation
 const signUpSchema = z.object({
@@ -34,19 +37,31 @@ const signUpSchema = z.object({
 type SignUpFormValues = z.infer<typeof signUpSchema>
 
 export function SignUpForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
+  // const [isLoading, setIsLoading] = useState(false)
+  // const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
+  //   resolver: zodResolver(signUpSchema),
+  // })
+
+  // async function onSubmit(data: SignUpFormValues) {
+  //   setIsLoading(true)
+  //   // Simulate API call
+  //   await new Promise(resolve => setTimeout(resolve, 2000))
+  //   console.log(data)
+  //   setIsLoading(false)
+  // }
+
+  const [state, formAction] = useFormState(signup, undefined);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
-  })
+  });
 
-  async function onSubmit(data: SignUpFormValues) {
-    setIsLoading(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log(data)
-    setIsLoading(false)
-  }
-
+  const onSubmit = async (data: SignUpFormValues) => {
+    await formAction(data);
+  };
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -57,7 +72,7 @@ export function SignUpForm() {
       </div>
       <Card className=''>
         <CardContent className='space-y-4'>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
           <Input id="name" placeholder="John Doe" {...register("name")} />
@@ -110,10 +125,12 @@ export function SignUpForm() {
             )}
           </div>
         </div>
-        <Button className="w-full" type="submit" disabled={isLoading}>
-          {isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+        <Button className="w-full" type="submit" disabled={isSubmitting}>
+          {isSubmitting && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
           Sign Up
         </Button>
+
+        {state && state}
       </form>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
@@ -126,15 +143,15 @@ export function SignUpForm() {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3">
-        <Button variant="outline" type="button" disabled={isLoading}>
+        <Button variant="outline" type="button" disabled={isSubmitting}>
           <GitHubLogoIcon className="mr-2 h-4 w-4" />
           GitHub
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading}>
+        <Button variant="outline" type="button" disabled={isSubmitting}>
           <GitHubLogoIcon className="mr-2 h-4 w-4" />
           Google
         </Button>
-        <Button variant="outline" type="button" disabled={isLoading}>
+        <Button variant="outline" type="button" disabled={isSubmitting}>
           <GitlabIcon className="mr-2 h-4 w-4" />
           GitLab
         </Button>

@@ -1,19 +1,19 @@
-import { ChevronDown, Save, Share } from 'lucide-react'
-import * as React from "react"
+import { ChevronDown, Save, Share } from "lucide-react";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 
 function ParamsTable() {
   return (
@@ -27,21 +27,23 @@ function ParamsTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="p-2">
-              <Input className="h-8" placeholder="Key" />
-            </td>
-            <td className="p-2">
-              <Input className="h-8" placeholder="Value" />
-            </td>
-            <td className="p-2">
-              <Input className="h-8" placeholder="Description" />
-            </td>
-          </tr>
+          {[...Array(3)].map((_, index) => (
+            <tr key={index}>
+              <td className="p-2">
+                <Input className="h-8" placeholder="Key" />
+              </td>
+              <td className="p-2">
+                <Input className="h-8" placeholder="Value" />
+              </td>
+              <td className="p-2">
+                <Input className="h-8" placeholder="Description" />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
-  )
+  );
 }
 
 export function RequestPanel() {
@@ -53,10 +55,18 @@ export function RequestPanel() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="GET">GET</SelectItem>
-            <SelectItem value="POST">POST</SelectItem>
-            <SelectItem value="PUT">PUT</SelectItem>
-            <SelectItem value="DELETE">DELETE</SelectItem>
+            <SelectItem value="GET" className="text-green-500">
+              GET
+            </SelectItem>
+            <SelectItem value="POST" className="text-blue-500">
+              POST
+            </SelectItem>
+            <SelectItem value="PUT" className="text-yellow-500">
+              PUT
+            </SelectItem>
+            <SelectItem value="DELETE" className="text-red-500">
+              DELETE
+            </SelectItem>
           </SelectContent>
         </Select>
         <Textarea
@@ -103,8 +113,13 @@ export function RequestPanel() {
                 <Label htmlFor="form-data">Form Data</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="x-www-form-urlencoded" id="x-www-form-urlencoded" />
-                <Label htmlFor="x-www-form-urlencoded">x-www-form-urlencoded</Label>
+                <RadioGroupItem
+                  value="x-www-form-urlencoded"
+                  id="x-www-form-urlencoded"
+                />
+                <Label htmlFor="x-www-form-urlencoded">
+                  x-www-form-urlencoded
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="raw" id="raw" />
@@ -124,6 +139,5 @@ export function RequestPanel() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
-

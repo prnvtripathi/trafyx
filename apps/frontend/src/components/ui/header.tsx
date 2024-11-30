@@ -34,7 +34,7 @@ export default async function Header() {
 
   return (
     <>
-      <nav className="py-4 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 w-full">
+      <nav className="py-4 sticky top-0 z-0 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 w-full">
         <div className="hidden md:flex items-center space-x-4">
           {" "}
           {/* This div is for breadcrumbs */}

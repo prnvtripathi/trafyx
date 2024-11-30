@@ -133,6 +133,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ModeToggle } from "./theme-button";
 import SpinningLogo from "./spinningLogo";
+import { GearIcon } from "@radix-ui/react-icons";
 // import ThemeToggle from "./ui/theme-toggle";
 
 export function AppSidebar() {
@@ -150,7 +151,9 @@ export function AppSidebar() {
             height={32}
             width={32}
             priority
-          /> */}<SpinningLogo/>
+          /> */} <div className="bg-primary rounded-full shadow-xl text-white  p-1">
+        <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
+      </div>
           {isSidebarOpen && (
             <AnimatePresence>
               <motion.span
