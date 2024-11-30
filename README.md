@@ -23,7 +23,8 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 5. [Installation](#-installation)
 6. [Usage](#-usage)
 7. [License](#-license)
-8. [Contributing](#-contributing)
+8. [Future-Enhancements](#-Future-Enhancements)
+9. [Contributing](#-contributing)
 
 ---
 
@@ -73,14 +74,20 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 
 ## ⚙️ Kestra Workflow
 
-### **Orchestration**
-Kestra orchestrates the workflow as follows:
-1. **Fetch Test Cases**: Retrieve test cases from MongoDB.
-2. **Execute Tests**: Use HTTP tasks to test API endpoints.
-3. **Store Results**: Save test results back to MongoDB.
-4. **Notify Frontend**: Notify the frontend when tests are completed.
+APILUX utilizes **Kestra** for orchestrating test execution workflows. The Kestra workflow manages the lifecycle of test cases, ensuring scalability, reliability, and streamlined operation.
+
+### **Workflow Steps**
+1. **Fetch Test Cases**: Retrieve stored test cases from MongoDB.
+2. **Execute Tests**: Use Kestra's HTTP tasks to run API requests.
+3. **Store Results**: Save execution results, including response details and performance metrics.
+4. **Notify Frontend**: Update the frontend with completion status using a WebSocket or HTTP endpoint.
+
+<!-- ### **Example Workflow**
+The Kestra workflow file is available in the `kestra-workflows/` directory. See the [workflow documentation](#kestra-workflow) for details on setup and usage. -->
 
 ---
+
+
 
 ## 📂 Backend Test Case Generation
 
@@ -104,7 +111,7 @@ Kestra orchestrates the workflow as follows:
 
 ---
 
-## 🛠 Installation
+<!-- ## 🛠 Installation
 
 ### Prerequisites
 - **Backend**: 
@@ -122,4 +129,68 @@ Kestra orchestrates the workflow as follows:
 1. Clone the repository:
    ```bash
    git clone https://github.com/prnvtripathi/apilux
-   cd APILUX/backend
+   cd APILUX/backend -->
+ ---
+
+
+## 📦 Usage
+
+After setting up the backend and frontend, you can start using APILUX to test APIs. Follow these steps to get started:
+
+1. Open your browser and navigate to the frontend at `http://localhost:3000`.
+2. **API Information Form**: Enter the API details such as:
+   - Endpoint URL
+   - HTTP Method (GET, POST, PUT, DELETE)
+   - Headers (optional)
+   - Payload/Body (for POST/PUT requests)
+3. **Generate Test Cases**: The system will automatically generate test cases based on the provided API details.
+4. **Modify Test Cases**: You can edit, delete, or add new test cases as needed.
+5. **Execute Tests**: Click the "Run Tests" button to execute the test cases.
+6. **View Results**: The test results will be displayed, showing:
+   - Test Case Name/Description
+   - Status Code
+   - Execution Time
+   - Pass/Fail status
+
+---
+
+## 📄 License
+
+APILUX is licensed under the [MIT License](https://opensource.org/licenses/MIT). 
+
+
+---
+
+## 🎯 Future Enhancements
+
+We have exciting plans to further improve APILUX and provide a more comprehensive API testing experience:
+
+1. **Enhanced Reporting**: Add more detailed analytics and insights for test case execution, such as visualized metrics and trends.
+2. **User Authentication**: Introduce user accounts to allow saving personalized test cases and workflows for individual users.
+3. **Multiple Test Formats**: Provide support for importing and exporting test cases in popular formats like Postman collections and Swagger files.
+4. **Integration Testing**: Extend the framework to include support for integration testing, enabling end-to-end validations.
+5. **CI/CD Integration**: Seamlessly integrate APILUX with CI/CD pipelines using tools like Jenkins, GitHub Actions, GitLab CI, and others.
+
+---
+
+
+
+## 🤝 Contributing
+
+APILUX is Open Source 🥳🥳 
+
+Feel free to reach out to us if you have any questions or ideas.
+We welcome contributions to APILUX! If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a pull request to the `main` branch.
+
+Please make sure your code follows the existing style and includes proper tests where applicable.
+
+We encourage contributions from the community. Whether it's fixing a bug, adding a new feature, or improving documentation, your input is valuable.
+For any questions or feedback, feel free to open an issue or reach out to us.
+
+---
