@@ -111,7 +111,7 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
 
 ---
 
-<!-- ## 🛠 Installation
+## 🛠 Installation
 
 ### Prerequisites
 - **Backend**: 
@@ -129,7 +129,13 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
 1. Clone the repository:
    ```bash
    git clone https://github.com/prnvtripathi/apilux
-   cd APILUX/backend -->
+   cd APILUX/backend 
+   ```
+ 2.  Install Dependencies
+         Install Dependencies
+         ```bash
+        Use go mod to install the required dependencies:
+        ```
  ---
 
 
