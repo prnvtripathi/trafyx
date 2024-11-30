@@ -23,7 +23,8 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 5. [Installation](#-installation)
 6. [Usage](#-usage)
 7. [License](#-license)
-8. [Contributing](#-contributing)
+8. [Future Enhancements](#-Future Enhancements)
+9. [Contributing](#-contributing)
 
 ---
 
@@ -158,6 +159,21 @@ After setting up the backend and frontend, you can start using APILUX to test AP
 APILUX is licensed under the [MIT License](https://opensource.org/licenses/MIT). 
 
 ---
+---
+
+## 🎯 Future Enhancements
+
+We have exciting plans to further improve APILUX and provide a more comprehensive API testing experience:
+
+1. **Enhanced Reporting**: Add more detailed analytics and insights for test case execution, such as visualized metrics and trends.
+2. **User Authentication**: Introduce user accounts to allow saving personalized test cases and workflows for individual users.
+3. **Multiple Test Formats**: Provide support for importing and exporting test cases in popular formats like Postman collections and Swagger files.
+4. **Integration Testing**: Extend the framework to include support for integration testing, enabling end-to-end validations.
+5. **CI/CD Integration**: Seamlessly integrate APILUX with CI/CD pipelines using tools like Jenkins, GitHub Actions, GitLab CI, and others.
+
+---
+
+
 
 ## 🤝 Contributing
 
