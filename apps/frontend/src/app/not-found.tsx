@@ -5,7 +5,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "404: Not Found",
+  title: "404: Page Not Found",
 };
 
 function Custom404() {
