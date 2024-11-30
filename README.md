@@ -82,8 +82,8 @@ APILUX utilizes **Kestra** for orchestrating test execution workflows. The Kestr
 3. **Store Results**: Save execution results, including response details and performance metrics.
 4. **Notify Frontend**: Update the frontend with completion status using a WebSocket or HTTP endpoint.
 
-### **Example Workflow**
-The Kestra workflow file is available in the `kestra-workflows/` directory. See the [workflow documentation](#kestra-workflow) for details on setup and usage.
+<!-- ### **Example Workflow**
+The Kestra workflow file is available in the `kestra-workflows/` directory. See the [workflow documentation](#kestra-workflow) for details on setup and usage. -->
 
 ---
 
