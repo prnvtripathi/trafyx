@@ -32,75 +32,13 @@ export default async function Header() {
   const { user } = await auth();
   console.log(user, "aa gaya");
 
-  const sidebarItems = [
-    {
-      id: 1,
-      name: "Home",
-      link: "/dashboard",
-      tooltiptext: "Home",
-      logo: <Home className="h-5 w-5" />,
-    },
-    {
-      id: 2,
-      name: "Products",
-      link: "/dashboard/products",
-      tooltiptext: "Products",
-      logo: <Package className="h-5 w-5" />,
-    },
-    {
-      id: 3,
-      name: "Customers",
-      link: "/dashboard/customers",
-      tooltiptext: "Customers",
-      logo: <Users2 className="h-5 w-5" />,
-    },
-    {
-      id: 3,
-      name: "contact",
-      link: "/dashboard/contactlogs",
-      tooltiptext: "Contact Logs",
-      logo: <ContactRoundIcon className="h-5 w-5" />,
-    },
-  ];
-
   return (
     <>
-      <nav className="py-4 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="outline" className="sm:hidden">
-              <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="sm:max-w-xs">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-transparent text-lg font-semibold text-primary-foreground md:text-base"
-              >
-                <div>
-                  <LayoutDashboardIcon className="h-8 w-8 bg-primary text-white dark:text-black p-1 rounded-full inline mx-2 md:mx-0" />
-                </div>
-                <span className="sr-only">company logo</span>
-              </Link>
-              {sidebarItems.map((item, index) => (
-                <Link
-                  href={item.link}
-                  key={item.id}
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  {item.logo} {item.name}
-                </Link>
-              ))}
-            </nav>
-          </SheetContent>
-        </Sheet>
-
+      <nav className="py-4 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 w-full">
         <div className="hidden md:flex items-center space-x-4">
           {" "}
           {/* This div is for breadcrumbs */}
-          <LayoutDashboardIcon className="h-8 w-8 bg-primary text-white p-1 rounded-full inline mx-2 md:mx-0" />{" "}
+    
           <DynamicBreadcrumb separator={"/"} />
         </div>
 
@@ -144,33 +82,15 @@ export default async function Header() {
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
             </div>
-            <div className="py-4 px-2 space-y-3">
-              <DropdownMenuLabel className="flex items-center cursor-default">
-                <User className="mr-3 h-4 w-4 text-primary" />
-                <p className="text-sm font-medium">Username: {user.username}</p>
-              </DropdownMenuLabel>
-              <DropdownMenuLabel className="flex items-center cursor-default">
-                <Mail className="mr-3 h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">Email: {user.email}</span>
-              </DropdownMenuLabel>
-              {/* <DropdownMenuLabel className="flex items-center cursor-default">
-                  <Shield className="mr-3 h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">Role: {userRole}</span>
-                </DropdownMenuLabel> */}
-            </div>
-
-            <DropdownMenuSeparator />
-            {/* <div className="p-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    logout();
-                  }}
-                  className="w-full font-bold hover:text-primary transition-colors"
-                >
-                  <LogOut className="mr-2 h-4 w-4" /> Logout
-                </Button>
-              </div> */}
+            <DropdownMenuItem>
+              <Link
+                href={`/dashboard/user/${user.id}`}
+                className="flex space-x-4 items-center"
+              >
+                <User className="mr-4" />
+                View Profile
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem className="p-2 m-1">
               <form
                 className="w-full"
@@ -179,8 +99,9 @@ export default async function Header() {
                   await signOut();
                 }}
               >
-                <button className="w-full text-left hover:text-red-500 transition">
+                <button className="w-full text-left hover:text-red-500 transition flex items-center">
                   {" "}
+                  <LogOut className="mr-4" />
                   Logout
                 </button>
               </form>
