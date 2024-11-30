@@ -1,20 +1,14 @@
 ---
 title: Introduction
-description: This section provides an overview of how to get started with the Documents, Next.js Document Starter Kit.
-keywords: ["introduction", "guide", "nextjs", "documents"]
+description: This section provides an overview of how to get started with Apilux, the AI driven API testing tool.
+keywords: ["introduction", "guide", "nextjs", "Apilux"]
 ---
 
-![Banner](/images/banner.png "Documents")
 
-## Documents
 
-Welcome to **Documents**, a powerful and flexible Next.js documentation starter kit designed to simplify the process of creating high-quality, comprehensive 
-product documentation, technical manuals, and business guides. Built with **React**, **Tailwind CSS**, and **TypeScript**, this starter kit provides the 
-foundation to build your project documentation and knowledge base.
+## Apilux
 
-Documents was crafted to streamline the creation, management and showcasing of documentation, allowing developers and teams to focus on the content rather 
-than building the underlying structure. This documentation aims to help you get up and running with the kit, exploring the various features and providing 
-insights into how to structure and present your content effectively.
+Apilux is an innovative platform designed to automate API testing using AI-driven workflows. By leveraging Kestra for orchestration, it ensures seamless execution of test cases with a focus on efficiency and reliability. Apilux simplifies the process of generating, executing, and analyzing API tests, empowering developers with dynamic testing capabilities.
 
 <CardGrid>
   <Card
@@ -31,40 +25,117 @@ insights into how to structure and present your content effectively.
   />
   <Card
     subtitle="Support"
-    title="Rubix Studios"
-    description="Australia's leading branding, marketing and web development company."
-    href="https://www.rubixstudios.com.au/"
+    title="Apilux"
+    description="Open an issue on the official GitHub repository"
+    href="https://github.com/prnvtripathi/apilux/issues"
     external={true}
   />
 </CardGrid>
 
-## Why Documents?
+## Why Apilux?
 
-Documents was created as an open-source project to help the community streamline their documentation process, enabling developers to focus on more critical 
-tasks. Built with scalability in mind, it adapts to projects of all sizes, from single-page guides to comprehensive knowledge bases. 
+API testing is a critical aspect of modern software development, yet it can often be time-consuming, repetitive, and prone to human error. Apilux is designed to solve these challenges by leveraging AI and orchestration tools to make API testing more efficient, scalable, and user-friendly. Here's why Apilux stands out:
 
-The integration of MDX, custom components and Tailwind CSS ensures an intuitive experience, simplifying both content creation and management. 
+## 1. AI-Powered Automation
+Traditional API testing requires significant manual effort in creating test cases. Apilux leverages the power of AI to generate diverse and comprehensive test cases automatically. By using GenAI APIs, it can craft tests that are not only functional but also human-readable, covering happy paths, edge cases, and negative scenarios.
 
-  - **Product Guides**: Comprehensive manuals for product usage, setup and troubleshooting.
-  - **Business Documentation**: Clear and structured documentation for internal processes, policies and systems.
-  - **Technical Manuals**: Detailed guides for APIs, software development kits (SDKs) and technical processes.
+### Benefits:
+- Saves time by automating the creation of test cases.
+- Reduces human error by generating consistent and reliable tests.
+- Adapts to complex API structures with minimal user input.
 
-Documents offers extensive customization options, allowing you to easily align the design and functionality with your branding.
+---
+
+## 2. Scalability with Kestra Orchestration
+Apilux integrates with Kestra, a powerful orchestration tool, to execute test cases at scale. Whether you're testing a single API or a suite of endpoints, Kestra ensures that all workflows are executed efficiently and results are processed seamlessly.
+
+### Benefits:
+- Handles large-scale test executions effortlessly.
+- Offers robust error handling and logging during test workflows.
+- Ensures scalability for enterprise-level applications.
+
+---
+
+## 3. Customizable Test Cases
+While automation is key, flexibility is equally important. Apilux allows users to edit, delete, or add test cases as needed. This ensures that developers can tailor the tests to meet specific project requirements.
+
+### Benefits:
+- Empowers users to adapt tests for unique API scenarios.
+- Supports edge cases and custom business logic.
+- Provides full control over the testing process.
+
+---
+
+## 4. Comprehensive Test Coverage
+Apilux doesn't just test functionality; it also includes boundary tests, performance benchmarks, and negative scenarios. This holistic approach ensures that APIs are robust, secure, and performant under all conditions.
+
+### Benefits:
+- Identifies potential vulnerabilities in API design.
+- Validates API performance under high-load conditions.
+- Guarantees compliance with edge-case scenarios.
+
+---
+
+## 5. User-Friendly Interface
+Apilux's intuitive UI makes API testing accessible to developers of all skill levels. From entering API details to viewing detailed results, the platform ensures a smooth and efficient user experience.
+
+### Benefits:
+- Simplifies the testing process with a clean and interactive UI.
+- Reduces the learning curve for new users.
+- Improves productivity with streamlined workflows.
+
+---
+
+## 6. Detailed Insights and Reporting
+Apilux provides structured test results, including status codes, execution times, and response data. The results are displayed in a clear, actionable format, helping developers debug issues and improve API performance.
+
+### Benefits:
+- Enables quick identification of failing tests.
+- Offers actionable insights for debugging and optimization.
+- Supports data export for external analysis.
+
+---
+
+## 7. Seamless Integration with Modern Tools
+With its MongoDB backend and JSON-based result logging, Apilux integrates effortlessly into existing development pipelines. Developers can store, retrieve, and analyze test data with ease.
+
+### Benefits:
+- Fits seamlessly into CI/CD pipelines.
+- Supports persistent test case storage for long-term projects.
+- Offers compatibility with third-party tools through JSON exports.
+
+---
+
+## 8. Cost and Time Efficiency
+By automating repetitive tasks and providing scalable solutions, Apilux saves significant time and resources for development teams. Its token-based AI integration ensures cost efficiency without compromising on functionality.
+
+## Benefits:
+- Reduces overall API testing costs.
+- Speeds up the testing cycle, accelerating development timelines.
+- Provides maximum ROI for development and QA teams.
+
+---
+
+Apilux is more than just an API testing tool; it's a complete solution designed to empower developers, enhance productivity, and ensure the reliability of modern applications. Whether you're a solo developer or part of an enterprise team, Apilux is the ultimate choice for efficient and effective API testing.
+
 
 ## Key Features
 
 Here are some of the features that make **Documents** ideal for building your documentation:
 
-| Feature                              | Description                                                                                                      |
-|--------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| **Content Creation**                 | Write documentation using Markdown with JSX, custom components and Mermaid.js for diagrams.                      |
-| **Navigation & Structure**           | Organize content with multi-level navigation, automatically generated tables of contents and smooth pagination.  |
-| **Code Features**                    | Syntax highlighting, enhanced code blocks and a code switcher with copy functionality.                           |
-| **Advanced Search**                  | Fuzzy search with term highlighting for quick and accurate results.                                              |
-| **Theming & Layout**                 | Supports light/dark modes with automatic switching and responsive design.                                        |
-| **Math & Tables**                    | Seamless integration of LaTeX for math and structured tables.                                                    |
-| **SEO & Meta Tags**                  | Built-in SEO, metadata generation and control over meta tags for better search rankings and social sharing.      |
-| **AI-powered Docs (In Development)** | Future feature for AI-driven content discussions and search.                                                     |
+| **Feature**                  | **Description**                                                                                                      | **Benefits**                                                                                  |
+|-------------------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| **AI-Generated Test Cases**   | Automatically generates test cases using predefined templates or GenAI APIs like OpenAI.                             | Saves time and ensures comprehensive coverage for API testing.                               |
+| **Customizable Test Cases**   | Allows users to edit, delete, or add new test cases through the frontend interface.                                   | Provides flexibility to tailor test cases for specific API requirements.                     |
+| **Kestra Orchestration**      | Uses Kestra workflows for scalable and efficient test execution.                                                     | Ensures smooth orchestration of complex testing processes.                                   |
+| **Dynamic API Integration**   | Accepts detailed API information including URL, HTTP method, headers, and payload.                                    | Simplifies integration of various APIs for testing.                                          |
+| **Test Execution**            | Executes all generated test cases with a single click, retrieving and storing results.                               | Streamlines the testing process, making it fast and hassle-free.                            |
+| **Detailed Results Display**  | Presents execution results in a structured format, including status codes, response times, and pass/fail status.     | Helps developers analyze outcomes and debug APIs effectively.                                |
+| **Database Integration**      | Stores test cases and results in MongoDB for easy retrieval and session-based management.                            | Enables persistence and scalability for large-scale testing.                                 |
+| **Boundary and Performance Tests** | Supports edge-case testing, invalid inputs, and performance benchmarks.                                          | Ensures APIs handle unexpected scenarios and meet performance standards.                     |
+| **GenAI Integration**         | Optionally uses AI to create human-readable test cases and diverse scenarios.                                        | Enhances test case quality and readability.                                                  |
+| **User-Friendly Interface**   | Provides a clear and intuitive UI for API information input, test case management, and result analysis.              | Improves user experience, making the platform accessible for developers of all skill levels. |
+| **JSON File Logging**         | Stores test execution results in a JSON file for further analysis or external integration.                           | Enables seamless data export and interoperability with other tools.                          |
 
 ## How to Use These Documents
 
@@ -72,12 +143,10 @@ You'll find the documentation's navigation bar on the left side of the screen. T
 topics to more advanced concepts, allowing you to follow along step-by-step as you build your documentation. However, feel free to explore the content in 
 any order, selecting the sections most relevant to your use case.
 
-On the right side of the screen, a table of contents provides easy navigation between sections of each page. For quick access to specific content, you can 
-use the search bar at the top or the search shortcut (`Ctrl+K` or `Cmd+K`).
+On the right side of the screen, a table of contents provides easy navigation between sections of each page.
 
 Head over to the [Installation Guide](/docs/introduction/installation).
 
-## Join our Community
+## Find us on GitHub
 
-If you have questions about anything related to Documents, you're always welcome to ask our community on [GitHub](https://github.com/rubixvi/rubix-documents), [X (Twitter)](https://x.com/rubixstory), [Facebook](https://www.facebook.com/rubixstudios) 
-and [Reddit](https://www.reddit.com/r/RubixStudios/).
+If you have questions about anything related to Apilux, you're always welcome to ask us on [GitHub](https://github.com/prnvtripathi/apilux)

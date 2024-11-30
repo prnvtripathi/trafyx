@@ -11,10 +11,10 @@ type SideBarEdit = {
 
 export default function RightSideBar({ slug, title }: SideBarEdit) {
   const feedbackUrl = `${GitHubLink.href}/issues/new?title=Feedback for "${title}"&labels=feedback`;
-  const editUrl = `${GitHubLink.href}/edit/main/contents/docs/${slug}/index.mdx`;
+  const editUrl = `${GitHubLink.href}/edit/master/apps/frontend/src/contents/docs/${slug}/index.mdx`;
 
   return (
-    <div className="flex flex-col gap-3 pl-2">
+    <div className="flex flex-col gap-3 pl-2 border-t pt-4">
       <h3 className="text-sm font-semibold">This content</h3>
       <div className="flex flex-col gap-2">
         <Link

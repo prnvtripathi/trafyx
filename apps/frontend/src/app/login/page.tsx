@@ -15,9 +15,9 @@ export const metadata = {
 // This is the Login component
 export default function Login() {
   return (
-    <div className="">
+    <div className="relative">
       {/* ThemeToggle component */}
-      <div className="absolute top-0 right-0 p-6">
+      <div className="absolute top-0 left-0 p-6 z-50">
         <ModeToggle />
       </div>
       {/* LoginForm component */}
