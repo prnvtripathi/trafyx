@@ -9,45 +9,6 @@ import { toast } from "sonner";
 import { signIn, auth, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
-// Function to add a new user
-// export const addUser = async (formData: any) => {
-//   // Extract user data from form
-//   const { name, username, email, password, phone, address, img, isAdmin, isActive } =
-//     Object.fromEntries(formData);
-
-//   try {
-//     connectToDB();
-
-//     // Hash the password
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(password, salt);
-
-//     // Create new user object
-//     const newUser = new User({
-//       name,
-//       username,
-//       email,
-//       password: hashedPassword,
-//       phone,
-//       img,
-//       address,
-//       // isAdmin,
-//       // isActive,
-//       // companyID,
-//     });
-
-//     // Save user to database
-//     await newUser.save();
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error("Failed to create user!");
-//   }
-
-//   // Revalidate the users page and redirect
-//   revalidatePath("/dashboard/users");
-//   redirect("/dashboard/users");
-// };
-
 // Function to update an existing user
 export const updateUser = async (formData: any) => {
   // Extract updated user data from form
@@ -88,22 +49,22 @@ export const updateUser = async (formData: any) => {
 };
 
 // Function to delete a user
-export const deleteUser = async (id: any) => {
-  console.log("id for deleted user is", id);
+// export const deleteUser = async (id: any) => {
+//   console.log("id for deleted user is", id);
 
-  try {
-    await connectToDB();
-    // Delete user from database
-    await User.findByIdAndDelete(id);
+//   try {
+//     await connectToDB();
+//     // Delete user from database
+//     await User.findByIdAndDelete(id);
 
-    // Revalidate the users page
-    revalidatePath("/dashboard/users");
-    return { success: true };
-  } catch (err) {
-    console.log(err);
-    throw new Error("Failed to delete user!");
-  }
-};
+//     // Revalidate the users page
+//     revalidatePath("/dashboard/users");
+//     return { success: true };
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error("Failed to delete user!");
+//   }
+// };
 
 // Function to authenticate a user
 export const authenticate = async (prevState: any, formData: any) => {
@@ -157,5 +118,33 @@ export const signup = async (prevState: any, formData: any) => {
       return "User already exists";
     }
     throw err;
+  }
+};
+
+
+// Function to delete all records for a user
+export const deleteUser = async (formData: any) => {
+  const session = await auth();
+
+  const { id: inputID } = Object.fromEntries(formData);
+  // console.log("inputID is", inputID);
+
+  const currentID = session?.user?.id;
+  try {
+    await connectToDB();
+
+    // Delete all records for the company
+    await User.findByIdAndDelete(currentID);
+
+    console.log(`All records for ID: '${currentID}' have been deleted.`);    
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete records!");
+  }
+  // Sign out the user and redirect to home page
+  finally {
+    await signOut({ redirectTo: "/account-deleted" });
+    redirect("/account-deleted")
+
   }
 };

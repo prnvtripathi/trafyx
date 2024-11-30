@@ -14,6 +14,7 @@ import {
 import { DoorOpenIcon, TriangleAlertIcon } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { deleteUser } from "@/lib/actions";
 
 export default function DeleteDialog() {
   const { data: session } = useSession();
@@ -38,7 +39,7 @@ export default function DeleteDialog() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <form
-        //   action={deleteCompanyRecords}
+          action={deleteUser}
         >
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Account</AlertDialogTitle>
