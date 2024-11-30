@@ -2,6 +2,7 @@ import { ChevronUp, LayoutDashboardIcon } from "lucide-react";
 import { auth } from "@/auth";
 import Link from "next/link";
 import { GearIcon } from "@radix-ui/react-icons";
+import { PageRoutes } from "@/lib/pageroutes";
 
 export default async function Footer() {
   const session = await auth();
@@ -11,7 +12,7 @@ export default async function Footer() {
     { href: "#", label: "About" },
     { href: "/sitemap.xml", label: "Sitemap" },
     { href: "https://github.com/prnvtripathi/apilux ", label: "GitHub" },
-    // { href: "#", label: "Blog" },
+    { href: `/docs${PageRoutes[0].href}`, label: "Docs" },
   ];
 
   return (

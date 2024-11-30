@@ -142,7 +142,7 @@ export function SignUpForm() {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <Button variant="outline" type="button" disabled={isSubmitting}>
           <GitHubLogoIcon className="mr-2 h-4 w-4" />
           GitHub
@@ -151,10 +151,7 @@ export function SignUpForm() {
           <GitHubLogoIcon className="mr-2 h-4 w-4" />
           Google
         </Button>
-        <Button variant="outline" type="button" disabled={isSubmitting}>
-          <GitlabIcon className="mr-2 h-4 w-4" />
-          GitLab
-        </Button>
+
       </div>
       </CardContent></Card>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
