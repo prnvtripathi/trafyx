@@ -12,17 +12,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authenticate } from "@/lib/actions";
-// import { useFormState } from "react-dom";
-import { useActionState } from "react";
+import { useFormState } from "react-dom";
+// import { useActionState } from "react";
 import { toast } from "sonner";
 
 const LoginForm = () => {
-  const [state, formAction] = useActionState(authenticate, undefined);
+  const [state, formAction] = useFormState(authenticate, undefined);
 
   return (
     <div>
       {/* The outer form element */}
-      <form action={formAction}>
+      <form 
+      action={formAction}
+      >
         <Card className="mx-auto max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>

@@ -1,8 +1,10 @@
 import { ModeToggle } from "@/components/theme-button";
 import LoginForm from "./loginForm";
-import Image from "next/image";
+// import Image from "next/image";
 import { BackgroundStyle } from "@/components/ui/background-style";
-import { FloatingShapes } from "@/components/ui/floating-shapes";
+// import { FloatingShapes } from "@/components/ui/floating-shapes";
+// import { GearIcon } from "@radix-ui/react-icons";
+import SpinningLogo from "@/components/spinningLogo";
 
 export const metadata = {
   title: "Login | App",
@@ -29,20 +31,17 @@ export default function Login() {
               </div>
 
               {/* Right column: Image */}
-              <div className="w-full md:w-1/2 relative hidden md:block">
-                <Image
-                  src="/placeholder.svg?height=800&width=600"
-                  alt="Sign in illustration"
-                  width={600}
-                  height={800}
-                  className="object-cover w-full h-3/6"
-                />
+              <div className="w-full md:w-1/2 relative hidden md:flex items-center justify-center">
+            
+                <div className="w-2/3 h-2/3">
+                <SpinningLogo/></div>
+           
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-blue-600/20 mix-blend-overlay" />
               </div>
             </div>
           </div>
         </div>
-        <FloatingShapes />
+        {/* <FloatingShapes /> */}
       </div>
     </div>
   );
