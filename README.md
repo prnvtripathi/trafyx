@@ -110,7 +110,7 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
    - Trigger Kestra workflows for test execution.
 
 ---
-
+<!-- 
 ## 🛠 Installation
 
 ### Prerequisites
@@ -131,25 +131,7 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
    git clone https://github.com/prnvtripathi/apilux
    cd APILUX/backend 
    ```
-   2. Install Dependencies:
-   ```bash
-   go mod tidy
-
-   ```
-   3. Configure MongoDB:
-   ```bash
-MONGO_URI=mongodb://localhost:27017
-DB_NAME=apilux
-PORT=5000
-
-   ```
-   4. Start the Backend Server:
-   ```bash
-   go run main.go
-   ```
-  The server will now be running at http://localhost:5000.
- ---
-
+--- -->
 
 ## 📦 Usage
 
