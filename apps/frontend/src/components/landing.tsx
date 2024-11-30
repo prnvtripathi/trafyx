@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button"
 import { Inter } from 'next/font/google'
 import Link from "next/link"
-import { Play, Code2, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Cpu, Database, Lock, RefreshCcw, GitBranch, Terminal, BarChart, Activity, Globe, Workflow, SunIcon, MoonIcon } from 'lucide-react'
+import { Play, Code2, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Cpu, Database, Lock, RefreshCcw, GitBranch, Terminal, BarChart, Activity, Globe, Workflow, SunIcon, MoonIcon, NotebookIcon } from 'lucide-react'
 import { motion } from "framer-motion"
 import { useState, useEffect } from 'react'
+import { PageRoutes } from "@/lib/pageroutes";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -293,11 +294,14 @@ export default function LandingPage() {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="relative group border-violet-600 dark:border-violet-500 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/50"
+                className="relative flex group border-violet-600 dark:border-violet-500 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/50"
               >
+                <Link className="flex items-center"
+          href={`/docs${PageRoutes[0].href}`}>
                 <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-violet-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                Watch Demo
-                <Play className="ml-2 h-4 w-4" />
+                Docs
+                <NotebookIcon className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </motion.div>
 
