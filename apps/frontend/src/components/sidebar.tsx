@@ -269,10 +269,10 @@ export function AppSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             {/* <ThemeToggle /> */}
-            <SidebarMenuButton>
+            {/* <SidebarMenuButton>
             <ModeToggle/>
             <span>Switch Theme</span>
-            </SidebarMenuButton>
+            </SidebarMenuButton> */}
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
