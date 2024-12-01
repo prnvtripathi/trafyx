@@ -50,7 +50,6 @@ func AddUserAPI(c *gin.Context) {
 		return
 	}
 
-
 	log.Println(userAPI.UserID)
 
 	// Set additional fields (CreatedAt, UpdatedAt, ID)
@@ -123,4 +122,37 @@ func UpdateUserAPI(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "API information updated successfully"})
+}
+
+func GetAllUserAPIsByUserId(c *gin.Context) {
+	// Extract user ID from the URL parameters
+	userID := c.Query("user_id")
+
+	// Parse the ID as an ObjectID
+	objectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid User ID"})
+		return
+	}
+
+	collection := config.MongoDB.Collection("user_apis")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Perform the find operation
+	cursor, err := collection.Find(ctx, bson.M{"user_id": objectID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch API information"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	// Prepare the response
+	var userAPIs []models.UserAPI
+	if err = cursor.All(ctx, &userAPIs); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch API information"})
+		return
+	}
+
+	c.JSON(http.StatusOK, userAPIs)
 }

@@ -49,6 +49,9 @@ func RegisterRoutes(router *gin.Engine) {
 		// Endpoint for updating user API information
 		api.PUT("/user-apis/:id", handlers.UpdateUserAPI)
 
+		// Endpoint for fetching all the user API information
+		api.GET("/user-apis", handlers.GetAllUserAPIsByUserId)
+
 		// Endpoint for generating test cases using Gemini
 		api.POST("/generate-test-cases", func(c *gin.Context) {
 			// take api_id from request body
