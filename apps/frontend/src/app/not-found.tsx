@@ -25,7 +25,7 @@ function Custom404() {
           </p>
 
           <p className="mt-4 text-gray-500">
-            Nah fam, you're just lost. Let's get you back on track.
+            Nah fam, you&apos;re just lost. Let&apos;s get you back on track.
           </p>
 
           <Button className="w-1/2 my-6">

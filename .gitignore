@@ -7,3 +7,18 @@ apps/backend/tmp/
 apps/backend/dist/
 
 .turbo/
+
+# env
+.env
+*/.env
+*/.env.local
+*/.env.development
+*/.env.test
+*/.env.production
+*/.env.staging
+*/.env.prod
+*/.env
+*/.env.local
+*/.env.development
+*/.env.test
+*/.env.production

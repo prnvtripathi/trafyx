@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "air",
-    "build": "go build -o main.go"
+    "build": "go build -o main ."
   }
 }

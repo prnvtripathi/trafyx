@@ -23,14 +23,14 @@ export default function AccountDeletedCard({}: Props) {
           Account Deleted
         </h1>
         <p className="text-gray-600 dark:text-gray-300 mb-8">
-          Your account has been permanently deleted. We're sorry to see you go.
+          Your account has been permanently deleted. We&apos;re sorry to see you go.
         </p>
         <div className="mb-8">
           <div className="w-full h-1 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full" />
         </div>
         <p className="text-gray-600 dark:text-gray-300 mb-8">
           Thank you for being a part of our community. If you change your mind,
-          you're always welcome to create a new account.
+          you&apos;re always welcome to create a new account.
         </p>
         <Link href="/">
           <Button className="w-full bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
