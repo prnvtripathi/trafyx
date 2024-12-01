@@ -28,8 +28,9 @@ import {
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { PageRoutes } from "@/lib/pageroutes";
-import  SyntaxHighlighter  from "react-syntax-highlighter";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { CodeBlock } from "./ui/code-block";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,6 +57,77 @@ const float = {
     },
   },
 };
+
+// Code examples
+const codeExamples = [
+  {
+    step: "01",
+    title: "Connect Your API",
+    description:
+      "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
+    code: `
+import apilex from 'apilex';
+
+const myApi = apilex.connect({
+  specUrl: 'https://api.example.com/openapi.json',
+  // or
+  endpoints: [
+    { method: 'GET', path: '/users' },
+    { method: 'POST', path: '/users' },
+    // ...
+  ]
+});
+
+console.log('API connected successfully!');
+    `,
+  },
+  {
+    step: "02",
+    title: "Generate Tests",
+    description:
+      "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
+    code: `
+const testSuite = await myApi.generateTests();
+
+console.log(\`Generated \${testSuite.length} tests\`);
+
+// Example test
+testSuite[0] = {
+  name: 'Get all users',
+  method: 'GET',
+  path: '/users',
+  expectedStatus: 200,
+  assertions: [
+    { type: 'jsonSchema', schema: userListSchema },
+    { type: 'responseTime', max: 500 }
+  ]
+};
+    `,
+  },
+  {
+    step: "03",
+    title: "Monitor & Validate",
+    description:
+      "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
+    code: `
+const monitor = myApi.setupMonitor({
+  interval: '5m',
+  alertThreshold: {
+    errorRate: 0.01,
+    avgResponseTime: 200
+  }
+});
+
+monitor.on('alert', (data) => {
+  console.log('Alert:', data);
+  // Send notification, update dashboard, etc.
+});
+
+await monitor.start();
+console.log('API monitoring started');
+    `,
+  },
+];
 
 // Grid line pattern generator
 const GridLines = () => {
@@ -555,88 +627,20 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
-        <div className="space-y-24">
-          {[
-            {
-              step: "01",
-              title: "Connect Your API",
-              description:
-                "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
-              code: `
-import apilex from 'apilex';
-
-const myApi = apilex.connect({
-  specUrl: 'https://api.example.com/openapi.json',
-  // or
-  endpoints: [
-    { method: 'GET', path: '/users' },
-    { method: 'POST', path: '/users' },
-    // ...
-  ]
-});
-
-console.log('API connected successfully!');
-      `,
-            },
-            {
-              step: "02",
-              title: "Generate Tests",
-              description:
-                "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
-              code: `
-const testSuite = await myApi.generateTests();
-
-console.log(\`Generated \${testSuite.length} tests\`);
-
-// Example test
-testSuite[0] = {
-  name: 'Get all users',
-  method: 'GET',
-  path: '/users',
-  expectedStatus: 200,
-  assertions: [
-    { type: 'jsonSchema', schema: userListSchema },
-    { type: 'responseTime', max: 500 }
-  ]
-};
-      `,
-            },
-            {
-              step: "03",
-              title: "Monitor & Validate",
-              description:
-                "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
-              code: `
-const monitor = myApi.setupMonitor({
-  interval: '5m',
-  alertThreshold: {
-    errorRate: 0.01,
-    avgResponseTime: 200
-  }
-});
-
-monitor.on('alert', (data) => {
-  console.log('Alert:', data);
-  // Send notification, update dashboard, etc.
-});
-
-await monitor.start();
-console.log('API monitoring started');
-      `,
-            },
-          ].map((step, index) => (
+        <div className="space-y-24 mx-auto flex flex-col justify-center items-center">
+          {codeExamples.map((step, index) => (
             <motion.div
               key={index}
               variants={fadeIn}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="flex flex-col md:flex-row items-center gap-8"
+              className="flex flex-col md:flex-row items-center justify-center gap-8"
             >
               <div
                 className={`md:w-1/2 ${index % 2 === 1 ? "md:order-2" : ""}`}
               >
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg">
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg mx-5">
                   <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
                     {step.step}
                   </div>
@@ -646,10 +650,8 @@ console.log('API monitoring started');
                   </p>
                 </div>
               </div>
-              <div
-                className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}
-              >
-                <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl">
+              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}>
+                <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
                   <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
                     <div className="flex gap-1.5">
                       <div className="size-3 rounded-full bg-red-500" />
@@ -657,9 +659,7 @@ console.log('API monitoring started');
                       <div className="size-3 rounded-full bg-green-500" />
                     </div>
                   </div>
-                  <SyntaxHighlighter language="javascript" style={docco}>
-                    {step.code}
-                  </SyntaxHighlighter>
+                  <CodeBlock language="javascript" code={step.code} />
                 </div>
               </div>
             </motion.div>
