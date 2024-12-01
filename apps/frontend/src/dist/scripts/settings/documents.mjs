@@ -22,25 +22,12 @@ export const Documents = [
         spacer: true,
     },
     {
-        title: "Navigation",
-        href: "/navigation",
-        heading: "Documents",
-    },
-    {
-        title: "Structure",
-        href: "/structure",
-        items: [
-            {
-                title: "Deeper",
-                href: "/deeper",
-                items: [
-                    {
-                        title: "Even deeper",
-                        href: "/even-deeper",
-                    },
-                ]
-            },
-        ],
+        title: "Contributing",
+        href: "/contributing",
+        heading: "Community",
+    },  {
+        title: "Code of Conduct",
+        href: "/code_of_conduct",
     },
     {
         spacer: true,

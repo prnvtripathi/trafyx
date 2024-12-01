@@ -54,7 +54,7 @@ console.log(user, "is the recieved user");
           </CardContent>
         </div>
       </Card>
-      <Separator className="space-y-2"/>
+      {/* <Separator className="space-y-2"/> */}
     </div>
   );
 }

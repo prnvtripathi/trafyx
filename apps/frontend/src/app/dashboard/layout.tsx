@@ -1,20 +1,27 @@
-import SideNav from "@/components/sidebar";
+// "use client"
+
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/sidebar";
 import Header from "@/components/ui/header";
+import Footer from "@/components/ui/footer";
+import { BackgroundStyle } from "@/components/ui/background-style";
 
 
-// Global layout for the dashboard route
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      {/* Render the SideNav component */}
-   
-      {/* Render the Header component */}
-      <Header />
+    <SidebarProvider>
+      <AppSidebar />
 
-      {/* Render the children components within a div */}
-      <div className="p-6">{children}</div>
-    </>
+      <main className="md:flex-1 space-y-2 overflow-hidden relative z-0">
+      {/* <BackgroundStyle/> */}
+        <div className="flex items-center justify-between">
+          <SidebarTrigger className="flex md:hidden h-full" />
+          <Header />
+        </div>
+        <div className="mx-4">{children}</div>
+        {/* <Footer /> */}
+        
+      </main>
+    </SidebarProvider>
   );
-};
-
-export default Layout;
+}

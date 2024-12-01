@@ -3,6 +3,13 @@ import mongoose from "mongoose";
 // User Schema
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      unique: false,
+      min: 3,
+      max: 20,
+    },
     username: {
       type: String,
       required: true,
@@ -22,18 +29,7 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    companyID: {
-      type: String,
-      required: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+  
     phone: {
       type: String,
     },

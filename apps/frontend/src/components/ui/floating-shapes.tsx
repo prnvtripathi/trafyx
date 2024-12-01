@@ -1,5 +1,4 @@
 'use client'
-
 import { motion } from 'framer-motion'
 
 const shapes = [
@@ -17,12 +16,12 @@ export function FloatingShapes() {
           key={index}
           className={`absolute ${shape.color} ${shape.size} rounded-full opacity-20`}
           initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : 0,
+            y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : 0,
           }}
           animate={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: typeof window !== 'undefined' ? Math.random() * window.innerWidth:0,
+            y: typeof window !== 'undefined' ? Math.random() * window.innerHeight:0,
             rotate: 360,
           }}
           transition={{

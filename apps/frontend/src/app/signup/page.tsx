@@ -5,7 +5,10 @@ import { SignUpForm } from "./signUpForm";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 import { SunIcon, MoonIcon } from "lucide-react";
 import Image from "next/image";
-import { BackgroundStyle } from '@/components/ui/background-style'
+import { BackgroundStyle } from "@/components/ui/background-style";
+import SpinningLogo from "@/components/spinningLogo";
+import { GearIcon } from "@radix-ui/react-icons";
+import  Footer  from "@/components/ui/footer";
 
 export const metadata = {
   title: "Sign Up | Apilux",
@@ -17,10 +20,6 @@ export default function Signin() {
   return (
     <>
       {" "}
-      <div className="absolute p-6 z-50">
-        {" "}
-        <ModeToggle />{" "}
-      </div>{" "}
       <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <BackgroundStyle />
         <div className="w-full max-w-6xl relative z-10">
@@ -33,13 +32,7 @@ export default function Signin() {
 
               {/* Right column: Image */}
               <div className="w-full md:w-1/2 relative hidden md:block">
-                <Image
-                  src="/placeholder.svg?height=800&width=600"
-                  alt="Sign up illustration"
-                  width={600}
-                  height={800}
-                  className="object-cover w-full h-full"
-                />
+                <SpinningLogo />
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-blue-600/20 mix-blend-overlay" />
               </div>
             </div>
@@ -47,6 +40,7 @@ export default function Signin() {
         </div>
         <FloatingShapes />
       </div>
+      <Footer/>
     </>
   );
 }

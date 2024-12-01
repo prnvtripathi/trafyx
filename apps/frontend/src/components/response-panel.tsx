@@ -2,13 +2,14 @@ import { Copy, Link2, Maximize2, RotateCcw } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from './ui/badge'
 
 export function ResponsePanel() {
   return (
     <div className="flex flex-col border-t">
       <div className="flex items-center justify-between border-b p-2">
         <div className="flex items-center gap-4">
-          <span className="text-sm text-red-500">401 Unauthorized</span>
+          <Badge variant="secondary" className="text-sm text-red-500">401 Unauthorized</Badge>
           <span className="text-sm text-muted-foreground">1360 ms</span>
           <span className="text-sm text-muted-foreground">199 B</span>
         </div>
@@ -47,7 +48,7 @@ export function ResponsePanel() {
               <TabsTrigger value="preview">Preview</TabsTrigger>
               <TabsTrigger value="visualize">Visualize</TabsTrigger>
             </TabsList>
-            <TabsContent value="pretty" className="border-none p-4">
+            <TabsContent value="pretty" className="border-none p-4 bg-secondary rounded">
               <pre className="text-sm">
                 {JSON.stringify(
                   {

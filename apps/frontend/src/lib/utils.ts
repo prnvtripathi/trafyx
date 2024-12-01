@@ -1,30 +1,31 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import mongoose from "mongoose";
-
+import { Paths } from "@/lib/pageroutes";
+import searchData from "frontend/public/search-data/documents.json";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-const connection = {};
+const connection: { isConnected?: boolean } = {};
 
 export const connectToDB = async () => {
   try {
     if (connection.isConnected) return;
+    if (!process.env.MONGO) {
+      throw new Error("MONGO environment variable is not defined");
+    }
     const db = await mongoose.connect(process.env.MONGO);
-    connection.isConnected = db.connections[0].readyState;
+    connection.isConnected = db.connections[0].readyState === 1;
     console.log("Successfully connected to the database");
   } catch (error) {
     console.log(error);
-    throw new Error(error);
+    throw new Error(error instanceof Error ? error.message : String(error));
   }
 };
 
 
 
-import { Paths } from "@/lib/pageroutes";
-
-import searchData from "@/public/search-data/documents.json";
 
 export type search = {
   title: string;
