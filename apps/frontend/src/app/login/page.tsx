@@ -7,6 +7,9 @@ import { BackgroundStyle } from "@/components/effects/background-style";
 import SpinningLogo from "@/components/effects/spinningLogo";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 import Footer from "@/components/ui/footer";
+import { GearIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Login | App",
@@ -18,9 +21,19 @@ export default function Login() {
   return (
     <div className="relative">
       {/* ThemeToggle component */}
-      <div className="absolute top-0 left-0 p-6 z-50">
-        <ModeToggle />
-      </div>
+      <header className="absolute top-0 z-10 w-full">
+        <div className="max-w-8xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
+          <Link href="/" className="space-x-3 flex flex-row items-center">
+            <div className="bg-primary rounded-full shadow-xl text-white  p-1">
+              <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
+            </div>{" "}
+            <h1 className="text-2xl font-bold">Apilux</h1>
+          </Link>
+          <nav className="flex items-center space-x-3">
+            <ModeToggle />
+          </nav>
+        </div>
+      </header>
       {/* LoginForm component */}
       <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <BackgroundStyle />
@@ -34,18 +47,18 @@ export default function Login() {
 
               {/* Right column: Image */}
               <div className="w-full md:w-1/2 relative hidden md:flex items-center justify-center">
-            
                 <div className="w-2/3 h-2/3">
-                <SpinningLogo/></div>
-           
+                  <SpinningLogo />
+                </div>
+
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-blue-600/20 mix-blend-overlay" />
               </div>
             </div>
           </div>
         </div>
-        <FloatingShapes/>
+        <FloatingShapes />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
