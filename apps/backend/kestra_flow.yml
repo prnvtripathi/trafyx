@@ -10,25 +10,22 @@ tasks:
     filter:
       apiid:
         $oid: "{{ inputs.api_id }}"
-    store: true
 
   - id: log_fetch_test_cases
     type: io.kestra.plugin.core.log.Log
     level: INFO
-    message: "{{ outputs.fetch_test_cases | json }}"
+    message: "{{ outputs.fetch_test_cases.rows | json }}"
 
   - id: execute_test_cases
     type: io.kestra.plugin.scripts.python.Script
-    containerImage: ghcr.io/kestra-io/pydata:latest # Ensures Pandas is available
     inputFiles:
-      test_cases.json: "{{ outputs.fetch_test_cases | json }}"
+      test_cases.json: "{{ outputs.fetch_test_cases.rows | json }}"
     outputFiles:
       - "results.json"
     script: |
       import json
       import requests
       import time
-      import pandas as pd
 
       # Load test cases from the input file
       with open('test_cases.json', 'r') as f:
@@ -58,23 +55,25 @@ tasks:
               )
               duration = time.time() - start_time
               results.append({
-                  "_id": test_case_id,
+                  "test_case_id": test_case_id,
                   "status_code": response.status_code,
                   "response": response.text,
                   "expected_outcome": expected_outcome,
                   "test_result": response.status_code == expected_outcome,
-                  "duration": duration
+                  "duration": duration,
+                  "executed_at": start_time
               })
           except Exception as e:
               # Handle exceptions
               duration = time.time() - start_time
               results.append({
-                  "_id": test_case_id,
+                  "test_case_id": test_case_id,
                   "status_code": 0,
                   "response": str(e),
                   "expected_outcome": expected_outcome,
                   "test_result": False,
-                  "duration": duration
+                  "duration": duration,
+                  "executed_at": start_time
               })
 
       # Save results as a JSON file
@@ -86,15 +85,23 @@ tasks:
     message: "{{ outputs.execute_test_cases.outputFiles['results.json'] | json }}"
 
   - id: send_results_to_backend
-    type: io.kestra.plugin.core.http.Request
-    uri: "http://host.docker.internal:5000/api/test-results"
-    method: POST
-    headers:
-      Content-Type: "application/json"
-    body: |
-      {
-        "results": {{ outputs.execute_test_cases.outputFiles['results.json'] | json }}
-      }
+    type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      results.json: "{{ outputs.execute_test_cases.outputFiles['results.json'] }}"
+    script: |
+      import json
+      import requests
+
+      # Load results from the input file
+      with open('results.json', 'r') as f:
+          results = json.load(f)
+
+      # Send results to the backend
+      response = requests.post(
+          url="http://host.docker.internal:5000/api/test-results",
+          json={"results": results},
+          headers={"Content-Type": "application/json"}
+      )
 
 inputs:
   - id: api_id
