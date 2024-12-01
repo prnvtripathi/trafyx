@@ -1,5 +1,7 @@
-import { ChevronDown, Save, Share } from "lucide-react";
+"use client";
+import { ChevronDown, Save, Share, HelpCircle, Trash2 } from "lucide-react";
 import * as React from "react";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,39 +16,180 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-function ParamsTable() {
+interface ParamsTableProps {
+  onParamsChange: (queryString: string) => void;
+}
+
+function ParamsTable({ onParamsChange }: ParamsTableProps) {
+  const [params, setParams] = useState([
+    { id: 1, checked: false, key: "", value: "", description: "" },
+    { id: 2, checked: false, key: "", value: "", description: "" },
+    { id: 3, checked: false, key: "", value: "", description: "" },
+  ]);
+  const [allChecked, setAllChecked] = useState(false);
+
+  useEffect(() => {
+    const queryString = params
+      .filter((param) => param.key && param.value)
+      .map(
+        (param) =>
+          `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`
+      )
+      .join("&");
+    onParamsChange(queryString);
+  }, [params, onParamsChange]);
+
+  const toggleAll = (checked: boolean) => {
+    setAllChecked(checked);
+    setParams(params.map((param) => ({ ...param, checked })));
+  };
+
+  const toggleParam = (id: number, checked: boolean) => {
+    setParams(
+      params.map((param) => (param.id === id ? { ...param, checked } : param))
+    );
+    setAllChecked(params.every((param) => param.checked));
+  };
+
+  const updateParam = (id: number, field: string, value: string) => {
+    setParams(
+      params.map((param) =>
+        param.id === id ? { ...param, [field]: value } : param
+      )
+    );
+    if (
+      id === params[params.length - 1].id &&
+      (field === "key" || field === "value") &&
+      value !== ""
+    ) {
+      addParam();
+    }
+  };
+
+  const addParam = () => {
+    setParams([
+      ...params,
+      {
+        id: params.length + 1,
+        checked: false,
+        key: "",
+        value: "",
+        description: "",
+      },
+    ]);
+  };
+
+  const deleteParam = (id: number) => {
+    setParams(params.filter((param) => param.id !== id));
+  };
+
   return (
-    <div className="rounded-md border">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="p-2 text-left font-medium">Key</th>
-            <th className="p-2 text-left font-medium">Value</th>
-            <th className="p-2 text-left font-medium">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(3)].map((_, index) => (
-            <tr key={index}>
-              <td className="p-2">
-                <Input className="h-8" placeholder="Key" />
-              </td>
-              <td className="p-2">
-                <Input className="h-8" placeholder="Value" />
-              </td>
-              <td className="p-2">
-                <Input className="h-8" placeholder="Description" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Table className="border">
+      <TableHeader>
+        <TableRow className="">
+          <TableHead className="w-[50px] border-r">
+            <Checkbox checked={allChecked} onCheckedChange={toggleAll} />
+          </TableHead>
+          <TableHead className="border-r">Key</TableHead>
+          <TableHead className="border-r">Value</TableHead>
+          <TableHead className="border-r">
+            Description
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-1 inline" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>This description if for internal understanding and is not sent to the API via HTTP requests</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </TableHead>
+          <TableHead className="w-[50px]"></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {params.map((param) => (
+          <TableRow key={param.id} className="border-b">
+            <TableCell className="border-r">
+              <Checkbox
+                checked={param.checked}
+                onCheckedChange={(checked) =>
+                  toggleParam(param.id, checked === true)
+                }
+              />
+            </TableCell>
+            <TableCell className="border-r">
+              <Input
+                value={param.key}
+                onChange={(e) => updateParam(param.id, "key", e.target.value)}
+                placeholder="Key"
+                className="border-0 focus:ring-0"
+              />
+            </TableCell>
+            <TableCell className="border-r">
+              <Input
+                value={param.value}
+                onChange={(e) => updateParam(param.id, "value", e.target.value)}
+                placeholder="Value"
+                className="border-0 focus:ring-0"
+              />
+            </TableCell>
+            <TableCell className="border-r">
+              <Input
+                value={param.description}
+                onChange={(e) =>
+                  updateParam(param.id, "description", e.target.value)
+                }
+                placeholder="Description"
+                className="border-0 focus:ring-0"
+              />
+            </TableCell>
+            <TableCell>
+              {(param.key || param.value) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => deleteParam(param.id)}
+                  className="h-8 w-8 p-0"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 
 export function RequestPanel() {
+  const [url, setUrl] = useState("https://api.example.com/v1/endpoint");
+  const [queryParams, setQueryParams] = useState("");
+
+  const handleParamsChange = (newParams: string) => {
+    setQueryParams(newParams);
+  };
+
+  const fullUrl = `${url}${queryParams ? `?${queryParams}` : ""}`;
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex items-center gap-2">
@@ -55,24 +198,17 @@ export function RequestPanel() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="GET" className="text-green-500">
-              GET
-            </SelectItem>
-            <SelectItem value="POST" className="text-blue-500">
-              POST
-            </SelectItem>
-            <SelectItem value="PUT" className="text-yellow-500">
-              PUT
-            </SelectItem>
-            <SelectItem value="DELETE" className="text-red-500">
-              DELETE
-            </SelectItem>
+            <SelectItem value="GET">GET</SelectItem>
+            <SelectItem value="POST">POST</SelectItem>
+            <SelectItem value="PUT">PUT</SelectItem>
+            <SelectItem value="DELETE">DELETE</SelectItem>
           </SelectContent>
         </Select>
         <Textarea
           className="h-10 min-h-0 flex-1 resize-none py-2"
           placeholder="Enter request URL"
-          defaultValue="https://api.example.com/v1/endpoint"
+          value={fullUrl}
+          onChange={(e) => setUrl(e.target.value.split("?")[0])}
         />
         <Button variant="secondary">
           Save
@@ -93,13 +229,13 @@ export function RequestPanel() {
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="params" className="border-none p-0 pt-4">
-          <ParamsTable />
+          <ParamsTable onParamsChange={handleParamsChange} />
         </TabsContent>
         <TabsContent value="authorization" className="border-none p-0 pt-4">
-          <ParamsTable />
+          {/* Authorization content goes here */}
         </TabsContent>
         <TabsContent value="headers" className="border-none p-0 pt-4">
-          <ParamsTable />
+          <ParamsTable onParamsChange={handleParamsChange} />
         </TabsContent>
         <TabsContent value="body" className="border-none p-0 pt-4">
           <div className="space-y-4">
@@ -134,7 +270,7 @@ export function RequestPanel() {
                 <Label htmlFor="graphql">GraphQL</Label>
               </div>
             </RadioGroup>
-            <ParamsTable />
+            <ParamsTable onParamsChange={handleParamsChange} />
           </div>
         </TabsContent>
       </Tabs>
