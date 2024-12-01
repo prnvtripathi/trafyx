@@ -15,7 +15,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Card, CardContent } from '@/components/ui/card'
 import { useFormState } from "react-dom";
 import { signup } from "@/lib/actions";
-import MagneticEffect from '@/components/magnetic-effect'
+import MagneticEffect from '@/components/effects/magnetic-effect'
 
 
 // Define the schema for form validation

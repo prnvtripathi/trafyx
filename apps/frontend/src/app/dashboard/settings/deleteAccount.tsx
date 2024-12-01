@@ -12,8 +12,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DoorOpenIcon, TriangleAlertIcon } from "lucide-react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
 import { deleteUser } from "@/lib/actions";
 
 export default function DeleteDialog() {

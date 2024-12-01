@@ -2,7 +2,7 @@ import { Bot, Cookie, Laptop, Play, Terminal } from 'lucide-react'
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import { Badge } from './ui/badge'
+import { Badge } from '../ui/badge'
 
 export function Footer() {
   return (

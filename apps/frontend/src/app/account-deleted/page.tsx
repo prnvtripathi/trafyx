@@ -1,5 +1,5 @@
 // "use client"
-import { BackgroundStyle } from "@/components/ui/background-style";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 import Footer from "@/components/ui/footer";
 import AccountDeletedCard from "./account-deleted-card";

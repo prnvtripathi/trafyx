@@ -16,7 +16,7 @@ import { useFormState } from "react-dom";
 // import { useActionState } from "react";
 import { toast } from "sonner";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import MagneticEffect from "@/components/magnetic-effect";
+import MagneticEffect from "@/components/effects/magnetic-effect";
 
 const LoginForm = () => {
   const [state, formAction] = useFormState(authenticate, undefined);

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {FormInputIcon} from "lucide-react";
-import { BackgroundStyle } from "@/components/ui/background-style";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 type Props = {};
 

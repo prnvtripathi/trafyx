@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Routes } from "@/lib/pageroutes";
-import SubLink from "@/components/navigation/sublink";
+import SubLink from "@/components/documentation/navigation/sublink";
 
 export default function PageMenu({ isSheet = false }) {
   const pathname = usePathname();

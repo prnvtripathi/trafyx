@@ -29,7 +29,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ModeToggle } from "./theme-button";
-import SpinningLogo from "./spinningLogo";
+import SpinningLogo from "./effects/spinningLogo";
 import { GearIcon } from "@radix-ui/react-icons";
 // import ThemeToggle from "./ui/theme-toggle";
 

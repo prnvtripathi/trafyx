@@ -1,24 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { updateUser } from "@/lib/actions";
 import { fetchUser } from "@/lib/data";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/auth";
 import ProfilePage from "../user/[id]/page";
-import { BackgroundStyle } from "@/components/ui/background-style";
-import DeleteDialog from "@/components/delete";
+import { BackgroundStyle } from "@/components/effects/background-style";
+import DeleteDialog from "@/app/dashboard/settings/deleteAccount";
 
 interface PageParams {
   params: {
@@ -84,8 +74,21 @@ export default async function SettingsPage(params: PageParams) {
                 {" "}
                 <Card>
                   <CardContent>
-                    <h1 className="font-semibold">Remove stored API data</h1>
+                    <h1 className="font-semibold">Remove Stored API Data</h1>
                     <p>By removing stored API data, you will clear all cached information related to your account.</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <div className="flex flex-row justify-between items-center">
+                      <div>
+                        <h1 className="font-semibold">Remove Stored API Test Cases</h1>
+                        <p>
+                        This will remove all generated test cases for the APIs stored within your account. Note that this will not delete the APIs themselves.
+                        </p>
+                      </div>{" "}
+                      <DeleteDialog/>
+                    </div>{" "}
                   </CardContent>
                 </Card>
                 <h1 className="font-bold text-2xl">Danger Zone</h1>
