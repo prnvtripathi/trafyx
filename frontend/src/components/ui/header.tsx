@@ -30,7 +30,12 @@ import { Table, LogOut, Shield, Mail, User } from "lucide-react";
 
 export default async function Header() {
   const session = await auth();
-  const user = session?.user;
+  const user = session?.user as {
+    img?: string | null;
+    name?: string | null;
+    id?: string;
+    email?: string | null;
+  };
   // console.log(user, "aa gaya");
 
   return (
@@ -68,7 +73,10 @@ export default async function Header() {
           <DropdownMenuContent className="w-fit p-0" align="end">
             <div className="flex items-center space-x-4 p-4 border-b">
               <Avatar className="h-16 w-16 border-2 border-primary">
-                <AvatarImage src={user?.img} alt={user?.name || ""} />
+                <AvatarImage
+                  src={user?.img ?? undefined}
+                  alt={user?.name || ""}
+                />
                 {user?.name ? (
                   <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
                 ) : (
