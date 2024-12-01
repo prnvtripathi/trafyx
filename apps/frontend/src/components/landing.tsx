@@ -488,7 +488,7 @@ export default function LandingPage() {
               variants={fadeIn}
               className="text-3xl md:text-4xl font-bold mb-4"
             >
-              How Apilux Works
+              How Apilex Works
             </motion.h2>
             <motion.p 
               variants={fadeIn}
@@ -498,88 +498,104 @@ export default function LandingPage() {
             </motion.p>
           </motion.div>
 
-          <motion.div 
-            className="grid md:grid-cols-3 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-          >
+          <div className="space-y-24">
             {[
               {
                 step: "01",
                 title: "Connect Your API",
-                description: "Import your OpenAPI spec or connect your endpoints directly"
+                description: "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
+                code: `
+import apilex from 'apilex';
+
+const myApi = apilex.connect({
+  specUrl: 'https://api.example.com/openapi.json',
+  // or
+  endpoints: [
+    { method: 'GET', path: '/users' },
+    { method: 'POST', path: '/users' },
+    // ...
+  ]
+});
+
+console.log('API connected successfully!');
+                `
               },
               {
                 step: "02",
                 title: "Generate Tests",
-                description: "Our AI automatically generates comprehensive test suites"
+                description: "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
+                code: `
+const testSuite = await myApi.generateTests();
+
+console.log(\`Generated \${testSuite.length} tests\`);
+
+// Example test
+testSuite[0] = {
+  name: 'Get all users',
+  method: 'GET',
+  path: '/users',
+  expectedStatus: 200,
+  assertions: [
+    { type: 'jsonSchema', schema: userListSchema },
+    { type: 'responseTime', max: 500 }
+  ]
+};
+                `
               },
               {
                 step: "03",
                 title: "Monitor & Validate",
-                description: "Get real-time insights and automated validation reports"
+                description: "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
+                code: `
+const monitor = myApi.setupMonitor({
+  interval: '5m',
+  alertThreshold: {
+    errorRate: 0.01,
+    avgResponseTime: 200
+  }
+});
+
+monitor.on('alert', (data) => {
+  console.log('Alert:', data);
+  // Send notification, update dashboard, etc.
+});
+
+await monitor.start();
+console.log('API monitoring started');
+                `
               }
             ].map((step, index) => (
               <motion.div
                 key={index}
                 variants={fadeIn}
-                whileHover={{ scale: 1.05 }}
-                className="relative group"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="flex flex-col md:flex-row items-center gap-8"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-600 to-blue-600 dark:from-violet-500 dark:to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000" />
-                <div className="relative p-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-white/10">
-                  <motion.div 
-                    className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2"
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    {step.step}
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                  
-                  {/* Animated Connection Lines */}
-                  {index < 2 && (
-                    <motion.div 
-                      className="hidden md:block absolute top-1/2 -right-4 w-8 h-px bg-violet-500/50"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                    />
-                  )}
+                <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
+                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg">
+                    <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
+                      {step.step}
+                    </div>
+                    <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+                  </div>
+                </div>
+                <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
+                  <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl">
+                    <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
+                      <div className="flex gap-1.5">
+                        <div className="size-3 rounded-full bg-red-500" />
+                        <div className="size-3 rounded-full bg-yellow-500" />
+                        <div className="size-3 rounded-full bg-green-500" />
+                      </div>
+                    </div>
+                    {/* <CodeBlock language="javascript" code={step.code} /> */}
+                  </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* Floating Graphics */}
-          <div className="absolute inset-0 pointer-events-none">
-            <motion.div
-              className="absolute top-1/4 left-10 size-20 rounded-full bg-violet-500/20 blur-xl"
-              animate={{
-                y: [-20, 20],
-                opacity: [0.2, 0.5],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            />
-            <motion.div
-              className="absolute bottom-1/4 right-10 size-32 rounded-full bg-blue-500/20 blur-xl"
-              animate={{
-                y: [20, -20],
-                opacity: [0.3, 0.6],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            />
           </div>
         </div>
       </section>
@@ -617,7 +633,7 @@ export default function LandingPage() {
                   variants={staggerChildren}
                   className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-600 dark:text-gray-200"
                 >
-                  {['Free to get started', 'No credit card required', '14-day trial'].map((item, index) => (
+                  {['Free to get started', 'Distributed', 'Open Source'].map((item, index) => (
                     <motion.li 
                       key={index}
                       variants={fadeIn}
@@ -632,6 +648,7 @@ export default function LandingPage() {
                   variants={fadeIn}
                   className="flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
+                  <Link href="/signup">
                   <Button 
                     size="lg" 
                     className="relative group bg-violet-600 hover:bg-violet-700 dark:bg-violet-500 dark:hover:bg-violet-600 text-white"
@@ -640,14 +657,17 @@ export default function LandingPage() {
                     Start Testing Now
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
+                  </Link>
+                  <Link href={`/docs${PageRoutes[0].href}`}>
                   <Button 
                     variant="outline" 
                     size="lg" 
                     className="relative group border-violet-600 dark:border-violet-500 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/50"
                   >
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-violet-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    Schedule Demo
+                    View documentation
                   </Button>
+                  </Link>
                 </motion.div>
               </div>
             </div>

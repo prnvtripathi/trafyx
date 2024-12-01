@@ -9,7 +9,7 @@ export default async function Footer() {
   console.log(session?.expires, "is the recieved session");
 
   const footerLinks = [
-    { href: "#", label: "About" },
+    { href: "/about", label: "About" },
     { href: "/sitemap.xml", label: "Sitemap" },
     { href: "https://github.com/prnvtripathi/apilux ", label: "GitHub" },
     { href: `/docs${PageRoutes[0].href}`, label: "Docs" },
