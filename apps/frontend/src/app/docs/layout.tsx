@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/navigation/navbar";
-import Search from "@/components/navigation/search";
-import { Sidebar } from "@/components/navigation/sidebar";
+import { Navbar } from "@/components/documentation/navigation/navbar";
+import Search from "@/components/documentation/navigation/search";
+import { Sidebar } from "@/components/documentation/navigation/sidebar";
 import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
 import { GearIcon } from "@radix-ui/react-icons";

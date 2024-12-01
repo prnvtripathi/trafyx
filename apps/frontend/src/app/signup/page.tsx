@@ -5,8 +5,8 @@ import { SignUpForm } from "./signUpForm";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 import { SunIcon, MoonIcon } from "lucide-react";
 import Image from "next/image";
-import { BackgroundStyle } from "@/components/ui/background-style";
-import SpinningLogo from "@/components/spinningLogo";
+import { BackgroundStyle } from "@/components/effects/background-style";
+import SpinningLogo from "@/components/effects/spinningLogo";
 import { GearIcon } from "@radix-ui/react-icons";
 import  Footer  from "@/components/ui/footer";
 

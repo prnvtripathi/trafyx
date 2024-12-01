@@ -1,11 +1,11 @@
 import { ChevronDown, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
-import { RequestPanel } from "@/components/request-panel";
-import { ResponsePanel } from "@/components/response-panel";
-import { WorkspaceSidebar } from "@/components/ui/workspaceSidebar";
+import { Footer } from "@/components/workspace/footer";
+import { Navbar } from "@/components/workspace/navbar";
+import { RequestPanel } from "@/components/workspace/request-panel";
+import { ResponsePanel } from "@/components/workspace/response-panel";
+import { WorkspaceSidebar } from "@/components/workspace/workspaceSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function Page() {

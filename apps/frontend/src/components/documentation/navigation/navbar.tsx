@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Logo } from "@/components/navigation/logo";
+import { Logo } from "@/components/documentation/navigation/logo";
 import { LuArrowUpRight, LuGithub } from "react-icons/lu";
 
-import { ModeToggle } from "@/components/navigation/theme-toggle";
-import { SheetLeft } from "@/components/navigation/sidebar";
-import Search from "@/components/navigation/search";
-import Anchor from "@/components/navigation/anchor";
+import { ModeToggle } from "@/components/documentation/navigation/theme-toggle";
+import { SheetLeft } from "@/components/documentation/navigation/sidebar";
+import Search from "@/components/documentation/navigation/search";
+import Anchor from "@/components/documentation/navigation/anchor";
 import { Navigations, GitHubLink } from "@/settings/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { SheetClose } from "@/components/ui/sheet";

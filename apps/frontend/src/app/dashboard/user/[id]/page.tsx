@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { fetchUser } from "@/lib/data";
-import { BackgroundStyle } from "@/components/ui/background-style";
+import { BackgroundStyle } from "@/components/effects/background-style";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
