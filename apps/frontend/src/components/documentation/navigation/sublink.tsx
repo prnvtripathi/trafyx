@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/collapsible";
 import { SheetClose } from "@/components/ui/sheet";
 
-import Anchor from "@/components/navigation/anchor";
+import Anchor from "@/components/documentation/navigation/anchor";
 import { Button } from "@/components/ui/button";
 
 function isRoute(item: Paths): item is Extract<Paths, { title: string; href: string }> {

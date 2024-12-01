@@ -10,9 +10,9 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { NavMenu } from "@/components/navigation/navbar";
-import { Logo } from "@/components/navigation/logo";
-import PageMenu from "@/components/navigation/pagemenu";
+import { NavMenu } from "@/components/documentation/navigation/navbar";
+import { Logo } from "@/components/documentation/navigation/logo";
+import PageMenu from "@/components/documentation/navigation/pagemenu";
 
 export function Sidebar() {
   return (

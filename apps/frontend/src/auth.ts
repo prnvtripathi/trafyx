@@ -68,22 +68,22 @@ export const {
         // const typedUser = user as User;
         token.name = user.name;
         // token.username = user.username;
-        // token.img = user.img;
+        token.img = user.img;
         token.id = user.id;
         // token.role = user.isAdmin;
       }
-      console.log(token, "is the token");
+      // console.log(token, "is the token");
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.name = token.name;
         // session.user.username = token.username;
-        // session.user.img = token.img;
+        session.user.img = token.img;
         // session.user.role = token.role;
         session.user.id = token.id as string;
       }
-      console.log(session, "is the session");
+      // console.log(session, "is the session");
       return session;
     },
   },

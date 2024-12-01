@@ -4,7 +4,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar";
 import Header from "@/components/ui/header";
 import Footer from "@/components/ui/footer";
-import { BackgroundStyle } from "@/components/ui/background-style";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {

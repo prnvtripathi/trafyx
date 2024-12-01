@@ -1,107 +1,3 @@
-// "use client";
-// import React from "react";
-// import Link from "next/link";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip";
-// import {
-//   ContactRoundIcon,
-//   DoorOpen,
-//   Home,
-//   LayoutDashboardIcon,
-//   Package,
-//   TrashIcon,
-//   TriangleAlertIcon,
-//   UserCircle2Icon,
-//   Users2,
-// } from "lucide-react";
-// import { usePathname } from "next/navigation";
-
-
-// export default function Sidebar() {
-//   const sidebarItems = [
-//     {
-//       id: 1,
-//       name: "Home",
-//       link: "/dashboard",
-//       tooltiptext: "Home",
-//       logo: <Home className="h-5 w-5" />,
-//     },
-//     {
-//       id: 2,
-//       name: "Products",
-//       link: "/dashboard/products",
-//       tooltiptext: "Products",
-//       logo: <Package className="h-5 w-5" />,
-//     },
-//     {
-//       id: 3,
-//       name: "Customers",
-//       link: "/dashboard/customers",
-//       tooltiptext: "Customers",
-//       logo: <Users2 className="h-5 w-5" />,
-//     },
-//     {
-//       id: 4,
-//       name: "Users",
-//       link: "/dashboard/profile/${user.id}",
-//       tooltiptext: "Users",
-//       logo: <UserCircle2Icon className="h-5 w-5" />,
-//     },
-//     {
-//       id: 5,
-//       name: "contact",
-//       link: "/dashboard/contactlogs",
-//       tooltiptext: "Contact",
-//       logo: <ContactRoundIcon className="h-5 w-5" />,
-//     },
-//   ];
-
-//   const inactiveLink =
-//     "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8";
-
-//   const activeLink =
-//     "flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8";
-
-//   const pathname = usePathname();
-
-//   return (
-//     <div>
-//       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-//         <nav className="flex flex-col items-center gap-4 px-2 py-4">
-//           <Link
-//             href="/dashboard"
-//             className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-transparent text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-//           >
-//             {/* <Image src="" width={50} height={50} alt="App logo" /> */}
-//             <LayoutDashboardIcon className="h-8 w-8 bg-primary text-white   p-1 rounded-full" />
-//             <span className="sr-only">CRM Logo</span>
-//           </Link>
-//           {sidebarItems.map((item, index) => (
-//             <Tooltip key={index}>
-//               <TooltipTrigger asChild>
-//                 <Link
-//                   href={item.link}
-//                   key={item.id}
-//                   className={pathname === item.link ? activeLink : inactiveLink} // Change here
-//                 >
-//                   {item.logo}
-//                   <span className="sr-only">{item.tooltiptext}</span>
-//                 </Link>
-//               </TooltipTrigger>
-//               <TooltipContent side="right">{item.tooltiptext}</TooltipContent>
-//             </Tooltip>
-//           ))}
-//         </nav>
-     
-//       </aside>
-//     </div>
-//   );
-// }
-
-
 "use client";
 
 import {
@@ -124,6 +20,7 @@ import {
   QrCode,
   ScanQrCode,
   LinkIcon,
+  LucideFileChartColumnIncreasing,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -132,7 +29,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ModeToggle } from "./theme-button";
-import SpinningLogo from "./spinningLogo";
+import SpinningLogo from "./effects/spinningLogo";
 import { GearIcon } from "@radix-ui/react-icons";
 // import ThemeToggle from "./ui/theme-toggle";
 
@@ -144,16 +41,20 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Link href="/" className="flex items-center justify-center py-3 gap-2 flex-row w-full">
+        <Link
+          href="/"
+          className="flex items-center justify-center py-3 gap-2 flex-row w-full"
+        >
           {/* <Image
             src="/images/logo.svg"
             alt="Logo"
             height={32}
             width={32}
             priority
-          /> */} <div className="bg-primary rounded-full shadow-xl text-white  p-1">
-        <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
-      </div>
+          /> */}{" "}
+          <div className="bg-primary rounded-full shadow-xl text-white  p-1">
+            <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
+          </div>
           {isSidebarOpen && (
             <AnimatePresence>
               <motion.span
@@ -171,10 +72,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="pl-2">
         <SidebarMenu>
-          
-      
           <SidebarSeparator />
-       
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Workspace"
@@ -187,7 +85,21 @@ export function AppSidebar() {
                 <span>Workspace</span>
               </Link>
             </SidebarMenuButton>
+          </SidebarMenuItem>{" "}
+          <SidebarMenuItem className="pr-2">
+            <SidebarMenuButton
+              tooltip="All APIs"
+              isActive={pathname.includes("/dashboard/all-apis")}
+              asChild
+              className="flex items-center"
+            >
+              <Link href="/dashboard/all-apis">
+                <LucideFileChartColumnIncreasing className="h-4 w-4" />
+                <span>All APIs</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
+          <SidebarSeparator />
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Settings"
@@ -203,6 +115,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
+      <SidebarSeparator />
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -218,7 +131,8 @@ export function AppSidebar() {
                 className={`h-4 w-4 ${
                   isSidebarOpen ? "" : "transform rotate-180"
                 } transition-transform duration-300`}
-              /><span>Collapse Sidebar</span>
+              />
+              <span>Collapse Sidebar</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
