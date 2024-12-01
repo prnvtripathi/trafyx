@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func AddTestResults(c *gin.Context) {
@@ -86,9 +87,9 @@ func AddTestResults(c *gin.Context) {
 }
 
 func GetTestResults(c *gin.Context) {
-	userAPIID := c.Query("user_api_id")
+	userAPIID := c.Query("api_id")
 	if userAPIID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user_api_id is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "api_id is required"})
 		return
 	}
 
@@ -96,26 +97,87 @@ func GetTestResults(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	// Convert the userAPIID to an ObjectID
 	objectID, err := primitive.ObjectIDFromHex(userAPIID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user_api_id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid api_id"})
 		return
 	}
 
-	cursor, err := collection.Find(ctx, bson.M{"user_api_id": objectID})
+	// Aggregation pipeline
+	pipeline := mongo.Pipeline{
+		// Step 1: Join test_results with test_cases
+		{{Key: "$lookup", Value: bson.M{
+			"from":         "test_cases",
+			"localField":   "test_case_id",
+			"foreignField": "_id",
+			"as":           "test_case",
+		}}},
+		// Step 2: Unwind test_case array
+		{{Key: "$unwind", Value: bson.M{
+			"path":                       "$test_case",
+			"preserveNullAndEmptyArrays": false,
+		}}},
+		// Step 3: Join test_cases with user_apis
+		{{Key: "$lookup", Value: bson.M{
+			"from":         "user_apis",
+			"localField":   "test_case.apiid",
+			"foreignField": "_id",
+			"as":           "user_api",
+		}}},
+		// Step 4: Unwind user_api array
+		{{Key: "$unwind", Value: bson.M{
+			"path":                       "$user_api",
+			"preserveNullAndEmptyArrays": false,
+		}}},
+		// Step 5: Match the user_api_id
+		{{Key: "$match", Value: bson.M{
+			"user_api._id": objectID,
+		}}},
+		// Step 6: Group by api_id to count test_cases and aggregate results
+		{{Key: "$group", Value: bson.M{
+			"_id": "$user_api._id",
+			"test_results": bson.M{"$push": bson.M{
+				"test_case":         "$test_case",
+				"test_results_data": "$$ROOT",
+			}},
+			"test_cases_count": bson.M{"$sum": 1},
+		}}},
+	}
+
+	// Execute the aggregation pipeline
+	cursor, err := collection.Aggregate(ctx, pipeline)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	defer cursor.Close(ctx)
 
-	var results []models.TestResult
-	if err = cursor.All(ctx, &results); err != nil {
+	// Prepare the final response
+	var aggregatedResults []bson.M
+	if err = cursor.All(ctx, &aggregatedResults); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, results)
+	// Construct the response
+	var response gin.H
+	if len(aggregatedResults) > 0 {
+		aggregatedResult := aggregatedResults[0]
+		response = gin.H{
+			"api_id":       userAPIID,
+			"test_cases":   aggregatedResult["test_cases_count"],
+			"test_results": aggregatedResult["test_results"],
+		}
+	} else {
+		response = gin.H{
+			"api_id":       userAPIID,
+			"test_cases":   0,
+			"test_results": []bson.M{},
+		}
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func DeleteTestResults(c *gin.Context) {
