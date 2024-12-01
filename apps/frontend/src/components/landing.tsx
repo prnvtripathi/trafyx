@@ -7,6 +7,9 @@ import { Play, Code2, Zap, Shield, ArrowRight, CheckCircle2, Sparkles, Cpu, Data
 import { motion } from "framer-motion"
 import { useState, useEffect } from 'react'
 import { PageRoutes } from "@/lib/pageroutes";
+import { SyntaxHighlighter } from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -499,12 +502,12 @@ export default function LandingPage() {
           </motion.div>
 
           <div className="space-y-24">
-            {[
-              {
-                step: "01",
-                title: "Connect Your API",
-                description: "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
-                code: `
+  {[
+    {
+      step: "01",
+      title: "Connect Your API",
+      description: "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
+      code: `
 import apilex from 'apilex';
 
 const myApi = apilex.connect({
@@ -518,13 +521,13 @@ const myApi = apilex.connect({
 });
 
 console.log('API connected successfully!');
-                `
-              },
-              {
-                step: "02",
-                title: "Generate Tests",
-                description: "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
-                code: `
+      `
+    },
+    {
+      step: "02",
+      title: "Generate Tests",
+      description: "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
+      code: `
 const testSuite = await myApi.generateTests();
 
 console.log(\`Generated \${testSuite.length} tests\`);
@@ -540,13 +543,13 @@ testSuite[0] = {
     { type: 'responseTime', max: 500 }
   ]
 };
-                `
-              },
-              {
-                step: "03",
-                title: "Monitor & Validate",
-                description: "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
-                code: `
+      `
+    },
+    {
+      step: "03",
+      title: "Monitor & Validate",
+      description: "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
+      code: `
 const monitor = myApi.setupMonitor({
   interval: '5m',
   alertThreshold: {
@@ -562,43 +565,44 @@ monitor.on('alert', (data) => {
 
 await monitor.start();
 console.log('API monitoring started');
-                `
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                variants={fadeIn}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="flex flex-col md:flex-row items-center gap-8"
-              >
-                <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
-                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg">
-                    <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
-                      {step.step}
-                    </div>
-                    <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                  </div>
-                </div>
-                <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
-                  <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl">
-                    <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
-                      <div className="flex gap-1.5">
-                        <div className="size-3 rounded-full bg-red-500" />
-                        <div className="size-3 rounded-full bg-yellow-500" />
-                        <div className="size-3 rounded-full bg-green-500" />
-                      </div>
-                    </div>
-                    {/* <CodeBlock language="javascript" code={step.code} /> */}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+      `
+    }
+  ].map((step, index) => (
+    <motion.div
+      key={index}
+      variants={fadeIn}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="flex flex-col md:flex-row items-center gap-8"
+    >
+      <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
+        <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg">
+          <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
+            {step.step}
           </div>
+          <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
+          <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
         </div>
-      </section>
+      </div>
+      <div className={`md:w-1/2 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
+        <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl">
+          <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
+            <div className="flex gap-1.5">
+              <div className="size-3 rounded-full bg-red-500" />
+              <div className="size-3 rounded-full bg-yellow-500" />
+              <div className="size-3 rounded-full bg-green-500" />
+            </div>
+          </div>
+          <SyntaxHighlighter language="javascript" style={docco}>
+            {step.code}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</div>
+
 
       {/* CTA Section */}
       <section className="py-24 bg-gray-100 dark:bg-gray-900 relative overflow-hidden">
