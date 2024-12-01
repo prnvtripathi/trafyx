@@ -172,7 +172,7 @@ const developers = [
   },
 ];
 
-export default async function AboutPageContent() {
+export default function AboutPageContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white relative overflow-hidden">
       <BackgroundStyle />
@@ -202,7 +202,7 @@ export default async function AboutPageContent() {
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Apilux is built on a foundation of cutting-edge technologies,
             enabling us to deliver a powerful and efficient API testing
-            platform. Here's a look at the key technologies powering our
+            platform. Here&apos;s a look at the key technologies powering our
             solution:
           </p>
         </motion.div>
@@ -260,8 +260,8 @@ export default async function AboutPageContent() {
           transition={{ duration: 0.5, delay: 0.9 }}
           className="mt-16 text-center text-3xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto italic"
         >
-          "We are very happy with our progress and are proud of the fact that we
-          were able to build this project within such a short timeframe."
+          &quot;We are very happy with our progress and are proud of the fact that we
+          were able to build this project within such a short timeframe.&quot;
         </motion.blockquote>
       </div>
     </div>

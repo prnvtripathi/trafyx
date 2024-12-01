@@ -25,7 +25,7 @@ export function DeveloperNote({ developer, index }: DeveloperNoteProps) {
           <p className="text-lg text-gray-600 dark:text-gray-400">{developer.role}</p>
         </CardHeader>
         <CardContent>
-          <blockquote className="italic text-gray-700 font-bold dark:text-gray-300 mb-4 text-base tracking-wider">"{developer.quote}"</blockquote>
+          <blockquote className="italic text-gray-700 font-bold dark:text-gray-300 mb-4 text-base tracking-wider">&quot;{developer.quote}&quot;</blockquote>
           <p className="text-gray-600 dark:text-gray-300">{developer.experience}</p>
         </CardContent>
       </Card>
