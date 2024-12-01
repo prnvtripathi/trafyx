@@ -11,10 +11,9 @@ import { Separator } from "./separator";
 import { auth } from "@/auth";
 
 export default async function HomePageGreeting() {
-
-
-const { user } = await auth();
-console.log(user, "is the recieved user");
+  const session = await auth();
+  const user = session?.user;
+  console.log(user, "is the received user");
 
   const getGreeting = () => {
     const currentTime = new Date().getHours();
@@ -35,12 +34,11 @@ console.log(user, "is the recieved user");
           <Avatar className="size-20 md:size-28 mr-4">
             <AvatarImage src={user?.img || "/noavatar.png"} />
             <AvatarFallback className="text-3xl md:text-5xl">
-              {user?.name}
+              {user?.name?.[0] || "?"}
             </AvatarFallback>
           </Avatar>{" "}
           <CardTitle className="text-2xl md:text-5xl">
-            <span className="font-normal">{getGreeting()}</span>,{" "}
-            {user?.name}
+            <span className="font-normal">{getGreeting()}</span>, {user?.name}
           </CardTitle>
         </CardHeader>
         <div className="flex-col">
@@ -50,7 +48,7 @@ console.log(user, "is the recieved user");
             </CardDescription>
             <CardDescription className="flex-end">
               {/* {currentDateTime} */}
-          </CardDescription>
+            </CardDescription>
           </CardContent>
         </div>
       </Card>

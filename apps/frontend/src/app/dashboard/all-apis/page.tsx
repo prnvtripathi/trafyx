@@ -17,30 +17,35 @@ export default async function page({}: Props) {
 
   // Function to fetch and format customer data
   async function getData() {
-    const response = await fetchUserApis("");
-    console.log(response, "jo aaya hai");
+    const response = session?.user?.id
+      ? await fetchUserApis(session.user.id)
+      : [];
 
-    const formattedData = response.userApis.map(
+    console.log(response);
+
+    const formattedData = response.map(
       (api: {
-        user_id: number;
-        name: string;
-        method: string;
-        url: string;
-        headers: string;
-        payload: string;
-        description: string;
-        createdAt: string;
-        updatedAt: string;
+        ID: string;
+        UserID: string;
+        Name: string;
+        Method: string;
+        URL: string;
+        Headers: string;
+        Payload: string;
+        Description: string;
+        CreatedAt: string;
+        UpdatedAt: string;
       }) => ({
-        user_id: api.user_id.toString(),
-        name: api.name,
-        method: api.method,
-        url: api.url,
-        headers: api.headers,
-        payload: api.payload,
-        description: api.description,
-        createdAt: api.createdAt,
-        updatedAt: api.updatedAt,
+        id: api.ID,
+        user_id: api.UserID,
+        name: api.Name,
+        method: api.Method,
+        url: api.URL,
+        headers: api.Headers,
+        payload: api.Payload,
+        description: api.Description,
+        createdAt: api.CreatedAt,
+        updatedAt: api.UpdatedAt,
       })
     );
 

@@ -17,13 +17,6 @@ import { toast } from "sonner";
 // Define the columns for the customer table
 export const columns = [
   {
-    accessorKey: "user_id",
-    header: "User ID",
-    cell: ({ row }: { row: { original: { user_id: string } } }) => {
-      return <span>{row.original.user_id}</span>;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Name",
   },
@@ -39,14 +32,53 @@ export const columns = [
     accessorKey: "headers",
     header: "Headers",
     cell: ({ row }: { row: { original: { headers: string } } }) => {
-      return <pre>{JSON.stringify(row.original.headers, null, 2)}</pre>;
+      let headers;
+      try {
+        headers = JSON.parse(row.original.headers);
+      } catch (error) {
+        console.error("Invalid JSON in headers:", row.original.headers);
+        return <span>Invalid JSON</span>;
+      }
+
+      return (
+        <ul className="list-none p-0">
+          {Object.entries(headers).map(([key, value], index) => (
+            <li key={index}>
+              <strong>{key}:</strong> {String(value)}
+            </li>
+          ))}
+        </ul>
+      );
     },
   },
   {
     accessorKey: "payload",
     header: "Payload",
     cell: ({ row }: { row: { original: { payload: string } } }) => {
-      return <pre>{JSON.stringify(row.original.payload, null, 2)}</pre>;
+      const rawPayload = row.original.payload;
+
+      if (!rawPayload) {
+        // Handle empty string or null/undefined payloads
+        return <span>No Payload Provided</span>;
+      }
+
+      let payload;
+      try {
+        payload = JSON.parse(rawPayload);
+      } catch (error) {
+        console.error("Invalid JSON in payload:", rawPayload);
+        return <span>Invalid JSON</span>;
+      }
+
+      return (
+        <ul className="list-none p-0">
+          {Object.entries(payload).map(([key, value], index) => (
+            <li key={index}>
+              <strong>{key}:</strong> {String(value)}
+            </li>
+          ))}
+        </ul>
+      );
     },
   },
   {

@@ -20,16 +20,14 @@ export const fetchUser = async (id: any) => {
 // Fetch UserApis based on a search query and user ID
 export const fetchUserApis = async (q: string) => {
   // Create a case-insensitive regular expression for the search query
-  const regex = new RegExp(q);
   try {
-    await connectToDB();
-    // Count the number of UserApis matching the search criteria
-    const count = await UserApi.countDocuments({ title: { $regex: regex }});
-    // Fetch the UserApis matching the search criteria
-    const userApis = await UserApi.find({ title: { $regex: regex }});
-    return { count, userApis };
+    const response = await fetch(
+      `${process.env.BACKEND_URL}/api/user-apis?user_id=${q}`
+    );
+    const user_apis = await response.json();
+    return user_apis;
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to fetch UserApis!");
+    throw new Error("Failed to fetch user APIs!");
   }
 };
