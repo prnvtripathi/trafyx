@@ -6,6 +6,30 @@ import { User } from "@/lib/models";
 import bcrypt from "bcrypt";
 import "next-auth/jwt";
 
+declare module "next-auth" {
+  interface User {
+    img?: string | null;
+    name?: string | null;
+    id?: string;
+  }
+
+  interface Session {
+    user: {
+      img?: string | null;
+      name?: string | null;
+      id?: string;
+    };
+  }
+}
+
+declare module "@auth/core/adapters" {
+  interface AdapterUser {
+    img: string | null;
+    name: string | null;
+    id: string;
+  }
+}
+
 // Function to handle user login
 const login = async (credentials: any) => {
   try {
@@ -66,22 +90,19 @@ export const {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // const typedUser = user as User;
         token.name = user.name;
         // token.username = user.username;
         token.img = (user as ExtendedUser).img;
         token.id = user.id;
-        // token.role = user.isAdmin;
       }
       // console.log(token, "is the token");
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        session.user.name = token.name;
+      if (token && session && session.user) {
+        session.user.name = token.name ?? null;
         // session.user.username = token.username;
-        session.user.img = token.img ?? "";
-        // session.user.role = token.role;
+        session.user.img = token.img as string | null;
         session.user.id = token.id as string;
       }
       // console.log(session, "is the session");
@@ -96,24 +117,4 @@ interface ExtendedUser extends NextAuthUser {
   img: string;
   password: string;
   userid: number;
-}
-
-// Extend the built-in session types
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      username: string;
-      img: string;
-      userid: number;
-    } & DefaultSession["user"];
-  }
-}
-
-// Extend the built-in JWT types
-declare module "next-auth/jwt" {
-  interface JWT {
-    username?: string;
-    img?: string;
-    userid?: number;
-  }
 }
