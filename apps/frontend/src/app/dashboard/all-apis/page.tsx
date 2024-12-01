@@ -3,6 +3,7 @@ import React from "react";
 import { columns } from "./api-table-columns";
 import { auth } from "@/auth";
 import { fetchUserApis } from "@/lib/data";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 export const metadata = {
   title: "All APIs | Apilux",
@@ -49,7 +50,8 @@ export default async function page({}: Props) {
   // Fetch the data
   const data = await getData();
   return (
-    <div>
+    <div className="overflow-hidden">
+      <BackgroundStyle />
       <DataTable
         columns={columns}
         data={data}

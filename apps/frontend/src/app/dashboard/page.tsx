@@ -37,7 +37,7 @@ export default async function page({}: Props) {
     <div className="space-y-4 h-screen">
       <BackgroundStyle />
       <HomePageGreeting />
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 overflow-auto">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-2 overflow-auto">
         {cards.map((card, index) => (
           <Link key={index} href={card.link}>
             <Card className="hover:bg-secondary/80 dark:hover:bg-primary-foreground/10 transition-colors">
