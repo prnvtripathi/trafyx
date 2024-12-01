@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { User,} from "./models";
+import { User } from "./models";
 import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
@@ -31,7 +31,8 @@ export const updateUser = async (formData: any) => {
     // Remove empty fields
     Object.keys(updateFields).forEach(
       (key) =>
-        (updateFields[key] === "" || updateFields[key] === undefined) && delete updateFields[key]
+        (updateFields[key] === "" || updateFields[key] === undefined) &&
+        delete updateFields[key]
     );
 
     // Update user in database
@@ -41,8 +42,7 @@ export const updateUser = async (formData: any) => {
     throw new Error("Failed to update user!");
   }
 
-
-  console.log(id, "revalidate hogi")
+  console.log(id, "revalidate hogi");
   // Revalidate the users page and redirect
   revalidatePath(`/dashboard/`);
   redirect(`/dashboard/`);
@@ -75,7 +75,7 @@ export const authenticate = async (prevState: any, formData: any) => {
   } catch (err: any) {
     if (isRedirectError(err)) {
       throw err;
-  }
+    }
     console.error(err);
     if (err.message.includes("CredentialsSignin")) {
       return "Incorrect username or password. Please try again.";
@@ -87,12 +87,11 @@ export const authenticate = async (prevState: any, formData: any) => {
 // Function to sign up a new user
 export const signup = async (prevState: any, formData: any) => {
   // Extract signup data from form
-  const { username, email, password, name } =
-    Object.fromEntries(formData);
-    console.log ("name", name)
+  const { username, email, password, name } = Object.fromEntries(formData);
+  console.log("name", name);
   console.log("username", username);
   console.log("email", email);
-  console.log("password", password)
+  console.log("password", password);
   try {
     connectToDB();
 
@@ -121,7 +120,6 @@ export const signup = async (prevState: any, formData: any) => {
   }
 };
 
-
 // Function to delete all records for a user
 export const deleteUser = async (formData: any) => {
   const session = await auth();
@@ -136,15 +134,13 @@ export const deleteUser = async (formData: any) => {
     // Delete all records for the user
     await User.findByIdAndDelete(currentID);
 
-    console.log(`All records for ID: '${currentID}' have been deleted.`);    
+    console.log(`All records for ID: '${currentID}' have been deleted.`);
   } catch (err) {
     console.log(err);
     throw new Error("Failed to delete records!");
-  }
-  // Sign out the user and redirect to home page
-  finally {
+  } finally {
+    // Sign out the user and redirect to home page
     await signOut({ redirectTo: "/account-deleted" });
-    redirect("/account-deleted")
-
+    redirect("/account-deleted");
   }
 };
