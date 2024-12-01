@@ -2,77 +2,58 @@ package services
 
 import (
 	"bytes"
-	"encoding/json"
-	// "fmt"
-	"context"
-	"io"
+	"fmt"
+	"mime/multipart"
 	"net/http"
-	"time"
-
-	"backend/api/models"
-	"backend/config"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
-type TestResult struct {
-	TestCaseID string
-	StatusCode int
-	Response   string
-	Duration   time.Duration
-}
+func ExecuteAPITest(apiID string) error {
+	// Validate the input
+	if apiID == "" {
+		return fmt.Errorf("API ID cannot be empty")
+	}
 
-func ExecuteTests() ([]TestResult, error) {
-	collection := config.MongoDB.Collection("test_cases")
+	// Define the API endpoint
+	url := "http://localhost:8080/api/v1/executions/apilux/execute_api_tests"
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	// Create a buffer to hold the multipart form data
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
 
-	cursor, err := collection.Find(ctx, bson.D{})
+	// Add the form field for 'api_id'
+	err := writer.WriteField("api_id", apiID)
 	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
-
-	var testCases []models.TestCase
-	if err = cursor.All(ctx, &testCases); err != nil {
-		return nil, err
+		return fmt.Errorf("failed to write api_id field: %v", err)
 	}
 
-	var results []TestResult
-
-	for _, tc := range testCases {
-		start := time.Now()
-
-		client := &http.Client{}
-		reqBody := bytes.NewBufferString(tc.Payload)
-		req, err := http.NewRequest(tc.Method, tc.URL, reqBody)
-		if err != nil {
-			return nil, err
-		}
-
-		// Add headers
-		var headers map[string]string
-		json.Unmarshal([]byte(tc.Headers), &headers)
-		for key, value := range headers {
-			req.Header.Set(key, value)
-		}
-
-		resp, err := client.Do(req)
-		if err != nil {
-			return nil, err
-		}
-		defer resp.Body.Close()
-
-		body, _ := io.ReadAll(resp.Body)
-		duration := time.Since(start)
-
-		results = append(results, TestResult{
-			TestCaseID: tc.ID.Hex(),
-			StatusCode: resp.StatusCode,
-			Response:   string(body),
-			Duration:   duration,
-		})
+	// Close the writer to finalize the multipart form data
+	err = writer.Close()
+	if err != nil {
+		return fmt.Errorf("failed to close writer: %v", err)
 	}
 
-	return results, nil
+	// Create a new HTTP request
+	req, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %v", err)
+	}
+
+	// Set the appropriate content type
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	// Perform the HTTP request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to send request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Log the response status
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected response status: %v", resp.Status)
+	}
+
+	fmt.Println("API test executed successfully with status:", resp.Status)
+	return nil
 }

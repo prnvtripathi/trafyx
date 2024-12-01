@@ -29,12 +29,18 @@ func RegisterRoutes(router *gin.Engine) {
 
 		// Endpoint for running all test cases
 		api.POST("/test-cases/run", func(c *gin.Context) {
-			results, err := services.ExecuteTests()
-			if err != nil {
+			var apiID struct {
+				APIID string `json:"api_id"`
+			}
+			if err := c.ShouldBindJSON(&apiID); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			if err := services.ExecuteAPITest(apiID.APIID); err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
 			}
-			c.JSON(200, results)
+			c.JSON(200, gin.H{"message": "Test cases executed successfully"})
 		})
 
 		// Endpoint for adding user API information

@@ -145,8 +145,8 @@ func generateHappyPathTestCases(config struct {
 	}
 	happyPathCases = append(happyPathCases, basicCase)
 
-	// Additional happy path scenarios can be added here
-	if config.Method == "POST" {
+	// Full payload for POST/PUT
+	if config.Method == "POST" || config.Method == "PUT" {
 		fullPayloadCase := models.TestCase{
 			Name:            fmt.Sprintf("%s Happy Path - Full Payload", strings.ToUpper(config.Method)),
 			Method:          config.Method,
@@ -158,6 +158,30 @@ func generateHappyPathTestCases(config struct {
 		}
 		happyPathCases = append(happyPathCases, fullPayloadCase)
 	}
+
+	// Request with optional headers
+	optionalHeadersCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Happy Path - Optional Headers", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(addOptionalHeaders(config.Headers)),
+		Payload:         stringifyPayload(config.PayloadTemplate),
+		Description:     "Successful request with additional optional headers",
+		ExpectedOutcome: 200,
+	}
+	happyPathCases = append(happyPathCases, optionalHeadersCase)
+
+	// Query parameters
+	queryParamsCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Happy Path - Query Parameters", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL + "?key=value&key2=value2",
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(config.PayloadTemplate),
+		Description:     "Successful request with query parameters",
+		ExpectedOutcome: 200,
+	}
+	happyPathCases = append(happyPathCases, queryParamsCase)
 
 	return happyPathCases
 }
@@ -207,6 +231,30 @@ func generateNegativeTestCases(config struct {
 	}
 	negativeCases = append(negativeCases, unauthorizedCase)
 
+	// Invalid URL path
+	invalidURLCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Negative - Invalid URL", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL + "/non-existent-path",
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(config.PayloadTemplate),
+		Description:     "Request with invalid URL path",
+		ExpectedOutcome: 404,
+	}
+	negativeCases = append(negativeCases, invalidURLCase)
+
+	// Empty payload
+	emptyPayloadCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Negative - Empty Payload", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         "{}",
+		Description:     "Request with empty payload",
+		ExpectedOutcome: 400,
+	}
+	negativeCases = append(negativeCases, emptyPayloadCase)
+
 	return negativeCases
 }
 
@@ -242,6 +290,30 @@ func generateEdgeTestCases(config struct {
 		ExpectedOutcome: 200,
 	}
 	edgeCases = append(edgeCases, minFieldsCase)
+
+	// Payload with unexpected fields
+	unexpectedFieldsCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Edge - Unexpected Fields", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(addUnexpectedFields(config.PayloadTemplate)),
+		Description:     "Request with unexpected fields in payload",
+		ExpectedOutcome: 400,
+	}
+	edgeCases = append(edgeCases, unexpectedFieldsCase)
+
+	// Special characters in payload
+	specialCharsCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Edge - Special Characters", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(addSpecialCharsToPayload(config.PayloadTemplate)),
+		Description:     "Request with special characters in payload",
+		ExpectedOutcome: 400,
+	}
+	edgeCases = append(edgeCases, specialCharsCase)
 
 	return edgeCases
 }
@@ -347,4 +419,65 @@ func generateMinPayload(template map[string]interface{}) map[string]interface{} 
 		break
 	}
 	return minPayload
+}
+
+// addOptionalHeaders appends optional headers to the existing headers
+func addOptionalHeaders(headers map[string]string) map[string]string {
+	optionalHeaders := map[string]string{
+		"X-Correlation-ID": "test-correlation-id-12345", // Useful for tracking requests
+		"X-Request-ID":     "unique-request-id-67890",   // Unique identifier for the request
+		"Content-Language": "en-US",                     // Indicating the language of the request
+		"Cache-Control":    "no-cache",                  // Disables caching for testing purposes
+	}
+
+	// Combine the existing headers with the optional ones
+	for key, value := range optionalHeaders {
+		if _, exists := headers[key]; !exists { // Avoid overwriting existing headers
+			headers[key] = value
+		}
+	}
+
+	return headers
+}
+
+// addUnexpectedFields appends unexpected fields to an existing payload
+func addUnexpectedFields(payload map[string]interface{}) map[string]interface{} {
+	// Clone the original payload to avoid modifying the original
+	updatedPayload := make(map[string]interface{})
+	for k, v := range payload {
+		updatedPayload[k] = v
+	}
+
+	// Add unexpected fields
+	updatedPayload["unexpectedField1"] = "unexpectedValue1" // Unexpected string field
+	updatedPayload["unexpectedField2"] = 12345              // Unexpected numeric field
+	updatedPayload["unexpectedField3"] = true               // Unexpected boolean field
+	updatedPayload["nestedUnexpectedField"] = map[string]interface{}{
+		"nestedKey": "nestedUnexpectedValue",
+	}
+
+	return updatedPayload
+}
+
+// addSpecialCharsToPayload injects special characters into the payload fields
+func addSpecialCharsToPayload(payload map[string]interface{}) map[string]interface{} {
+	// Clone the original payload to avoid modifying the original
+	updatedPayload := make(map[string]interface{})
+	for k, v := range payload {
+		switch value := v.(type) {
+		case string:
+			updatedPayload[k] = value + " !@#$%^&*()<>?{}[]|"
+		case int:
+			updatedPayload[k] = value // Leave numeric fields unchanged
+		case bool:
+			updatedPayload[k] = value // Leave boolean fields unchanged
+		default:
+			updatedPayload[k] = v // Copy any other types unchanged
+		}
+	}
+
+	// Add a new field with special characters as a key
+	updatedPayload["!@#$%^&*()<>?{}[]|"] = "valueWithSpecialChars"
+
+	return updatedPayload
 }
