@@ -4,17 +4,21 @@ import (
 	"backend/api/models"
 	"backend/config"
 	"context"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // AddUserAPI handles adding user API information to MongoDB
 func AddUserAPI(c *gin.Context) {
 	var userAPI models.UserAPI
+
+	log.Println("Adding user API information")
+	log.Println(c.Request.Body)
 
 	// Bind JSON input to the UserAPI struct
 	if err := c.ShouldBindJSON(&userAPI); err != nil {
@@ -22,20 +26,50 @@ func AddUserAPI(c *gin.Context) {
 		return
 	}
 
-	// Set additional fields
+	// Convert user_id from string to primitive.ObjectID (if it's a valid string)
+	if userAPI.UserID != primitive.NilObjectID {
+		if userAPI.UserID == primitive.NilObjectID {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UserID format"})
+			return
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID is required"})
+		return
+	}
+
+	// check if user exists
+	userCollection := config.MongoDB.Collection("users")
+	userFilter := bson.M{"_id": userAPI.UserID}
+	userCount, err := userCollection.CountDocuments(context.Background(), userFilter)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check user existence"})
+		return
+	}
+	if userCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+
+	log.Println(userAPI.UserID)
+
+	// Set additional fields (CreatedAt, UpdatedAt, ID)
 	userAPI.ID = primitive.NewObjectID()
 	userAPI.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
+	userAPI.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 
+	// Insert into MongoDB
 	collection := config.MongoDB.Collection("user_apis")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, err := collection.InsertOne(ctx, userAPI)
+	_, err = collection.InsertOne(ctx, userAPI)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save API information"})
 		return
 	}
 
+	// Respond with success message and the inserted API data
 	c.JSON(http.StatusCreated, gin.H{"message": "API information saved successfully", "api": userAPI})
 }
 
