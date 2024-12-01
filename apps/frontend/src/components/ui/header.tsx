@@ -30,7 +30,7 @@ import { Table, LogOut, Shield, Mail, User } from "lucide-react";
 
 export default async function Header() {
   const { user } = await auth();
-  console.log(user, "aa gaya");
+  // console.log(user, "aa gaya");
 
   return (
     <>

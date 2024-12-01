@@ -40,5 +40,45 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// User API Schema
+const userApiSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    method: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    headers: {
+      type: String,
+      required: true,
+    },
+    payload: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+// Exporting the User API model
+export const UserApi = mongoose.models.UserApi || mongoose.model("UserApi", userApiSchema);
+
+
 // Exporting the models
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
