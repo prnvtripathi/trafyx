@@ -171,69 +171,20 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="pl-2">
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Create a new URL"
-              isActive={pathname === "/short"}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/short">
-                <Plus className="h-4 w-4" />
-                <span>New short URL</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Create a new QR Code"
-              isActive={pathname === "/qr"}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/qr">
-                <QrCode className="h-4 w-4" />
-                <span>New QR Code</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          
+      
           <SidebarSeparator />
+       
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
-              tooltip="Dashboard"
-              isActive={pathname.includes("/dashboard/home")}
+              tooltip="Workspace"
+              isActive={pathname.includes("/dashboard/workspace")}
               asChild
               className="flex items-center"
             >
-              <Link href="/dashboard/home">
-                <LinkIcon className="h-4 w-4" />
-                <span>Short URLs</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="QR Codes"
-              isActive={pathname.includes("/dashboard/qr")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/qr">
-                <ScanQrCode className="h-4 w-4" />
-                <span>QR Codes</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="Analytics"
-              isActive={pathname.includes("/dashboard/analytics")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/analytics">
+              <Link href="/dashboard/workspace">
                 <BarChart2 className="h-4 w-4" />
-                <span>Analytics</span>
+                <span>Workspace</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -6,30 +6,40 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter
+  CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { fetchUser } from "@/lib/data";
 import { BackgroundStyle } from "@/components/ui/background-style";
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
-const profileSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters").optional(),
-  confirmPassword: z.string().optional(),
-}).refine((data) => {
-  if (data.password || data.confirmPassword) {
-    return data.password === data.confirmPassword;
-  }
-  return true;
-}, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const profileSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    username: z.string().min(3, "Username must be at least 3 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .optional(),
+    confirmPassword: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.password || data.confirmPassword) {
+        return data.password === data.confirmPassword;
+      }
+      return true;
+    },
+    {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }
+  );
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -47,7 +57,7 @@ interface PageParams {
   };
 }
 
-export default async function Page(params: PageParams) {
+export default async function ProfilePage(params: PageParams) {
   console.log(params, "is the params");
   const { id } = params.params;
   // console.log(id, "is the id");
@@ -55,23 +65,47 @@ export default async function Page(params: PageParams) {
   // console.log(user);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <BackgroundStyle />
-      <div className="w-full max-w-4xl relative z-10">
-        <div className="bg-white/80 dark:bg-gray-800/80 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm border border-white/20 dark:border-gray-700/20 p-8">
-          <h1 className="text-3xl font-bold text-center mb-2 text-violet-600 dark:text-violet-400">
-            Your Profile
-          </h1>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
-            Manage your account information and settings
-          </p>
+    <div className="min-h-screen  flex flex-col items-center space-y-4 justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* <BackgroundStyle /> */}
+      {/* <h1 className="text-3xl font-bold text-left mb-2 text-violet-600 dark:text-violet-400">
+        Your Profile
+      </h1>
+      <p className="text-left text-gray-600 dark:text-gray-400 mb-8">
+        Manage your account information here
+      </p> */}
+
+      <Card className="w-full">
+        <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+          <Avatar className="h-32 w-32">
+            <AvatarImage src={user.img} alt={user.name} />
+            <AvatarFallback>
+              {user.name
+                .split(" ")
+                .map((n: string) => n[0])
+                .join("")
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <p className="text-2xl font-semibold">{user.name}</p>
+            <p className="text-lg text-muted-foreground">@{user.username}</p>
+            <p className="text-lg text-muted-foreground">{user.email}</p>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Separator />
           <form action={updateUser}>
             <Card className="bg-transparent shadow-none border-none">
               <CardContent>
                 <div className="grid gap-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-violet-600 dark:text-violet-400">Name*</Label>
+                      <Label
+                        htmlFor="name"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        Name*
+                      </Label>
                       <Input
                         id="name"
                         name="name"
@@ -82,7 +116,12 @@ export default async function Page(params: PageParams) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="username" className="text-violet-600 dark:text-violet-400">Username*</Label>
+                      <Label
+                        htmlFor="username"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        Username*
+                      </Label>
                       <Input
                         id="username"
                         name="username"
@@ -93,7 +132,12 @@ export default async function Page(params: PageParams) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-violet-600 dark:text-violet-400">Email*</Label>
+                      <Label
+                        htmlFor="email"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        Email*
+                      </Label>
                       <Input
                         id="email"
                         type="email"
@@ -105,7 +149,28 @@ export default async function Page(params: PageParams) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="password" className="text-violet-600 dark:text-violet-400">New Password</Label>
+                      <Label
+                        htmlFor="img"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        Profile Picture URL
+                      </Label>
+                      <Input
+                        id="img"
+                        type="url"
+                        name="img"
+                        placeholder="https://example.com/image.jpg"
+                        defaultValue={user.img}
+                        className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-violet-500 transition duration-200"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="password"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        New Password
+                      </Label>
                       <Input
                         id="password"
                         type="password"
@@ -115,23 +180,17 @@ export default async function Page(params: PageParams) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="text-violet-600 dark:text-violet-400">Confirm New Password</Label>
+                      <Label
+                        htmlFor="confirmPassword"
+                        className="text-violet-600 dark:text-violet-400"
+                      >
+                        Confirm New Password
+                      </Label>
                       <Input
                         id="confirmPassword"
                         type="password"
                         name="confirmPassword"
                         placeholder="••••••••"
-                        className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-violet-500 transition duration-200"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="img" className="text-violet-600 dark:text-violet-400">Profile Picture URL</Label>
-                      <Input
-                        id="img"
-                        type="url"
-                        name="img"
-                        placeholder="https://example.com/image.jpg"
-                        defaultValue={user.img}
                         className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-violet-500 transition duration-200"
                       />
                     </div>
@@ -145,8 +204,8 @@ export default async function Page(params: PageParams) {
                     >
                       Cancel
                     </Button> */}
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full ml-2 bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-600 hover:to-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1"
                     >
                       Update Profile
@@ -159,9 +218,15 @@ export default async function Page(params: PageParams) {
               </CardFooter>
             </Card>
           </form>
-        </div>
+        </CardContent>
+      </Card>
+
+      <div className="w-full max-w-4xl relative z-10">
+        {/* <div className="bg-white/80 dark:bg-gray-800/80 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm border border-white/20 dark:border-gray-700/20 p-8">
+         
+        
+        </div> */}
       </div>
     </div>
   );
 }
-

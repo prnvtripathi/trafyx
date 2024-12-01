@@ -1,7 +1,8 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import mongoose from "mongoose";
-
+import { Paths } from "@/lib/pageroutes";
+import searchData from "frontend/public/search-data/documents.json";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -25,9 +26,6 @@ export const connectToDB = async () => {
 
 
 
-import { Paths } from "@/lib/pageroutes";
-
-import searchData from "@/public/search-data/documents.json";
 
 export type search = {
   title: string;

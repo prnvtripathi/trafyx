@@ -32,13 +32,6 @@ export default function Signin() {
 
               {/* Right column: Image */}
               <div className="w-full md:w-1/2 relative hidden md:block">
-                {/* <Image
-                  src="/placeholder.svg?height=800&width=600"
-                  alt="Sign up illustration"
-                  width={600}
-                  height={800}
-                  className="object-cover w-full h-full"
-                /> */}
                 <SpinningLogo />
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-blue-600/20 mix-blend-overlay" />
               </div>

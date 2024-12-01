@@ -1,182 +1,350 @@
 package handlers
 
 import (
-	"backend/api/models"
-	"backend/config"
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
+	"backend/api/models"
+	"backend/config"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// fetch API details from the database
-func fetchUserAPIs(APIID string) (models.UserAPI, error) {
+// GenerateTestCases generates test cases for a specific API
+func GenerateTestCases(apiID string) ([]models.TestCase, error) {
+	// Fetch API configuration from MongoDB
+	apiConfig, err := getAPIConfigByID(apiID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Prepare test case configuration
+	testCaseConfig := struct {
+		Method          string
+		URL             string
+		Headers         map[string]string
+		PayloadTemplate map[string]interface{}
+	}{
+		Method:          apiConfig.Method,
+		URL:             apiConfig.URL,
+		Headers:         parseHeaders(apiConfig.Headers),
+		PayloadTemplate: parsePayload(apiConfig.Payload),
+	}
+
+	// Generate test cases
+	testCases, err := testCaseHandler(testCaseConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate test cases: %v", err)
+	}
+
+	// Store test cases in MongoDB
+	storedTestCases, err := storeTestCases(apiID, testCases)
+	if err != nil {
+		return nil, fmt.Errorf("failed to store test cases: %v", err)
+	}
+
+	return storedTestCases, nil
+}
+
+// getAPIConfigByID retrieves API configuration from MongoDB
+func getAPIConfigByID(apiID string) (*models.TestCase, error) {
 	collection := config.MongoDB.Collection("user_apis")
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	cursor, err := collection.Find(ctx, primitive.M{"_id": APIID})
+	objectId, err := primitive.ObjectIDFromHex(apiID)
 	if err != nil {
-		return models.UserAPI{}, err
-	}
-	defer cursor.Close(ctx)
-
-	var userAPI models.UserAPI
-	if err = cursor.Decode(&userAPI); err != nil {
-		return models.UserAPI{}, err
+		log.Printf("Invalid API ID: %v", err)
+		return nil, err
 	}
 
-	return userAPI, nil
+	var apiConfig models.TestCase
+	err = collection.FindOne(ctx, bson.M{"_id": objectId}).Decode(&apiConfig)
+	if err != nil {
+		log.Printf("Failed to find API configuration for ID %s: %v", apiID, err)
+		return nil, err
+	}
+
+	return &apiConfig, nil
 }
 
-// GenerateTestCases will generate test cases based on the user's API details.
-func generateTestCases(userAPI models.UserAPI) ([]models.TestCase, error) {
+// storeTestCases saves generated test cases to MongoDB
+func storeTestCases(apiID string, testCases []models.TestCase) ([]models.TestCase, error) {
+	collection := config.MongoDB.Collection("test_cases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var storedTestCases []models.TestCase
+
+	// Convert and store each test case
+	for _, tc := range testCases {
+		tc.ID = primitive.NewObjectID()
+		tc.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
+		tc.APIID, _ = primitive.ObjectIDFromHex(apiID)
+
+		// Insert the test case
+		_, err := collection.InsertOne(ctx, tc)
+		if err != nil {
+			log.Printf("Failed to insert test case: %v", err)
+			continue
+		}
+
+		storedTestCases = append(storedTestCases, tc)
+	}
+	return storedTestCases, nil
+}
+
+// testCaseHandler generates test cases based on the API configuration
+func testCaseHandler(config struct {
+	Method          string
+	URL             string
+	Headers         map[string]string
+	PayloadTemplate map[string]interface{}
+}) ([]models.TestCase, error) {
 	var testCases []models.TestCase
 
-	// Happy Path Case
-	happyPathTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Happy Path - " + userAPI.Name,
-		Description:     "Test to verify the API returns the expected result with valid data.",
-		ExpectedOutcome: fmt.Sprintf("200 OK or valid response for %s", userAPI.URL),
-		Payload:         userAPI.Payload,
-		Headers:         userAPI.Headers,
-		Method:          userAPI.Method,
-		URL:             userAPI.URL,
-	}
-	testCases = append(testCases, happyPathTestCase)
+	// Generate Happy Path Test Cases
+	happyPathCases := generateHappyPathTestCases(config)
+	testCases = append(testCases, happyPathCases...)
 
-	// Negative Test Cases
-	// 1. Invalid Method
-	invalidMethodTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Negative Test - Invalid Method",
-		Description:     "Test to verify the API responds with error for invalid HTTP method.",
-		ExpectedOutcome: "405 Method Not Allowed",
-		Payload:         userAPI.Payload,
-		Headers:         userAPI.Headers,
-		Method:          "INVALID", // Use a method that's not valid
-		URL:             userAPI.URL,
-	}
-	testCases = append(testCases, invalidMethodTestCase)
+	// Generate Negative Test Cases
+	negativeCases := generateNegativeTestCases(config)
+	testCases = append(testCases, negativeCases...)
 
-	// 2. Invalid Payload (for POST/PUT)
-	invalidPayloadTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Negative Test - Invalid Payload",
-		Description:     "Test to verify the API responds with error for invalid payload.",
-		ExpectedOutcome: "400 Bad Request",
-		Payload:         `{"invalid_field": "value"}`, // Invalid data
-		Headers:         userAPI.Headers,
-		Method:          userAPI.Method,
-		URL:             userAPI.URL,
-	}
-	testCases = append(testCases, invalidPayloadTestCase)
-
-	// Edge Cases (Boundary Test Cases)
-	// 1. Empty Payload
-	emptyPayloadTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Edge Case - Empty Payload",
-		Description:     "Test to verify the API handles empty payload correctly.",
-		ExpectedOutcome: "400 Bad Request",
-		Payload:         "",
-		Headers:         userAPI.Headers,
-		Method:          userAPI.Method,
-		URL:             userAPI.URL,
-	}
-	testCases = append(testCases, emptyPayloadTestCase)
-
-	// 2. Empty Query Parameter (if applicable)
-	emptyQueryParamTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Edge Case - Empty Query Param",
-		Description:     "Test to verify the API handles empty query parameters correctly.",
-		ExpectedOutcome: "400 Bad Request",
-		Payload:         "",
-		Headers:         userAPI.Headers,
-		Method:          userAPI.Method,
-		URL:             userAPI.URL + "?param=", // Empty query param
-	}
-	testCases = append(testCases, emptyQueryParamTestCase)
-
-	// Performance Test Case
-	// 1. Stress Test with a large payload (for POST/PUT)
-	largePayloadTestCase := models.TestCase{
-		ID:              primitive.NewObjectID(),
-		APIID:           userAPI.ID.Hex(),
-		Name:            "Performance Test - Large Payload",
-		Description:     "Test to verify the API can handle a large payload.",
-		ExpectedOutcome: "200 OK or server-side error handling",
-		Payload:         strings.Repeat("A", 10000), // Large payload
-		Headers:         userAPI.Headers,
-		Method:          userAPI.Method,
-		URL:             userAPI.URL,
-	}
-	testCases = append(testCases, largePayloadTestCase)
-
-	// More test cases can be added here based on specific API logic
-
-	// Store the generated test cases in the database
-	collection := config.MongoDB.Collection("test_cases")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	// Insert all generated test cases
-	for _, tc := range testCases {
-		_, err := collection.InsertOne(ctx, tc)
-		if err != nil {
-			return nil, err
-		}
-	}
+	// Generate Edge Case Test Cases
+	edgeCases := generateEdgeTestCases(config)
+	testCases = append(testCases, edgeCases...)
 
 	return testCases, nil
 }
 
-// save the test cases to the database
-func saveTestCases(testCases []models.TestCase) error {
-	collection := config.MongoDB.Collection("test_cases")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+// generateHappyPathTestCases creates test cases for typical successful scenarios
+func generateHappyPathTestCases(config struct {
+	Method          string
+	URL             string
+	Headers         map[string]string
+	PayloadTemplate map[string]interface{}
+}) []models.TestCase {
+	var happyPathCases []models.TestCase
 
-	for _, tc := range testCases {
-		_, err := collection.InsertOne(ctx, tc)
-		if err != nil {
-			return err
+	// Basic successful request
+	basicCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Happy Path - Basic", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(config.PayloadTemplate),
+		Description:     "Successful request with valid data",
+		ExpectedOutcome: 200,
+	}
+	happyPathCases = append(happyPathCases, basicCase)
+
+	// Additional happy path scenarios can be added here
+	if config.Method == "POST" {
+		fullPayloadCase := models.TestCase{
+			Name:            fmt.Sprintf("%s Happy Path - Full Payload", strings.ToUpper(config.Method)),
+			Method:          config.Method,
+			URL:             config.URL,
+			Headers:         stringifyHeaders(config.Headers),
+			Payload:         stringifyPayload(generateFullPayload(config.PayloadTemplate)),
+			Description:     "Successful request with complete payload",
+			ExpectedOutcome: 201,
 		}
+		happyPathCases = append(happyPathCases, fullPayloadCase)
 	}
 
-	return nil
+	return happyPathCases
 }
 
-// Handler function to generate test cases for a user API
-func GenerateTestCases(userAPIID string) ([]models.TestCase, error) {
-	fmt.Println("Generating test cases for user API:", userAPIID)
-	// fetch user APIs from the database
-	userAPI, err := fetchUserAPIs(userAPIID)
-	fmt.Println(userAPI)
-	if err != nil {
-		return nil, err
+// generateNegativeTestCases creates test cases for failure scenarios
+func generateNegativeTestCases(config struct {
+	Method          string
+	URL             string
+	Headers         map[string]string
+	PayloadTemplate map[string]interface{}
+}) []models.TestCase {
+	var negativeCases []models.TestCase
+
+	// Missing required fields
+	missingFieldsCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Negative - Missing Fields", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(generateMissingFieldsPayload(config.PayloadTemplate)),
+		Description:     "Request with missing required fields",
+		ExpectedOutcome: 400,
+	}
+	negativeCases = append(negativeCases, missingFieldsCase)
+
+	// Invalid data types
+	invalidDataTypeCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Negative - Invalid Data Types", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(generateInvalidDataTypePayload(config.PayloadTemplate)),
+		Description:     "Request with invalid data types",
+		ExpectedOutcome: 422,
+	}
+	negativeCases = append(negativeCases, invalidDataTypeCase)
+
+	// Unauthorized access
+	unauthorizedCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Negative - Unauthorized", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(map[string]string{"Authorization": "Invalid Token"}),
+		Payload:         stringifyPayload(config.PayloadTemplate),
+		Description:     "Request with invalid authorization",
+		ExpectedOutcome: 401,
+	}
+	negativeCases = append(negativeCases, unauthorizedCase)
+
+	return negativeCases
+}
+
+// generateEdgeTestCases creates test cases for boundary conditions
+func generateEdgeTestCases(config struct {
+	Method          string
+	URL             string
+	Headers         map[string]string
+	PayloadTemplate map[string]interface{}
+}) []models.TestCase {
+	var edgeCases []models.TestCase
+
+	// Maximum payload size
+	maxPayloadCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Edge - Maximum Payload", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(generateMaxPayload(config.PayloadTemplate)),
+		Description:     "Request with maximum allowed payload size",
+		ExpectedOutcome: 200,
+	}
+	edgeCases = append(edgeCases, maxPayloadCase)
+
+	// Minimum required fields
+	minFieldsCase := models.TestCase{
+		Name:            fmt.Sprintf("%s Edge - Minimum Fields", strings.ToUpper(config.Method)),
+		Method:          config.Method,
+		URL:             config.URL,
+		Headers:         stringifyHeaders(config.Headers),
+		Payload:         stringifyPayload(generateMinPayload(config.PayloadTemplate)),
+		Description:     "Request with minimum required fields",
+		ExpectedOutcome: 200,
+	}
+	edgeCases = append(edgeCases, minFieldsCase)
+
+	return edgeCases
+}
+
+// Utility functions
+
+func stringifyHeaders(headers map[string]string) string {
+	headersJSON, _ := json.Marshal(headers)
+	return string(headersJSON)
+}
+
+func stringifyPayload(payload map[string]interface{}) string {
+	payloadJSON, _ := json.Marshal(payload)
+	return string(payloadJSON)
+}
+
+func parseHeaders(headers string) map[string]string {
+	var headersMap map[string]string
+	_ = json.Unmarshal([]byte(headers), &headersMap)
+	return headersMap
+}
+
+func parsePayload(payload string) map[string]interface{} {
+	var payloadMap map[string]interface{}
+	_ = json.Unmarshal([]byte(payload), &payloadMap)
+	return payloadMap
+}
+
+// generateFullPayload creates a payload with all possible fields
+func generateFullPayload(template map[string]interface{}) map[string]interface{} {
+	fullPayload := make(map[string]interface{})
+	for k, v := range template {
+		// Add more detailed or comprehensive values based on type
+		switch val := v.(type) {
+		case string:
+			fullPayload[k] = val + "_full"
+		case int:
+			fullPayload[k] = val * 2 // Example: doubling numeric values
+		case bool:
+			fullPayload[k] = !val // Example: toggling boolean values
+		default:
+			fullPayload[k] = val
+		}
+	}
+	return fullPayload
+}
+
+// generateMissingFieldsPayload creates a payload with some fields removed
+func generateMissingFieldsPayload(template map[string]interface{}) map[string]interface{} {
+	missingPayload := make(map[string]interface{})
+	keys := make([]string, 0, len(template))
+	for k := range template {
+		keys = append(keys, k)
 	}
 
-	// generate test cases based on the user API
-	testCases, err := generateTestCases(userAPI)
-	if err != nil {
-		return nil, err
+	// Keep only half of the fields
+	for i := 0; i < len(keys)/2; i++ {
+		missingPayload[keys[i]] = template[keys[i]]
 	}
+	return missingPayload
+}
 
-	// save the generated test cases to the database
-	err = saveTestCases(testCases)
-	if err != nil {
-		return nil, err
+// generateInvalidDataTypePayload creates a payload with incorrect data types
+func generateInvalidDataTypePayload(template map[string]interface{}) map[string]interface{} {
+	invalidPayload := make(map[string]interface{})
+	for k, v := range template {
+		switch v.(type) {
+		case string:
+			invalidPayload[k] = 123 // Replace string with an integer
+		case int:
+			invalidPayload[k] = "invalid_number" // Replace integer with a string
+		case bool:
+			invalidPayload[k] = "not_a_boolean" // Replace boolean with a string
+		default:
+			invalidPayload[k] = nil // Replace unknown types with nil
+		}
 	}
+	return invalidPayload
+}
 
-	return testCases, nil
+// generateMaxPayload creates a payload with maximum size
+func generateMaxPayload(template map[string]interface{}) map[string]interface{} {
+	maxPayload := make(map[string]interface{})
+	for k, v := range template {
+		switch val := v.(type) {
+		case string:
+			maxPayload[k] = strings.Repeat(val, 100) // Create very long string
+		case int:
+			maxPayload[k] = val * 1000000 // Scale numeric values
+		default:
+			maxPayload[k] = v
+		}
+	}
+	return maxPayload
+}
+
+// generateMinPayload creates a payload with the minimum required fields
+func generateMinPayload(template map[string]interface{}) map[string]interface{} {
+	minPayload := make(map[string]interface{})
+	for k := range template {
+		// Select only the first field or a required field
+		minPayload[k] = "min_value"
+		break
+	}
+	return minPayload
 }

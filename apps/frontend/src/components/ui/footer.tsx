@@ -22,7 +22,7 @@ export default async function Footer() {
           <svg className="w-full" viewBox="0 0 1440 116" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path 
               d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z" 
-              className="fill-gray-100 dark:fill-black/50"
+              className="fill-primary dark:fill-black/50"
            
             />
           </svg>
@@ -34,19 +34,6 @@ export default async function Footer() {
               href="#MainContent"
             >
               <span className="sr-only">Back to top</span>
-{/* 
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg> */}
               <ChevronUp/>
             </Link>
           </div>
