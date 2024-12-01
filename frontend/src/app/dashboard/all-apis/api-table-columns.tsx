@@ -11,11 +11,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2Icon, EditIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 //  import { deleteCustomer } from "@/app/lib/actions";
 
 // Define the columns for the customer table
 export const columns = [
+  {
+    accessorKey: "run",
+    header: "Run",
+    cell: ({ row }: { row: { original: { id: string } } }) => {
+      return (
+        <Button variant="ghost" asChild>
+          <Link href={`/dashboard/all-apis/${row.original.id}`}>
+            Dig In 🚀
+          </Link>
+        </Button>
+      );
+    },
+  },
   {
     accessorKey: "name",
     header: "Name",

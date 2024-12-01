@@ -156,3 +156,29 @@ func GetAllUserAPIsByUserId(c *gin.Context) {
 
 	c.JSON(http.StatusOK, userAPIs)
 }
+
+func GetUserAPIById(c *gin.Context) {
+	// Extract API ID from the URL parameters
+	apiID := c.Param("id")
+
+	// Parse the ID as an ObjectID
+	objectID, err := primitive.ObjectIDFromHex(apiID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid API ID"})
+		return
+	}
+
+	collection := config.MongoDB.Collection("user_apis")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Perform the find operation
+	var userAPI models.UserAPI
+	err = collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&userAPI)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "API not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, userAPI)
+}

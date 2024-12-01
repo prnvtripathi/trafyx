@@ -49,6 +49,9 @@ func RegisterRoutes(router *gin.Engine) {
 		// Endpoint for updating user API information
 		api.PUT("/user-apis/:id", handlers.UpdateUserAPI)
 
+		// Endpoint for fetching user API information by ID
+		api.GET("/user-apis/:id", handlers.GetUserAPIById)
+
 		// Endpoint for fetching all the user API information
 		api.GET("/user-apis", handlers.GetAllUserAPIsByUserId)
 
