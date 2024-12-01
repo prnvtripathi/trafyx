@@ -33,3 +33,13 @@ export const fetchUserApis = async () => {
     throw new Error("Failed to fetch user APIs!");
   }
 };
+
+export async function submitApiData(data: any) {
+  return fetch(`${process.env.BACKEND_URL}/api/user-apis`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}
