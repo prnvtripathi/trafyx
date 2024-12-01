@@ -54,6 +54,7 @@ interface PageParams {
     name: string;
     username: string;
     password: string;
+    img: string;
   };
 }
 

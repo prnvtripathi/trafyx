@@ -19,7 +19,7 @@ export default function Copy({ content }: { content: string }) {
   }
 
   return (
-    <Button variant="secondary" size="xs" onClick={handleCopy}>
+    <Button variant="secondary" size="sm" onClick={handleCopy}>
       <span className="relative inline-block w-4 h-4">
         <LuCopy
           className={cn(
