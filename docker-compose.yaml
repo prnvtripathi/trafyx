@@ -1,23 +1,23 @@
 version: "3.8"
 
 services:
-  frontend:
-    build:
-      context: ./apps/frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - MONGO = "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
-      - AUTH_SECRET = "qwertyuioplkjhgfdsazxcvbjkm"
-      - AUTH_URL = "http://localhost:3000/api/auth"
-    depends_on:
-      - backend
-    networks:
-      - app-network
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - MONGO = "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
+  #     - AUTH_SECRET = "qwertyuioplkjhgfdsazxcvbjkm"
+  #     - AUTH_URL = "http://localhost:3000/api/auth"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app-network
 
   backend:
     build:
-      context: ./apps/backend
+      context: ./backend
     ports:
       - "5000:5000"
     environment:

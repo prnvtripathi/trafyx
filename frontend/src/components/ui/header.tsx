@@ -29,7 +29,8 @@ import DynamicBreadcrumb from "./breadcrumbs";
 import { Table, LogOut, Shield, Mail, User } from "lucide-react";
 
 export default async function Header() {
-  const { user } = await auth();
+  const session = await auth();
+  const user = session?.user;
   // console.log(user, "aa gaya");
 
   return (
@@ -38,7 +39,6 @@ export default async function Header() {
         <div className="hidden md:flex items-center space-x-4">
           {" "}
           {/* This div is for breadcrumbs */}
-    
           <DynamicBreadcrumb separator={"/"} />
         </div>
 
@@ -54,9 +54,9 @@ export default async function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer size-7">
-              <AvatarImage src={user.img || "/noavatar.png"} />
-              {user.name ? (
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={user?.img || "/noavatar.png"} />
+              {user?.name ? (
+                <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
               ) : (
                 <AvatarFallback>
                   <User className="h-4 w-4" />
@@ -68,9 +68,9 @@ export default async function Header() {
           <DropdownMenuContent className="w-fit p-0" align="end">
             <div className="flex items-center space-x-4 p-4 border-b">
               <Avatar className="h-16 w-16 border-2 border-primary">
-                <AvatarImage src={user.img} alt={user.name} />
-                {user.name ? (
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={user?.img} alt={user?.name || ""} />
+                {user?.name ? (
+                  <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
                 ) : (
                   <AvatarFallback>
                     <User className="h-4 w-4" />
@@ -78,13 +78,13 @@ export default async function Header() {
                 )}
               </Avatar>
               <div>
-                <p className="text-lg font-semibold">{user.name}</p>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
+                <p className="text-lg font-semibold">{user?.name}</p>
+                <p className="text-sm text-muted-foreground">{user?.email}</p>
               </div>
             </div>
             <DropdownMenuItem>
               <Link
-                href={`/dashboard/user/${user.id}`}
+                href={`/dashboard/user/${user?.id}`}
                 className="flex space-x-4 items-center"
               >
                 <User className="mr-4" />

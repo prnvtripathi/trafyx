@@ -1,6 +1,7 @@
 import { User } from "./models";
 import { UserApi } from "./models";
 import { connectToDB } from "./utils";
+import { auth } from "@/auth";
 
 // Fetch a single user by ID
 export const fetchUser = async (id: any) => {
@@ -18,11 +19,12 @@ export const fetchUser = async (id: any) => {
 };
 
 // Fetch UserApis based on a search query and user ID
-export const fetchUserApis = async (q: string) => {
+export const fetchUserApis = async () => {
   // Create a case-insensitive regular expression for the search query
+  const session = await auth();
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/user-apis?user_id=${q}`
+      `${process.env.BACKEND_URL}/api/user-apis?user_id=${session?.user?.id}`
     );
     const user_apis = await response.json();
     return user_apis;

@@ -3,8 +3,8 @@
 node_modules/
 
 # Build
-apps/backend/tmp/
-apps/backend/dist/
+backend/tmp/
+backend/dist/
 
 .turbo/
 

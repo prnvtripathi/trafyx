@@ -21,6 +21,7 @@ import {
   ScanQrCode,
   LinkIcon,
   LucideFileChartColumnIncreasing,
+  TestTubeDiagonal,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -96,6 +97,19 @@ export function AppSidebar() {
               <Link href="/dashboard/all-apis">
                 <LucideFileChartColumnIncreasing className="h-4 w-4" />
                 <span>All APIs</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem className="pr-2">
+            <SidebarMenuButton
+              tooltip="Create & Run Test Cases"
+              isActive={pathname.includes("/dashboard/test-cases")}
+              asChild
+              className="flex items-center"
+            >
+              <Link href="/dashboard/test-cases">
+                <TestTubeDiagonal className="h-4 w-4" />
+                <span>Test Cases</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

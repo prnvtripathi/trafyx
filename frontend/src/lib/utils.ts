@@ -1,10 +1,10 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import mongoose from "mongoose";
 import { Paths } from "@/lib/pageroutes";
-import searchData from "frontend/public/search-data/documents.json";
+import searchData from "@/lib/search-data/documents.json";
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 const connection: { isConnected?: boolean } = {};
@@ -23,9 +23,6 @@ export const connectToDB = async () => {
     throw new Error(error instanceof Error ? error.message : String(error));
   }
 };
-
-
-
 
 export type search = {
   title: string;
@@ -48,7 +45,7 @@ function memoize<T extends (...args: any[]) => any>(fn: T) {
 
     const result = fn(...args);
 
-    if (result !== '' && result != null) {
+    if (result !== "" && result != null) {
       cache.set(key, result);
     }
 
@@ -63,7 +60,9 @@ const memoizedCleanMdxContent = memoize(cleanMdxContent);
 //   return twMerge(clsx(inputs));
 // }
 
-function isRoute(node: Paths): node is Extract<Paths, { href: string; title: string }> {
+function isRoute(
+  node: Paths
+): node is Extract<Paths, { href: string; title: string }> {
   return "href" in node && "title" in node;
 }
 
@@ -82,7 +81,10 @@ export function helperSearch(
     const nextLink = `${prefix}${node.href}`;
 
     const titleMatch = node.title.toLowerCase().includes(lowerQuery);
-    const titleDistance = memoizedSearchMatch(lowerQuery, node.title.toLowerCase());
+    const titleDistance = memoizedSearchMatch(
+      lowerQuery,
+      node.title.toLowerCase()
+    );
 
     if (titleMatch || titleDistance <= 2) {
       res.push({ ...node, items: undefined, href: nextLink });
@@ -93,7 +95,13 @@ export function helperSearch(
 
     if (goNext && node.items) {
       node.items.forEach((item) => {
-        const innerRes = helperSearch(query, item, nextLink, currentLevel + 1, maxLevel);
+        const innerRes = helperSearch(
+          query,
+          item,
+          nextLink,
+          currentLevel + 1,
+          maxLevel
+        );
         if (innerRes.length && !parentHas && !node.noLink) {
           res.push({ ...node, items: undefined, href: nextLink });
           parentHas = true;
@@ -107,7 +115,7 @@ export function helperSearch(
 }
 
 function searchMatch(a: string, b: string): number {
-  if (typeof a !== 'string' || typeof b !== 'string') return 0;
+  if (typeof a !== "string" || typeof b !== "string") return 0;
 
   const aLen = a.length;
   const bLen = b.length;
@@ -128,8 +136,12 @@ function searchMatch(a: string, b: string): number {
     currRow[0] = j;
     for (let i = 1; i <= aLen; i++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      currRow[i] = Math.min(prevRow[i] + 1, currRow[i - 1] + 1, prevRow[i - 1] + cost);
-      
+      currRow[i] = Math.min(
+        prevRow[i] + 1,
+        currRow[i - 1] + 1,
+        prevRow[i - 1] + cost
+      );
+
       if (currRow[i] > maxDistance) {
         return maxDistance;
       }
@@ -140,8 +152,11 @@ function searchMatch(a: string, b: string): number {
   return Math.min(prevRow[aLen], maxDistance);
 }
 
-
-function calculateRelevance(query: string, title: string, content: string): number {
+function calculateRelevance(
+  query: string,
+  title: string,
+  content: string
+): number {
   const lowerQuery = query.toLowerCase().trim();
   const lowerTitle = title.toLowerCase();
   const lowerContent = memoizedCleanMdxContent(content);
@@ -156,19 +171,21 @@ function calculateRelevance(query: string, title: string, content: string): numb
   } else {
     queryWords.forEach((word, idx) => {
       if (lowerTitle.includes(word)) {
-        score += 10 + (5 * (queryWords.length - idx));
+        score += 10 + 5 * (queryWords.length - idx);
       }
     });
   }
 
-  const titleDistances = queryWords.map((word) => memoizedSearchMatch(word, lowerTitle));
+  const titleDistances = queryWords.map((word) =>
+    memoizedSearchMatch(word, lowerTitle)
+  );
   for (const distance of titleDistances) {
     if (distance <= 2) {
       score += 5;
     }
   }
 
-  const exactPhraseRegex = new RegExp(`\\b(${queryWords.join('|')})\\b`, 'g');
+  const exactPhraseRegex = new RegExp(`\\b(${queryWords.join("|")})\\b`, "g");
   const exactMatches = lowerContent.match(exactPhraseRegex);
   if (exactMatches) {
     score += exactMatches.length * 10;
@@ -188,17 +205,17 @@ function calculateRelevance(query: string, title: string, content: string): numb
 }
 
 function calculateProximityScore(query: string, content: string): number {
-  if (typeof query !== 'string' || typeof content !== 'string') return 0;
+  if (typeof query !== "string" || typeof content !== "string") return 0;
 
   const words = content.split(/\s+/);
   const queryWords = query.split(/\s+/);
-  
+
   let proximityScore = 0;
   let firstIndex = -1;
 
   queryWords.forEach((queryWord, queryIndex) => {
     const wordIndex = words.indexOf(queryWord, firstIndex + 1);
-    
+
     if (wordIndex !== -1) {
       if (queryIndex === 0) {
         proximityScore += 30;
@@ -217,18 +234,18 @@ function calculateProximityScore(query: string, content: string): number {
 
 function cleanMdxContent(content: string): string {
   return content
-    .replace(/<[^>]+>/g, '')
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/`[^`]*`/g, '')
-    .replace(/\|.*?\|/g, '')
-    .replace(/[*+-]\s|\d+\.\s|\[x\]|\[ \]/g, '')
-    .replace(/^(#{1,6}\s|>\s|-{3,}|\*{3,})/gm, '')
-    .replace(/[*_~`]+/g, '')
-    .replace(/!\[.*?\]\(.*?\)|\[.*?\]\(.*?\)/g, '')
-    .replace(/\$\$[\s\S]*?\$\$/g, '')
-    .replace(/\$[^$]*\$/g, '')
-    .replace(/\\/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(/<[^>]+>/g, "")
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/`[^`]*`/g, "")
+    .replace(/\|.*?\|/g, "")
+    .replace(/[*+-]\s|\d+\.\s|\[x\]|\[ \]/g, "")
+    .replace(/^(#{1,6}\s|>\s|-{3,}|\*{3,})/gm, "")
+    .replace(/[*_~`]+/g, "")
+    .replace(/!\[.*?\]\(.*?\)|\[.*?\]\(.*?\)/g, "")
+    .replace(/\$\$[\s\S]*?\$\$/g, "")
+    .replace(/\$[^$]*\$/g, "")
+    .replace(/\\/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -264,35 +281,50 @@ function extractSnippet(content: string, query: string): string {
 export function advanceSearch(query: string) {
   const lowerQuery = query.toLowerCase().trim();
 
-  const queryWords = lowerQuery.split(/\s+/).filter(word => word.length >= 3);
+  const queryWords = lowerQuery.split(/\s+/).filter((word) => word.length >= 3);
 
   if (queryWords.length === 0) return [];
 
   const chunks = chunkArray(searchData, 100);
 
   const results = chunks.flatMap((chunk) =>
-    chunk.map((doc) => {
-      const title = doc.title || "";
-      const content = doc.content || "";
-      const cleanedContent = memoizedCleanMdxContent(content);
+    chunk
+      .map(
+        (doc: {
+          title?: string;
+          content?: string;
+          slug: string;
+          description?: string;
+        }) => {
+          const title = doc.title || "";
+          const content = doc.content || "";
+          const cleanedContent = memoizedCleanMdxContent(content);
 
-      let relevanceScore = calculateRelevance(queryWords.join(' '), title, cleanedContent);
-      const proximityScore = calculateProximityScore(queryWords.join(' '), cleanedContent);
-      relevanceScore += proximityScore;
+          let relevanceScore = calculateRelevance(
+            queryWords.join(" "),
+            title,
+            cleanedContent
+          );
+          const proximityScore = calculateProximityScore(
+            queryWords.join(" "),
+            cleanedContent
+          );
+          relevanceScore += proximityScore;
 
-      const snippet = extractSnippet(cleanedContent, lowerQuery);
-      const highlightedSnippet = highlight(snippet, queryWords.join(' '));
+          const snippet = extractSnippet(cleanedContent, lowerQuery);
+          const highlightedSnippet = highlight(snippet, queryWords.join(" "));
 
-      return {
-        title: doc.title || "Untitled",
-        href: `${doc.slug}`,
-        snippet: highlightedSnippet,
-        description: doc.description || "",
-        relevance: relevanceScore,
-      };
-    })
-    .filter((doc) => doc.relevance > 0)
-    .sort((a, b) => b.relevance - a.relevance)
+          return {
+            title: doc.title || "Untitled",
+            href: `${doc.slug}`,
+            snippet: highlightedSnippet,
+            description: doc.description || "",
+            relevance: relevanceScore,
+          };
+        }
+      )
+      .filter((doc) => doc.relevance > 0)
+      .sort((a, b) => b.relevance - a.relevance)
   );
 
   return results;
@@ -306,7 +338,10 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
   return chunks;
 }
 
-function formatDateHelper(dateStr: string, options: Intl.DateTimeFormatOptions): string {
+function formatDateHelper(
+  dateStr: string,
+  options: Intl.DateTimeFormatOptions
+): string {
   const [day, month, year] = dateStr.split("-").map(Number);
   const date = new Date(year, month - 1, day);
   return date.toLocaleDateString("en-US", options);
@@ -380,15 +415,18 @@ export function highlight(snippet: string, searchTerms: string): string {
 
   const terms = searchTerms
     .split(/\s+/)
-    .filter(term => term.trim().length > 0)
-    .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    .filter((term) => term.trim().length > 0)
+    .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
 
   if (terms.length === 0) return snippet;
 
-  const regex = new RegExp(`(${terms.join('|')})(?![^<>]*>)`, 'gi');
-  
-  return snippet.replace(/(<[^>]+>)|([^<]+)/g, (match, htmlTag, textContent) => {
-    if (htmlTag) return htmlTag;
-    return textContent.replace(regex, "<span class='highlight'>$1</span>");
-  });
+  const regex = new RegExp(`(${terms.join("|")})(?![^<>]*>)`, "gi");
+
+  return snippet.replace(
+    /(<[^>]+>)|([^<]+)/g,
+    (match, htmlTag, textContent) => {
+      if (htmlTag) return htmlTag;
+      return textContent.replace(regex, "<span class='highlight'>$1</span>");
+    }
+  );
 }

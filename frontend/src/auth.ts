@@ -1,9 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authConfig } from "@/authconfig";
 import { connectToDB } from "./lib/utils";
 import { User } from "@/lib/models";
 import bcrypt from "bcrypt";
+import "next-auth/jwt";
 
 // Function to handle user login
 const login = async (credentials: any) => {
@@ -68,7 +69,7 @@ export const {
         // const typedUser = user as User;
         token.name = user.name;
         // token.username = user.username;
-        token.img = user.img;
+        token.img = (user as ExtendedUser).img;
         token.id = user.id;
         // token.role = user.isAdmin;
       }
@@ -79,7 +80,7 @@ export const {
       if (token) {
         session.user.name = token.name;
         // session.user.username = token.username;
-        session.user.img = token.img;
+        session.user.img = token.img ?? "";
         // session.user.role = token.role;
         session.user.id = token.id as string;
       }
@@ -88,3 +89,31 @@ export const {
     },
   },
 });
+
+// Extend the built-in session types
+interface ExtendedUser extends NextAuthUser {
+  username: string;
+  img: string;
+  password: string;
+  userid: number;
+}
+
+// Extend the built-in session types
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      username: string;
+      img: string;
+      userid: number;
+    } & DefaultSession["user"];
+  }
+}
+
+// Extend the built-in JWT types
+declare module "next-auth/jwt" {
+  interface JWT {
+    username?: string;
+    img?: string;
+    userid?: number;
+  }
+}
