@@ -222,11 +222,11 @@ export function RequestPanel() {
       <Tabs defaultValue="params">
         <TabsList>
           <TabsTrigger value="params">Params</TabsTrigger>
-          <TabsTrigger value="authorization">Authorization</TabsTrigger>
+          {/* <TabsTrigger value="authorization">Authorization</TabsTrigger> */}
           <TabsTrigger value="headers">Headers</TabsTrigger>
           <TabsTrigger value="body">Body</TabsTrigger>
-          <TabsTrigger value="scripts">Scripts</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          {/* <TabsTrigger value="scripts">Scripts</TabsTrigger> */}
+          {/* <TabsTrigger value="settings">Settings</TabsTrigger> */}
         </TabsList>
         <TabsContent value="params" className="border-none p-0 pt-4">
           <ParamsTable onParamsChange={handleParamsChange} />
