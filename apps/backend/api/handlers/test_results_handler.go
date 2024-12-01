@@ -13,22 +13,67 @@ import (
 )
 
 func AddTestResults(c *gin.Context) {
-	var results []models.TestResult
-	if err := c.ShouldBindJSON(&results); err != nil {
+	// Raw incoming data
+	var requestBody struct {
+		Results []map[string]interface{} `json:"results"`
+	}
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Parse into TestResult objects
+	var results []models.TestResult
+	for _, rawResult := range requestBody.Results {
+		// Convert test_case_id from string to ObjectID
+		testCaseIDStr, ok := rawResult["test_case_id"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "test_case_id must be a string"})
+			return
+		}
+		testCaseID, err := primitive.ObjectIDFromHex(testCaseIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid test_case_id format"})
+			return
+		}
+
+		// Convert executed_at from float64 to primitive.DateTime
+		executedAtFloat, ok := rawResult["executed_at"].(float64)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "executed_at must be a float64"})
+			return
+		}
+		executedAt := primitive.NewDateTimeFromTime(time.Unix(int64(executedAtFloat), 0))
+
+		// Parse other fields
+		result := models.TestResult{
+			TestCaseID:      testCaseID,
+			StatusCode:      int(rawResult["status_code"].(float64)), // Convert float64 to int
+			Response:        rawResult["response"].(string),
+			ExpectedOutcome: int(rawResult["expected_outcome"].(float64)), // Convert float64 to int
+			TestResult:      rawResult["test_result"].(bool),
+			Duration:        rawResult["duration"].(float64),
+			ExecutedAt:      executedAt,
+		}
+		results = append(results, result)
+	}
+
+	// Insert into MongoDB
 	collection := config.MongoDB.Collection("test_results")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Insert multiple results
 	var docs []interface{}
 	for _, result := range results {
-		result.ID = primitive.NewObjectID()
-		result.ExecutedAt = time.Now()
-		docs = append(docs, result)
+		docs = append(docs, bson.M{
+			"test_case_id":     result.TestCaseID,
+			"status_code":      result.StatusCode,
+			"response":         result.Response,
+			"expected_outcome": result.ExpectedOutcome,
+			"test_result":      result.TestResult,
+			"duration":         result.Duration,
+			"executed_at":      result.ExecutedAt,
+		})
 	}
 
 	_, err := collection.InsertMany(ctx, docs)
