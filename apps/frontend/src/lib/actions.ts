@@ -133,7 +133,7 @@ export const deleteUser = async (formData: any) => {
   try {
     await connectToDB();
 
-    // Delete all records for the company
+    // Delete all records for the user
     await User.findByIdAndDelete(currentID);
 
     console.log(`All records for ID: '${currentID}' have been deleted.`);    
