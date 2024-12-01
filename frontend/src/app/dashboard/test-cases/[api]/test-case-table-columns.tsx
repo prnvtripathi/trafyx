@@ -17,12 +17,24 @@ export const columns = [
     accessorKey: "headers",
     header: "Headers",
     cell: ({ row }: { row: { original: { headers: string } } }) => {
+      const rawHeaders = row.original.headers;
+
+      if (!rawHeaders) {
+        // Handle empty or missing headers
+        return <span>No Headers Provided</span>;
+      }
+
       let headers;
       try {
-        headers = JSON.parse(row.original.headers);
+        headers = JSON.parse(rawHeaders);
       } catch (error) {
-        console.error("Invalid JSON in headers:", row.original.headers);
+        console.error("Invalid JSON in headers:", rawHeaders);
         return <span>Invalid JSON</span>;
+      }
+
+      if (typeof headers !== "object" || headers === null) {
+        // Ensure headers is a valid object
+        return <span>Invalid Headers Format</span>;
       }
 
       return (
@@ -43,7 +55,7 @@ export const columns = [
       const rawPayload = row.original.payload;
 
       if (!rawPayload) {
-        // Handle empty string or null/undefined payloads
+        // Handle empty or missing payloads
         return <span>No Payload Provided</span>;
       }
 
@@ -55,11 +67,16 @@ export const columns = [
         return <span>Invalid JSON</span>;
       }
 
+      if (typeof payload !== "object" || payload === null) {
+        // Ensure payload is a valid object
+        return <span>Invalid Payload Format</span>;
+      }
+
       return (
         <ul className="list-none p-0">
           {Object.entries(payload).map(([key, value], index) => (
             <li key={index}>
-              <strong>{key}:</strong> {String(value).slice(0, 100)}
+              <strong>{key}:</strong> {String(value)}
             </li>
           ))}
         </ul>
