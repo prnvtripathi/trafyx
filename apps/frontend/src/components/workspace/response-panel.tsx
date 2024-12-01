@@ -2,7 +2,7 @@ import { Copy, Link2, Maximize2, RotateCcw } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from './ui/badge'
+import { Badge } from '@/components/ui/badge'
 
 export function ResponsePanel() {
   return (
