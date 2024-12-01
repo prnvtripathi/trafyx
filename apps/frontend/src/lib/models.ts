@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
     },
-  
+
     phone: {
       type: String,
     },
@@ -73,12 +73,56 @@ const userApiSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "user-apis" }
 );
 
-// Exporting the User API model
-export const UserApi = mongoose.models.UserApi || mongoose.model("UserApi", userApiSchema);
+// Test Case Schema
+const testCaseSchema = new mongoose.Schema(
+  {
+    api_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserApi",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    method: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    headers: {
+      type: String,
+      required: true,
+    },
+    payload: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    expected_outcome: {
+      type: Number,
+      required: true,
+    },
+  },
+  { timestamps: true, collection: "test-cases" }
+);
 
+// Exporting the Test Case model
+export const TestCase =
+  mongoose.models.TestCase || mongoose.model("TestCase", testCaseSchema);
+
+// Exporting the User API model
+export const UserApi =
+  mongoose.models.UserApi || mongoose.model("UserApi", userApiSchema);
 
 // Exporting the models
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

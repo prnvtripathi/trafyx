@@ -41,16 +41,20 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Link href="/" className="flex items-center justify-center py-3 gap-2 flex-row w-full">
+        <Link
+          href="/"
+          className="flex items-center justify-center py-3 gap-2 flex-row w-full"
+        >
           {/* <Image
             src="/images/logo.svg"
             alt="Logo"
             height={32}
             width={32}
             priority
-          /> */} <div className="bg-primary rounded-full shadow-xl text-white  p-1">
-        <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
-      </div>
+          /> */}{" "}
+          <div className="bg-primary rounded-full shadow-xl text-white  p-1">
+            <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
+          </div>
           {isSidebarOpen && (
             <AnimatePresence>
               <motion.span
@@ -68,10 +72,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="pl-2">
         <SidebarMenu>
-          
-      
           <SidebarSeparator />
-       
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Workspace"
@@ -84,7 +85,8 @@ export function AppSidebar() {
                 <span>Workspace</span>
               </Link>
             </SidebarMenuButton>
-          </SidebarMenuItem> <SidebarMenuItem className="pr-2">
+          </SidebarMenuItem>{" "}
+          <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="All APIs"
               isActive={pathname.includes("/dashboard/all-apis")}
@@ -97,6 +99,7 @@ export function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <SidebarSeparator />
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Settings"
@@ -112,6 +115,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
+      <SidebarSeparator />
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -127,7 +131,8 @@ export function AppSidebar() {
                 className={`h-4 w-4 ${
                   isSidebarOpen ? "" : "transform rotate-180"
                 } transition-transform duration-300`}
-              /><span>Collapse Sidebar</span>
+              />
+              <span>Collapse Sidebar</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
