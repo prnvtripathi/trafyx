@@ -110,8 +110,8 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
    - Trigger Kestra workflows for test execution.
 
 ---
-
-<!-- ## 🛠 Installation
+<!-- 
+## 🛠 Installation
 
 ### Prerequisites
 - **Backend**: 
@@ -129,9 +129,9 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
 1. Clone the repository:
    ```bash
    git clone https://github.com/prnvtripathi/apilux
-   cd APILUX/backend -->
- ---
-
+   cd APILUX/backend 
+   ```
+--- -->
 
 ## 📦 Usage
 
