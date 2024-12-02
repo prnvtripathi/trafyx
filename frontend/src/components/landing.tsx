@@ -443,13 +443,9 @@ export default function LandingPage() {
                 {/* Browser Content */}
                 <div className="relative aspect-video bg-gradient-to-br from-violet-100/20 to-transparent dark:from-violet-900/20 dark:to-black">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-3/4 h-3/4 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10">
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src="https://youtu.be/aFHhcpyHkEU"
-                      ></iframe>
-                      `
+                    <div className="w-3/4 h-3/4 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center mx-auto justify-center">
+                    <iframe width="98%" height="97%" src="https://www.youtube.com/embed/aFHhcpyHkEU?si=ftAlh-C7uTqYwyHO" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        
                     </div>
                   </div>
                 </div>
