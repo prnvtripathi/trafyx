@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import LandingPage from "@/components/landing";
 import { GearIcon } from "@radix-ui/react-icons";
 import Footer from "@/components/ui/footer";
+import { auth } from "@/auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 // import { buttonVariants } from "@/components/ui/button";
 // import { PageRoutes } from "@/lib/pageroutes";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const user = session?.user;
   return (
     <div className="min-h-screen ">
       <div className="absolute top-0 z-20 right-0 p-6"></div>
@@ -20,12 +24,31 @@ export default function Home() {
             <h1 className="text-2xl font-bold">Apilux</h1>
           </div>
           <nav className="flex items-center space-x-3">
-            <Link href="/login">
-              <Button variant="secondary">Login</Button>
-            </Link>
-            <Link href="/signup">
-              <Button>Signup</Button>
-            </Link>
+            {session?.user ? (
+              <>
+                <Avatar className="size-8 md:size-10 mr-4">
+                  <AvatarImage
+                    src={user?.img || "/noavatar.png"}
+                    className="rounded-full"
+                  />
+                  <AvatarFallback className="text-3xl md:text-5xl rounded-full">
+                    {user?.name?.[0] || "?"}
+                  </AvatarFallback>
+                </Avatar>
+                <Button asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link href="/login">
+                  <Button variant="secondary">Login</Button>
+                </Link>
+                <Link href="/signup">
+                  <Button>Signup</Button>
+                </Link>
+              </>
+            )}
             <ModeToggle />
           </nav>
         </div>
