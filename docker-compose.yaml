@@ -1,20 +1,10 @@
-version: "3.8"
+volumes:
+  postgres-data:
+    driver: local
+  kestra-data:
+    driver: local
 
 services:
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - MONGO = "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
-  #     - AUTH_SECRET = "qwertyuioplkjhgfdsazxcvbjkm"
-  #     - AUTH_URL = "http://localhost:3000/api/auth"
-  #   depends_on:
-  #     - backend
-  #   networks:
-  #     - app-network
-
   backend:
     build:
       context: ./backend
@@ -23,20 +13,6 @@ services:
     environment:
       - MONGO = "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
       - ENVIRONMENT = "production"
-    depends_on:
-      - kestra
-    networks:
-      - app-network
-
-  kestra:
-    image: kestra/kestra:latest
-    container_name: kestra
-    user: root
-    ports:
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp:/tmp
     networks:
       - app-network
 
