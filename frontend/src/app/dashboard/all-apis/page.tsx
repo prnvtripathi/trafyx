@@ -59,7 +59,7 @@ export default async function page({}: Props) {
       <DataTable
         columns={columns}
         data={data}
-        addNewLink="/dashboard/workspace/add/"
+        addNewLink="/dashboard/workspace/"
         addNewText="Add new API"
       />
     </div>
