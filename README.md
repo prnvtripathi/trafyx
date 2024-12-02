@@ -19,12 +19,11 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 1. [Frontend Workflow](#-frontend-workflow)
 2. [Backend Workflow](#-backend-workflow)
 3. [Kestra Workflow](#-kestra-workflow)
-4. [Backend Test Case Generation](#-backend-test-case-generation)
-<!-- 5. [Installation](#-installation) -->
-6. [Usage](#-usage)
-7. [License](#-license)
-8. [Future-Enhancements](#-Future-Enhancements)
-9. [Contributing](#-contributing)
+4. [Backend Test Case Generation](#-backend-test-case-generation)<!-- 5. [Installation](#-installation) -->
+5. [Usage](#-usage)
+6. [License](#-license)
+7. [Future-Enhancements](#-Future-Enhancements)
+8. [Contributing](#-contributing)
 
 ---
 
