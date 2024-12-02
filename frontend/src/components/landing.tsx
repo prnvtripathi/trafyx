@@ -443,7 +443,14 @@ export default function LandingPage() {
                 {/* Browser Content */}
                 <div className="relative aspect-video bg-gradient-to-br from-violet-100/20 to-transparent dark:from-violet-900/20 dark:to-black">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-3/4 h-3/4 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10" />
+                    <div className="w-3/4 h-3/4 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10">
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src="https://youtu.be/aFHhcpyHkEU"
+                      ></iframe>
+                      `
+                    </div>
                   </div>
                 </div>
               </div>
@@ -650,7 +657,9 @@ export default function LandingPage() {
                   </p>
                 </div>
               </div>
-              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}>
+              <div
+                className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}
+              >
                 <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
                   <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
                     <div className="flex gap-1.5">
