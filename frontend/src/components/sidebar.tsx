@@ -22,6 +22,8 @@ import {
   LinkIcon,
   LucideFileChartColumnIncreasing,
   TestTubeDiagonal,
+  NotebookTextIcon,
+  ArrowUpRight,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,6 +34,7 @@ import { signOut } from "next-auth/react";
 import { ModeToggle } from "./theme-button";
 import SpinningLogo from "./effects/spinningLogo";
 import { GearIcon } from "@radix-ui/react-icons";
+import { PageRoutes } from "@/lib/pageroutes";
 // import ThemeToggle from "./ui/theme-toggle";
 
 export function AppSidebar() {
@@ -132,6 +135,16 @@ export function AppSidebar() {
       <SidebarSeparator />
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
+              <SidebarMenuButton>
+                <NotebookTextIcon className="h-4 w-4" />{" "}
+                <span>View Documentation</span>
+                <ArrowUpRight className="h-1 w-1" />
+              </SidebarMenuButton>
+            </Link>{" "}
+          </SidebarMenuItem>
+          <SidebarSeparator />
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Expand Sidebar"
