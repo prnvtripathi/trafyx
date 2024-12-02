@@ -7,10 +7,6 @@ export const Documents: Paths[] = [
     heading: "Getting started",
     items: [
       {
-        title: "Installation",
-        href: "/installation",
-      },
-      {
         title: "Setup",
         href: "/setup",
       },
@@ -20,6 +16,14 @@ export const Documents: Paths[] = [
       },
     ],
   },
+  {
+    spacer: true,
+  },
+  {
+    title: "Internal Process Workflow",
+    href: "/internal_process_workflow",
+    heading: "Functionality",
+  }, 
   {
     spacer: true,
   },
@@ -35,5 +39,4 @@ export const Documents: Paths[] = [
   {
     spacer: true,
   },
-
 ];

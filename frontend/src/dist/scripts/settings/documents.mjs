@@ -5,10 +5,6 @@ export const Documents = [
         heading: "Getting started",
         items: [
             {
-                title: "Installation",
-                href: "/installation",
-            },
-            {
                 title: "Setup",
                 href: "/setup",
             },
@@ -21,6 +17,14 @@ export const Documents = [
     {
         spacer: true,
     },
+    {
+        title: "Internal Process Workflow",
+        href: "/internal_process_workflow",
+        heading: "Functionality",
+      }, 
+      {
+        spacer: true,
+      },
     {
         title: "Contributing",
         href: "/contributing",
