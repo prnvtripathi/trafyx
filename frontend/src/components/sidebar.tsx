@@ -137,7 +137,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
-              <SidebarMenuButton>
+              <SidebarMenuButton tooltip="View Documentation">
                 <NotebookTextIcon className="h-4 w-4" />{" "}
                 <span>View Documentation</span>
                 <ArrowUpRight className="h-1 w-1" />
