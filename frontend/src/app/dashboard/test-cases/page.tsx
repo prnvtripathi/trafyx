@@ -1,5 +1,6 @@
 import { fetchUserApis } from "@/lib/data";
 import ClientSelect from "./client-select";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 export default async function AnalyticsPage() {
   // Fetch and format API data
@@ -27,6 +28,7 @@ export default async function AnalyticsPage() {
         <h1 className="text-2xl font-bold">Test Cases</h1>
       </div>
       {/* Pass data to the client component */}
+      <BackgroundStyle/>
       <ClientSelect data={data} />
     </main>
   );
