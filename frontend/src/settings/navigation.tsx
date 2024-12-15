@@ -13,5 +13,5 @@ export const Navigations = [
 ];
 
 export const GitHubLink = {
-  href: "https://github.com/prnvtripathi/apilux",
+  href: "https://github.com/kyrexi/trafix",
 };

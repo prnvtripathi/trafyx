@@ -11,7 +11,7 @@ export default async function Footer() {
   const footerLinks = [
     { href: "/about", label: "About" },
     { href: "/sitemap.xml", label: "Sitemap" },
-    { href: "https://github.com/prnvtripathi/apilux ", label: "GitHub" },
+    { href: "https://github.com/kyrexi/trafix ", label: "GitHub" },
     { href: `/docs${PageRoutes[0].href}`, label: "Docs" },
   ];
 

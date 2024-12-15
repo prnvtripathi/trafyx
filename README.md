@@ -10,7 +10,7 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 - **Interactive Frontend**: A clean and responsive interface for managing test cases and viewing results.
 - **Test Case Customization**: Edit, delete, or add new test cases seamlessly.
 - **Execution and Results Display**: Execute test cases and review structured results, including status codes, response bodies, and execution times.
-- **[Orchestration using Kestra](https://github.com/prnvtripathi/apilux/blob/master/backend/kestra_flow.yml)**: Robust orchestration of test workflows using Kestra for scalability and fault tolerance.
+- **[Orchestration using Kestra](https://github.com/kyrexi/trafix/blob/master/backend/kestra_flow.yml)**: Robust orchestration of test workflows using Kestra for scalability and fault tolerance.
 
 ---
 
@@ -127,7 +127,7 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
 #### 1. Backend Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/prnvtripathi/apilux
+   git clone https://github.com/kyrexi/trafix
    cd APILUX/backend 
    ```
 --- -->

@@ -88,10 +88,6 @@ export const authenticate = async (prevState: any, formData: any) => {
 export const signup = async (prevState: any, formData: any) => {
   // Extract signup data from form
   const { username, email, password, name } = Object.fromEntries(formData);
-  console.log("name", name);
-  console.log("username", username);
-  console.log("email", email);
-  console.log("password", password);
   try {
     connectToDB();
 
