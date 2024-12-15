@@ -3,7 +3,6 @@ package routes
 import (
 	"backend/api/handlers"
 	"backend/api/models"
-	"backend/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,20 +27,7 @@ func RegisterRoutes(router *gin.Engine) {
 		api.GET("/test-cases", handlers.GetTestCasesByAPIID)
 
 		// Endpoint for running all test cases
-		api.POST("/test-cases/run", func(c *gin.Context) {
-			var apiID struct {
-				APIID string `json:"api_id"`
-			}
-			if err := c.ShouldBindJSON(&apiID); err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-			if err := services.ExecuteAPITest(apiID.APIID); err != nil {
-				c.JSON(500, gin.H{"error": err.Error()})
-				return
-			}
-			c.JSON(200, gin.H{"message": "Test cases executed successfully"})
-		})
+		api.GET("/test-cases/run", handlers.ExecuteTestCases)
 
 		// Endpoint for adding user API information
 		api.POST("/user-apis", handlers.AddUserAPI)

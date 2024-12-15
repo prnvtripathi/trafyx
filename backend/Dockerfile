@@ -23,8 +23,8 @@ FROM alpine:latest
 WORKDIR /root/
 
 # Declare environment variables for the final stage
-ENV ENVIRONMENT="production"
-ENV MONGODB_URI="mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
+# TODO
+
 
 # Copy the pre-built binary file from the builder stage
 COPY --from=builder /app/main .
