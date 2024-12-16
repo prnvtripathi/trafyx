@@ -1,6 +1,6 @@
-# APILUX - API Testing Framework
+# Trafix - API Testing Framework
 
-APILUX is a modern, efficient API testing framework that simplifies the process of generating, executing, and managing API test cases. Built with a **Go** backend and **Next.js** frontend, APILUX delivers high performance, reliability, and an intuitive user experience.
+Trafix is a modern, efficient API testing framework that simplifies the process of generating, executing, and managing API test cases. Built with a **Go** backend and **Next.js** frontend, APILUX delivers high performance, reliability, and an intuitive user experience.
 
 ---
 
@@ -10,7 +10,6 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 - **Interactive Frontend**: A clean and responsive interface for managing test cases and viewing results.
 - **Test Case Customization**: Edit, delete, or add new test cases seamlessly.
 - **Execution and Results Display**: Execute test cases and review structured results, including status codes, response bodies, and execution times.
-- **[Orchestration using Kestra](https://github.com/kyrexi/trafix/blob/master/backend/kestra_flow.yml)**: Robust orchestration of test workflows using Kestra for scalability and fault tolerance.
 
 ---
 
@@ -18,8 +17,7 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 
 1. [Frontend Workflow](#-frontend-workflow)
 2. [Backend Workflow](#-backend-workflow)
-3. [Kestra Workflow](#-kestra-workflow)
-4. [Backend Test Case Generation](#-backend-test-case-generation)<!-- 5. [Installation](#-installation) -->
+4. [Backend Test Case Generation](#-backend-test-case-generation)
 5. [Usage](#-usage)
 6. [License](#-license)
 7. [Future-Enhancements](#-Future-Enhancements)
@@ -71,22 +69,6 @@ APILUX is a modern, efficient API testing framework that simplifies the process 
 
 ---
 
-## ⚙️ Kestra Workflow
-
-APILUX utilizes **Kestra** for orchestrating test execution workflows. The Kestra workflow manages the lifecycle of test cases, ensuring scalability, reliability, and streamlined operation.
-
-### **Workflow Steps**
-1. **Fetch Test Cases**: Retrieve stored test cases from MongoDB.
-2. **Execute Tests**: Use Kestra's HTTP tasks to run API requests.
-3. **Store Results**: Save execution results, including response details and performance metrics.
-4. **Notify Frontend**: Update the frontend with completion status using a WebSocket or HTTP endpoint.
-
-<!-- ### **Example Workflow**
-The Kestra workflow file is available in the `kestra-workflows/` directory. See the [workflow documentation](#kestra-workflow) for details on setup and usage. -->
-
----
-
-
 
 ## 📂 Backend Test Case Generation
 
@@ -105,7 +87,7 @@ The Kestra workflow file is available in the `kestra-workflows/` directory. See 
    - Save test cases in the `test_cases` collection in MongoDB.
 
 4. **Execute Test Cases**:
-   - Endpoint: `/api/execute-test-cases`
+   - Endpoint: `/api/test-cases/run`
    - Trigger Kestra workflows for test execution.
 
 ---
@@ -165,7 +147,6 @@ APILUX is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 We have exciting plans to further improve APILUX and provide a more comprehensive API testing experience:
 
 1. **Enhanced Reporting**: Add more detailed analytics and insights for test case execution, such as visualized metrics and trends.
-2. **User Authentication**: Introduce user accounts to allow saving personalized test cases and workflows for individual users.
 3. **Multiple Test Formats**: Provide support for importing and exporting test cases in popular formats like Postman collections and Swagger files.
 4. **Integration Testing**: Extend the framework to include support for integration testing, enabling end-to-end validations.
 5. **CI/CD Integration**: Seamlessly integrate APILUX with CI/CD pipelines using tools like Jenkins, GitHub Actions, GitLab CI, and others.
@@ -179,7 +160,7 @@ We have exciting plans to further improve APILUX and provide a more comprehensiv
 APILUX is Open Source 🥳🥳 
 
 Feel free to reach out to us if you have any questions or ideas.
-We welcome contributions to APILUX! If you would like to contribute, please follow these steps:
+We welcome contributions to Trafix! If you would like to contribute, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
