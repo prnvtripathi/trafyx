@@ -13,7 +13,6 @@ import { auth } from "@/auth";
 export default async function HomePageGreeting() {
   const session = await auth();
   const user = session?.user;
-  console.log(user, "is the received user");
 
   const getGreeting = () => {
     const currentTime = new Date().getHours();

@@ -6,7 +6,6 @@ import { PageRoutes } from "@/lib/pageroutes";
 
 export default async function Footer() {
   const session = await auth();
-  console.log(session?.expires, "is the recieved session");
 
   const footerLinks = [
     { href: "/about", label: "About" },
