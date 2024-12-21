@@ -72,6 +72,9 @@ export const authenticate = async (prevState: any, formData: any) => {
   try {
     // Attempt to sign in user
     await signIn("credentials", { username, password });
+
+    // Redirect to dashboard
+    redirect("/dashboard");
   } catch (err: any) {
     if (isRedirectError(err)) {
       throw err;
