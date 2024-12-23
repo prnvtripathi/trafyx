@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2Icon, EditIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-//  import { deleteCustomer } from "@/app/lib/actions";
+import { getMethodColor } from "@/lib/helpers";
+import { Badge } from "@/components/ui/badge";
 
 // Define the columns for the customer table
 export const columns = [
@@ -21,9 +22,7 @@ export const columns = [
     cell: ({ row }: { row: { original: { id: string } } }) => {
       return (
         <Button variant="ghost" asChild>
-          <Link href={`/dashboard/all-apis/${row.original.id}`}>
-            Dig In 🚀
-          </Link>
+          <Link href={`/dashboard/all-apis/${row.original.id}`}>Dig In 🚀</Link>
         </Button>
       );
     },
@@ -35,68 +34,80 @@ export const columns = [
   {
     accessorKey: "method",
     header: "Method",
+    cell: ({ row }: { row: { original: { method: string } } }) => {
+      return (
+        <Badge
+          variant={"outline"}
+          className={`text-xs font-semibold rounded-full px-2 py-1 ${getMethodColor(
+            row.original.method.toLowerCase()
+          )}`}
+        >
+          {row.original.method}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "url",
     header: "URL",
   },
-  {
-    accessorKey: "headers",
-    header: "Headers",
-    cell: ({ row }: { row: { original: { headers: string } } }) => {
-      let headers;
-      try {
-        headers = JSON.parse(row.original.headers);
-      } catch (error) {
-        console.error("Invalid JSON in headers:", row.original.headers);
-        return <span>Invalid JSON</span>;
-      }
+  // {
+  //   accessorKey: "headers",
+  //   header: "Headers",
+  //   cell: ({ row }: { row: { original: { headers: string } } }) => {
+  //     let headers;
+  //     try {
+  //       headers = JSON.parse(row.original.headers);
+  //     } catch (error) {
+  //       console.error("Invalid JSON in headers:", row.original.headers);
+  //       return <span>Invalid JSON</span>;
+  //     }
 
-      return (
-        <ul className="list-none p-0">
-          {Object.entries(headers).map(([key, value], index) => (
-            <li key={index}>
-              <strong>{key}:</strong> {String(value)}
-            </li>
-          ))}
-        </ul>
-      );
-    },
-  },
-  {
-    accessorKey: "payload",
-    header: "Payload",
-    cell: ({ row }: { row: { original: { payload: string } } }) => {
-      const rawPayload = row.original.payload;
+  //     return (
+  //       <ul className="list-none p-0">
+  //         {Object.entries(headers).map(([key, value], index) => (
+  //           <li key={index}>
+  //             <strong>{key}:</strong> {String(value)}
+  //           </li>
+  //         ))}
+  //       </ul>
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "payload",
+  //   header: "Payload",
+  //   cell: ({ row }: { row: { original: { payload: string } } }) => {
+  //     const rawPayload = row.original.payload;
 
-      if (!rawPayload) {
-        // Handle empty string or null/undefined payloads
-        return <span>No Payload Provided</span>;
-      }
+  //     if (!rawPayload) {
+  //       // Handle empty string or null/undefined payloads
+  //       return <span>No Payload Provided</span>;
+  //     }
 
-      let payload;
-      try {
-        payload = JSON.parse(rawPayload);
-      } catch (error) {
-        console.error("Invalid JSON in payload:", rawPayload);
-        return <span>Invalid JSON</span>;
-      }
+  //     let payload;
+  //     try {
+  //       payload = JSON.parse(rawPayload);
+  //     } catch (error) {
+  //       console.error("Invalid JSON in payload:", rawPayload);
+  //       return <span>Invalid JSON</span>;
+  //     }
 
-      return (
-        <ul className="list-none p-0">
-          {Object.entries(payload).map(([key, value], index) => (
-            <li key={index}>
-              <strong>{key}:</strong> {String(value)}
-            </li>
-          ))}
-        </ul>
-      );
-    },
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
+  //     return (
+  //       <ul className="list-none p-0">
+  //         {Object.entries(payload).map(([key, value], index) => (
+  //           <li key={index}>
+  //             <strong>{key}:</strong> {String(value)}
+  //           </li>
+  //         ))}
+  //       </ul>
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "description",
+  //   header: "Description",
+  // },
   {
     accessorKey: "createdAt",
     header: "Created At",
@@ -117,29 +128,30 @@ export const columns = [
       );
     },
   },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-    cell: ({ row }: { row: { getValue: (key: string) => any } }) => {
-      const date = new Date(row.getValue("updatedAt"));
-      const formattedDate = `${date.getDate()}-${
-        date.getMonth() + 1
-      }-${date.getFullYear()}`;
-      const formattedTime = date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: "Updated At",
+  //   cell: ({ row }: { row: { getValue: (key: string) => any } }) => {
+  //     const date = new Date(row.getValue("updatedAt"));
+  //     const formattedDate = `${date.getDate()}-${
+  //       date.getMonth() + 1
+  //     }-${date.getFullYear()}`;
+  //     const formattedTime = date.toLocaleTimeString([], {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     });
 
-      return (
-        <div>
-          {formattedDate} {formattedTime}
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div>
+  //         {formattedDate} {formattedTime}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     enableHiding: false,
+    header: "Actions",
     cell: ({ row }: { row: { original: { id: string } } }) => {
       return (
         <DropdownMenu>

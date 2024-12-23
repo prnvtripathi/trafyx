@@ -18,3 +18,18 @@ export function parseJSON(jsonString: string): object {
     return {};
   }
 }
+
+export const getMethodColor = (method: string) => {
+  switch (method?.toLowerCase()) {
+    case "get":
+      return " text-green-500";
+    case "post":
+      return "text-blue-500";
+    case "put":
+      return " text-yellow-500";
+    case "delete":
+      return " text-red-500";
+    default:
+      return " text-gray-500";
+  }
+};
