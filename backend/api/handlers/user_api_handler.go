@@ -29,11 +29,11 @@ func AddUserAPI(c *gin.Context) {
 	// Convert user_id from string to primitive.ObjectID (if it's a valid string)
 	if userAPI.UserID != primitive.NilObjectID {
 		if userAPI.UserID == primitive.NilObjectID {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UserID format"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UserID format", "success": false})
 			return
 		}
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID is required", "success": false})
 		return
 	}
 
@@ -42,11 +42,11 @@ func AddUserAPI(c *gin.Context) {
 	userFilter := bson.M{"_id": userAPI.UserID}
 	userCount, err := userCollection.CountDocuments(context.Background(), userFilter)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check user existence"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check user existence", "success": false})
 		return
 	}
 	if userCount == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found", "success": false})
 		return
 	}
 
@@ -64,12 +64,12 @@ func AddUserAPI(c *gin.Context) {
 
 	_, err = collection.InsertOne(ctx, userAPI)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save API information"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save API information", "success": false})
 		return
 	}
 
 	// Respond with success message and the inserted API data
-	c.JSON(http.StatusCreated, gin.H{"message": "API information saved successfully", "api": userAPI})
+	c.JSON(http.StatusCreated, gin.H{"message": "API information saved successfully", "api": userAPI, "success": true})
 }
 
 // UpdateUserAPI handles editing user API information in MongoDB
@@ -160,6 +160,8 @@ func GetAllUserAPIsByUserId(c *gin.Context) {
 func GetUserAPIById(c *gin.Context) {
 	// Extract API ID from the URL parameters
 	apiID := c.Param("id")
+
+	log.Println(apiID)
 
 	// Parse the ID as an ObjectID
 	objectID, err := primitive.ObjectIDFromHex(apiID)
