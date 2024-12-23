@@ -31,6 +31,7 @@ import { PageRoutes } from "@/lib/pageroutes";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { CodeBlock } from "./ui/code-block";
+import { Cover } from "./ui/cover";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -369,8 +370,8 @@ export default function LandingPage() {
               className="text-4xl md:text-6xl font-bold tracking-tight"
             >
               Automated API Testing
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-blue-600 dark:from-violet-400 dark:to-blue-400">
-                Made Simple
+              <span className="block">
+                <Cover>Made Simple</Cover>
               </span>
             </motion.h1>
 
@@ -444,8 +445,15 @@ export default function LandingPage() {
                 <div className="relative aspect-video bg-gradient-to-br from-violet-100/20 to-transparent dark:from-violet-900/20 dark:to-black">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-3/4 h-3/4 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10 flex items-center mx-auto justify-center">
-                    <iframe width="98%" height="97%" src="https://www.youtube.com/embed/aFHhcpyHkEU?si=ftAlh-C7uTqYwyHO" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
-        
+                      <iframe
+                        width="98%"
+                        height="97%"
+                        src="https://www.youtube.com/embed/aFHhcpyHkEU?si=ftAlh-C7uTqYwyHO"
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                      ></iframe>
                     </div>
                   </div>
                 </div>
