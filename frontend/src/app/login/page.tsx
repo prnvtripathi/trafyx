@@ -1,15 +1,11 @@
 import { ModeToggle } from "@/components/theme-button";
 import LoginForm from "./loginForm";
-// import Image from "next/image";
 import { BackgroundStyle } from "@/components/effects/background-style";
-// import { FloatingShapes } from "@/components/ui/floating-shapes";
-// import { GearIcon } from "@radix-ui/react-icons";
 import SpinningLogo from "@/components/effects/spinningLogo";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 import Footer from "@/components/ui/footer";
 import { GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Login | App",

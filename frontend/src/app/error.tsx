@@ -8,6 +8,10 @@ export default function Error({
 }: {
   error: Error & { digest?: string };
 }) {
+  if (process.env.NODE_ENV !== "production") {
+    return null; // Or you can redirect to another page or display a different message
+  }
+
   return (
     <div>
       <div className="absolute top-0 left-0 p-6">
@@ -16,15 +20,16 @@ export default function Error({
       <div className="grid h-screen place-content-center px-4">
         <div className="text-center">
           <h1 className="text-9xl font-black flex justify-center items-center text-gray-600 dark:text-gray-200">
-          : (
+            :(
           </h1>
 
           <p className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-400 sm:text-4xl">
-           Something went wrong, what a bummer.
+            Something went wrong, what a bummer.
           </p>
 
           <p className="mt-4 text-gray-500">
-            Maybe it&apos;s you, or maybe it&apos;s us. It&apos;s okay though, let&apos;s just try again! 
+            Maybe it&apos;s you, or maybe it&apos;s us. It&apos;s okay though,
+            let&apos;s just try again!
           </p>
 
           <Button className="w-1/2 my-6">

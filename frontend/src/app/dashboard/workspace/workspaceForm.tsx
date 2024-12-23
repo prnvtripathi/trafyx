@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import { submitApiData } from "@/lib/data";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -48,6 +48,7 @@ type FormValues = z.infer<typeof formSchema>;
 export function ApiRequestForm() {
   const { data: session } = useSession();
   const userID = session?.user.id;
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -63,18 +64,23 @@ export function ApiRequestForm() {
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
     try {
-      // const response = await submitApiData({
-      //   ...data,
-      //   user_id: userID,
-      // });
+      const response = await fetch(`/api/submit/user-api`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          user_id: userID,
+        }),
+      });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        toast.success("API request submitted successfully.");
-        console.log(responseData);
+      const ResponseData = await response.json();
+      if (ResponseData.success) {
+        toast.success("API request submitted successfully!");
+        router.push("/dashboard/all-apis");
       } else {
-        const errorData = await response.json();
-        toast.error("Something went wrong.");
+        toast.error("Failed to submit API request!");
       }
     } catch (error) {
       console.error("Error submitting API request:", error);

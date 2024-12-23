@@ -140,7 +140,7 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }: { row: { original: { user_id: string } } }) => {
+    cell: ({ row }: { row: { original: { id: string } } }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -152,7 +152,7 @@ export const columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Link href={`/dashboard/workspace/${row.original.user_id}`}>
+            <Link href={`/dashboard/all-apis/${row.original.id}`}>
               <DropdownMenuItem>
                 <EditIcon className="mr-2 size-4" />
                 Edit API
