@@ -37,7 +37,7 @@ export default function Signin() {
         </div>
       </header>
         <div className="w-full max-w-6xl relative z-10">
-          <div className="bg-white/80 dark:bg-gray-800/80 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm border border-white/20 dark:border-gray-700/20">
+          <div className="bg-white/80 dark:bg-gray-900/50 shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm border border-white/20 dark:border-gray-700/20">
             <div className="flex flex-col md:flex-row">
               {/* Left column: Sign-up form */}
               <div className="w-full md:w-1/2 p-8">

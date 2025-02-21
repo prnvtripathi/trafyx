@@ -139,16 +139,16 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-          <SidebarMenuItem className="pr-2">
-            <Collapsible className="group/collapsible">
+       <SidebarSeparator />
+            <Collapsible defaultOpen className="group/collapsible">
               <SidebarGroup className="group-data-[collapsible=icon]:hidden">
                 <SidebarGroupLabel className="group/label" asChild>
-                  <CollapsibleTrigger>
-                    <>
-                      <GitGraphIcon className="h-4 w-4" />
-                      <span>All APIs</span>
-                    </>
-                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                  <CollapsibleTrigger className="w-full flex items-center p-0">
+                    <div className="rounded-lg hover:bg-muted/60 flex w-full items-center p-1">
+                      <GitGraphIcon className="h-4 w-4 mr-2 -translate-x-2 text-white" />
+                      <span className="text-sm text-white -translate-x-2">Recent APIs</span>
+                  
+                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />  </div>
                   </CollapsibleTrigger>
                 </SidebarGroupLabel>
                 <CollapsibleContent>
@@ -198,7 +198,6 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                 </CollapsibleContent>
               </SidebarGroup>
             </Collapsible>
-          </SidebarMenuItem>
           {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Create & Run Test Cases"

@@ -80,7 +80,7 @@ export function SignUpForm() {
           Enter your information to get started
         </p>
       </div>
-      <Card className="">
+      <Card className="bg-black/20 border-none">
         <CardContent className="space-y-4">
           <form action={formAction} className="space-y-4">
             <div className="space-y-2">
