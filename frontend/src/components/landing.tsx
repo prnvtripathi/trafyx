@@ -478,30 +478,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Integration Logos Section
-      <section className="relative py-24">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <IntegrationLogos />
-        </div>
-        {/* <WavePattern /> */}
-      <div className="absolute bottom-0 w-full rotate-180">
-        <svg
-          className="w-full"
-          viewBox="0 0 1440 116"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <motion.path
-            d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z"
-            className="fill-gray-100 dark:fill-gray-900/50"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
-          />
-        </svg>
-      </div>
-      {/* </section>  */}
-
       {/* How it Works Section */}
       <section className="py-24 relative overflow-hidden bg-white dark:bg-gray-900/50">
         {/* Static Grid with Dots */}
