@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: { api: string } }) {
               {/* Tooltip for Edit Button */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="outline" size="icon">
                     <EditIcon />
                   </Button>
                 </TooltipTrigger>
