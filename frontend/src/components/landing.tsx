@@ -32,6 +32,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { CodeBlock } from "./ui/code-block";
 import { Cover } from "./ui/cover";
+import PricingPage from "./pricing";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,76 +60,6 @@ const float = {
   },
 };
 
-// Code examples
-const codeExamples = [
-  {
-    step: "01",
-    title: "Connect Your API",
-    description:
-      "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
-    code: `
-import Trafix from 'Trafix';
-
-const myApi = Trafix.connect({
-  specUrl: 'https://api.example.com/openapi.json',
-  // or
-  endpoints: [
-    { method: 'GET', path: '/users' },
-    { method: 'POST', path: '/users' },
-    // ...
-  ]
-});
-
-console.log('API connected successfully!');
-    `,
-  },
-  {
-    step: "02",
-    title: "Generate Tests",
-    description:
-      "Our AI automatically generates comprehensive test suites based on your API structure, covering various scenarios and edge cases.",
-    code: `
-const testSuite = await myApi.generateTests();
-
-console.log(\`Generated \${testSuite.length} tests\`);
-
-// Example test
-testSuite[0] = {
-  name: 'Get all users',
-  method: 'GET',
-  path: '/users',
-  expectedStatus: 200,
-  assertions: [
-    { type: 'jsonSchema', schema: userListSchema },
-    { type: 'responseTime', max: 500 }
-  ]
-};
-    `,
-  },
-  {
-    step: "03",
-    title: "Monitor & Validate",
-    description:
-      "Get real-time insights and automated validation reports. Set up continuous monitoring to ensure your API's reliability and performance.",
-    code: `
-const monitor = myApi.setupMonitor({
-  interval: '5m',
-  alertThreshold: {
-    errorRate: 0.01,
-    avgResponseTime: 200
-  }
-});
-
-monitor.on('alert', (data) => {
-  console.log('Alert:', data);
-  // Send notification, update dashboard, etc.
-});
-
-await monitor.start();
-console.log('API monitoring started');
-    `,
-  },
-];
 
 // Grid line pattern generator
 const GridLines = () => {
@@ -589,78 +520,11 @@ export default function LandingPage() {
         </div>
 
         <div className="space-y-24 mx-auto flex flex-col justify-center items-center">
-          {/* {codeExamples.map((step, index) => (
-            <motion.div
-              key={index}
-              variants={fadeIn}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8"
-            >
-              <div
-                className={`md:w-1/2 ${index % 2 === 1 ? "md:order-2" : ""}`}
-              >
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg mx-5">
-                  <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
-                    {step.step}
-                  </div>
-                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-              <div
-                className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}
-              >
-                <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
-                  <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
-                    <div className="flex gap-1.5">
-                      <div className="size-3 rounded-full bg-red-500" />
-                      <div className="size-3 rounded-full bg-yellow-500" />
-                      <div className="size-3 rounded-full bg-green-500" />
-                    </div>
-                  </div>
-                  <CodeBlock language="javascript" code={step.code} />
-                </div>
-              </div>
-            </motion.div>
-          ))} */}
-          {codeExamples.map((step, index) => (
-            <motion.div
-              key={index}
-              variants={fadeIn}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8"
-            >
-              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-2" : ""}`}>
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg mx-5">
-                  <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
-                    {step.step}
-                  </div>
-                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                </div>
-              </div>
-              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}>
-                <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
-                  <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
-                    <div className="flex gap-1.5">
-                      <div className="size-3 rounded-full bg-red-500" />
-                      <div className="size-3 rounded-full bg-yellow-500" />
-                      <div className="size-3 rounded-full bg-green-500" />
-                    </div>
-                  </div>
-                  <CodeBlock language="javascript" code={step.code} />
-                </div>
-              </div>
-            </motion.div>
-          ))}
+       
         </div>
       </section>
+
+      <PricingPage/>
 
       {/* CTA Section */}
       <section className="py-24 bg-gray-100 dark:bg-gray-900 relative overflow-hidden">
