@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./test-case-table-columns";
+import { RunTestCases } from "@/components/run-test-cases";
 
 async function getApi(apiId: string) {
   try {
@@ -61,7 +62,7 @@ export default async function Page({ params }: { params: { api: string } }) {
           <h1 className="text-2xl font-bold">API Information</h1>
           <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
             {test_cases ? (
-              <Button>Run Test Cases</Button>
+              <RunTestCases api_id={apiId} />
             ) : (
               <GenerateTestCases api_id={apiId} />
             )}

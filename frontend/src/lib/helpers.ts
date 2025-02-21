@@ -24,7 +24,7 @@ export const getMethodColor = (method: string) => {
     case "get":
       return " text-green-500";
     case "post":
-      return "text-blue-500";
+      return " text-blue-500";
     case "put":
       return " text-yellow-500";
     case "delete":
