@@ -35,5 +35,5 @@ export default async function AnalyticsPage() {
 }
 
 export const metadata = {
-  title: "Test Cases | Apilux",
+  title: "Test Cases | Trafix",
 };

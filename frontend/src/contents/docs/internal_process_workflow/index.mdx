@@ -1,11 +1,11 @@
 # Internal Process Workflow
 
-This document provides a detailed overview of the internal process workflow for using the **Apilux API Testing Framework**. It outlines the steps involved in defining test cases, preparing requests, sending them to the API, receiving and validating responses, and logging results. This guide is designed for internal users to understand how the framework operates at each stage of the API testing process.
+This document provides a detailed overview of the internal process workflow for using the **Trafix API Testing Framework**. It outlines the steps involved in defining test cases, preparing requests, sending them to the API, receiving and validating responses, and logging results. This guide is designed for internal users to understand how the framework operates at each stage of the API testing process.
 
 <div style={{ textAlign: 'center' }}>
   <img 
-    src="/apilux-working.png" 
-    alt="Apilux API Testing Workflow" 
+    src="/trafix-working.png" 
+    alt="Trafix API Testing Workflow" 
     style={{ maxWidth: '100%', height: 'auto' }} 
   />
 </div>
@@ -13,7 +13,7 @@ This document provides a detailed overview of the internal process workflow for 
 
 ## 1. Defining Test Cases (User Input)
 
-The first step in the workflow is when the **User** interacts with the **Apilux Testing Tool**. In this step, users define the API test cases, specifying which API endpoints they need to test, the HTTP methods (GET, POST, PUT, DELETE), request parameters (headers, body), and the expected outcomes (status codes, response bodies, etc.).
+The first step in the workflow is when the **User** interacts with the **Trafix Testing Tool**. In this step, users define the API test cases, specifying which API endpoints they need to test, the HTTP methods (GET, POST, PUT, DELETE), request parameters (headers, body), and the expected outcomes (status codes, response bodies, etc.).
 
 ### Key Actions:
 - **API Endpoints:** Users specify which API endpoints need to be tested.
@@ -30,15 +30,15 @@ For testing a `GET` request on `/api/products`:
 
 ---
 
-## 2. API Request Preparation (Apilux Testing Tool)
+## 2. API Request Preparation (Trafix Testing Tool)
 
-After the user has defined the test cases, the **Apilux Testing Tool** takes this input and prepares the actual API requests. The tool ensures that all necessary components, such as headers, body data, authentication tokens, and query parameters, are included based on the test case details.
+After the user has defined the test cases, the **Trafix Testing Tool** takes this input and prepares the actual API requests. The tool ensures that all necessary components, such as headers, body data, authentication tokens, and query parameters, are included based on the test case details.
 
 ### Key Actions:
-- **Request Composition:** Apilux assembles the HTTP request with the proper headers, body, and authentication tokens (if applicable).
-- **Authentication:** If the API requires authentication (e.g., API key or JWT), Apilux adds the necessary tokens.
-- **Request Method:** Apilux sets the appropriate HTTP method (GET, POST, PUT, DELETE).
-- **Parameters and Payload:** Apilux ensures that the request body and query parameters match the test case specifications.
+- **Request Composition:** Trafix assembles the HTTP request with the proper headers, body, and authentication tokens (if applicable).
+- **Authentication:** If the API requires authentication (e.g., API key or JWT), Trafix adds the necessary tokens.
+- **Request Method:** Trafix sets the appropriate HTTP method (GET, POST, PUT, DELETE).
+- **Parameters and Payload:** Trafix ensures that the request body and query parameters match the test case specifications.
 
 ### Example:
 For a `POST` request to create a new product on `/api/products`, the request might be prepared with:
@@ -48,14 +48,14 @@ For a `POST` request to create a new product on `/api/products`, the request mig
 
 ---
 
-## 3. Sending and Receiving API Responses (API Server and Apilux Testing Tool)
+## 3. Sending and Receiving API Responses (API Server and Trafix Testing Tool)
 
-Once the request is prepared, **Apilux** sends it to the **Target API Server** for processing. The API server processes the request, performs the necessary operations (e.g., querying the database, modifying data), and sends a response back to Apilux. The response is then captured by Apilux for validation.
+Once the request is prepared, **Trafix** sends it to the **Target API Server** for processing. The API server processes the request, performs the necessary operations (e.g., querying the database, modifying data), and sends a response back to Trafix. The response is then captured by Trafix for validation.
 
 ### Key Actions:
-- **Send Request:** Apilux sends the HTTP request to the target API server.
+- **Send Request:** Trafix sends the HTTP request to the target API server.
 - **Process Request:** The API server processes the request and executes the necessary business logic.
-- **Receive Response:** Apilux receives the response from the API server, which includes the status code, response body, and headers.
+- **Receive Response:** Trafix receives the response from the API server, which includes the status code, response body, and headers.
 
 ### Example:
 For a `GET` request to `/api/products`, the API might return:
@@ -64,13 +64,13 @@ For a `GET` request to `/api/products`, the API might return:
 
 ---
 
-## 4. Validation and Logging Results (Apilux Tool and User)
+## 4. Validation and Logging Results (Trafix Tool and User)
 
-Once the response is received, Apilux performs validation based on the test case criteria. This validation ensures that the response matches the expected values for status codes, response bodies, and headers. The results of the validation are logged, and the user is notified whether the test has passed or failed.
+Once the response is received, Trafix performs validation based on the test case criteria. This validation ensures that the response matches the expected values for status codes, response bodies, and headers. The results of the validation are logged, and the user is notified whether the test has passed or failed.
 
 ### Key Actions:
-- **Response Validation:** Apilux compares the response against the expected results. It checks the status code, response body structure, and headers.
-- **Log Results:** Apilux logs the results, marking the test as either **Pass** or **Fail**.
+- **Response Validation:** Trafix compares the response against the expected results. It checks the status code, response body structure, and headers.
+- **Log Results:** Trafix logs the results, marking the test as either **Pass** or **Fail**.
 - **Display Results:** The results are displayed to the user, either in the UI or stored in a log file for further review.
 
 ### Example:
@@ -92,8 +92,8 @@ The test fails and is marked as **Fail**.
 
 ## Overall Workflow Summary:
 
-The entire Apilux API Testing Framework workflow is as follows:
+The entire Trafix API Testing Framework workflow is as follows:
 1. **User defines test cases:** The user specifies the API endpoints, HTTP methods, expected responses, and additional request details.
-2. **Apilux prepares the request:** The Apilux Testing Tool assembles the request with all necessary headers, body data, and authentication.
-3. **Request sent to API server:** Apilux sends the request to the target API server and receives the response.
-4. **Validation and results logging:** Apilux validates the response against the test case specifications and logs the result (Pass/Fail), displaying it to the user.
+2. **Trafix prepares the request:** The Trafix Testing Tool assembles the request with all necessary headers, body data, and authentication.
+3. **Request sent to API server:** Trafix sends the request to the target API server and receives the response.
+4. **Validation and results logging:** Trafix validates the response against the test case specifications and logs the result (Pass/Fail), displaying it to the user.

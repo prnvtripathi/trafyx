@@ -6,7 +6,7 @@ import AccountDeletedCard from "./account-deleted-card";
 import { FloatingShapes } from "@/components/ui/floating-shapes";
 
 export const metadata = {
-  title: "Account Deleted | Apilux",
+  title: "Account Deleted | Trafix",
 };
 
 export default function AccountDeletedPage() {

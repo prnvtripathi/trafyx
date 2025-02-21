@@ -12,9 +12,9 @@ import ProgressBars from "@/components/ui/ProgressBarProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Apilux: Test your APIs Faster, Not Harder",
+  title: "Trafix: Test your APIs Faster, Not Harder",
   description:
-    "Apilux Automates Test Case Generation,Retrieval And Storage For Your Api. We do the heavy lifting so you don't have to!!",
+    "Trafix Automates Test Case Generation,Retrieval And Storage For Your Api. We do the heavy lifting so you don't have to!!",
 };
 
 export default async function RootLayout({

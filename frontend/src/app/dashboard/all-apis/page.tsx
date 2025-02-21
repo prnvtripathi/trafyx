@@ -6,7 +6,7 @@ import { fetchUserApis } from "@/lib/data";
 import { BackgroundStyle } from "@/components/effects/background-style";
 
 export const metadata = {
-  title: "All APIs | Apilux",
+  title: "All APIs | Trafix",
 };
 
 type Props = {};

@@ -43,7 +43,7 @@ export default async function Footer() {
           <div className="lg:flex lg:items-end lg:justify-between">
             <div className="space-x-2 flex-col items-center">
               <GearIcon className="h-8 w-8 bg-primary text-white p-1 rounded-full inline mx-2 md:mx-0" />
-              <span className="text-2xl font-bold ">Apilux</span>
+              <span className="text-2xl font-bold ">Trafix</span>
 
               <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left dark:text-gray-400">
                 Test, monitor, and validate your APIs with zero configuration.

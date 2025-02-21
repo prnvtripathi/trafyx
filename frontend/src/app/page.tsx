@@ -21,7 +21,7 @@ export default async function Home() {
             <div className="bg-primary rounded-full shadow-xl text-white  p-1">
               <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
             </div>{" "}
-            <h1 className="text-2xl font-bold">Apilux</h1>
+            <h1 className="text-2xl font-bold">Trafix</h1>
           </div>
           <nav className="flex items-center space-x-3">
             {session?.user ? (
