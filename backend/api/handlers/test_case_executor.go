@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"sync"
@@ -87,13 +88,13 @@ func runTestCases(testCases []models.TestCase) ([]models.TestResult, error) {
 			start := time.Now()
 			headers := make(map[string]string)
 			if err := json.Unmarshal([]byte(tc.Headers), &headers); err != nil {
-				log.Println("Error in unmarshalling headers")
+				log.Println("Error in unmarshalling headers:", err)
 				return
 			}
 
 			req, err := http.NewRequest(tc.Method, tc.URL, bytes.NewBuffer([]byte(tc.Payload)))
 			if err != nil {
-				log.Println("Error in creating new request")
+				log.Println("Error in creating new request:", err)
 				return
 			}
 
@@ -104,11 +105,12 @@ func runTestCases(testCases []models.TestCase) ([]models.TestResult, error) {
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			if err != nil {
+				log.Println("Request failed:", err)
 				mu.Lock()
 				results = append(results, models.TestResult{
 					TestCaseID:      tc.ID,
 					StatusCode:      0,
-					Response:        err.Error(),
+					Response:        "Request Failed: " + err.Error(),
 					ExpectedOutcome: tc.ExpectedOutcome,
 					TestResult:      false,
 					Duration:        time.Since(start).Seconds(),
@@ -119,13 +121,21 @@ func runTestCases(testCases []models.TestCase) ([]models.TestResult, error) {
 			}
 			defer resp.Body.Close()
 
+			// Read the response body properly
+			bodyBytes, err := io.ReadAll(resp.Body)
+			if err != nil {
+				log.Println("Error reading response body:", err)
+				bodyBytes = []byte("Failed to read response body")
+			}
+			responseBody := string(bodyBytes)
+
 			isTestPassed := resp.StatusCode == tc.ExpectedOutcome
 
 			mu.Lock()
 			results = append(results, models.TestResult{
 				TestCaseID:      tc.ID,
 				StatusCode:      resp.StatusCode,
-				Response:        string(tc.Payload),
+				Response:        responseBody, // Store the response as string
 				ExpectedOutcome: tc.ExpectedOutcome,
 				TestResult:      isTestPassed,
 				Duration:        time.Since(start).Seconds(),
