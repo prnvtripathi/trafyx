@@ -12,18 +12,25 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
   BarChart2,
   Settings,
   LogOut,
   ChevronsLeft,
-  Plus,
-  QrCode,
-  ScanQrCode,
-  LinkIcon,
-  LucideFileChartColumnIncreasing,
-  TestTubeDiagonal,
+  // Plus,
+  // QrCode,
+  // ScanQrCode,
+  // LinkIcon,
+  // LucideFileChartColumnIncreasing,
+  // TestTubeDiagonal,
   NotebookTextIcon,
   ArrowUpRight,
+  ChevronRight,
+  GitGraphIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -90,7 +97,7 @@ export function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-          <SidebarMenuItem className="pr-2">
+          {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="All APIs"
               isActive={pathname.includes("/dashboard/all-apis")}
@@ -102,8 +109,46 @@ export function AppSidebar() {
                 <span>All APIs</span>
               </Link>
             </SidebarMenuButton>
+          </SidebarMenuItem> */}
+          <SidebarMenuItem className="w-full flex pr-2">
+            <Collapsible className="w-full">
+              <CollapsibleTrigger className="flex w-full">
+          
+               <SidebarMenuButton
+              tooltip="Workspace"
+              isActive={pathname.includes("/dashboard/workspace")}
+              asChild
+              className="flex items-center w-full"
+            >
+                <>
+                <GitGraphIcon className="h-4 w-4" />
+                <span>All APIs</span>
+                <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" /> 
+               </>
+               </SidebarMenuButton>
+         
+           </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenu>
+                  {/* {item.items.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild isActive={item.isActive}>
+                        <a href={item.url}>{item.title}</a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))} */}
+                  <SidebarMenuItem>
+                    <Link href="/dashboard/all-apis">
+                      <SidebarMenuButton tooltip="All APIs">
+                        <span>All APIs</span>
+                      </SidebarMenuButton>
+                    </Link>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </CollapsibleContent>
+            </Collapsible>
           </SidebarMenuItem>
-          <SidebarMenuItem className="pr-2">
+          {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Create & Run Test Cases"
               isActive={pathname.includes("/dashboard/test-cases")}
@@ -115,8 +160,20 @@ export function AppSidebar() {
                 <span>Test Cases</span>
               </Link>
             </SidebarMenuButton>
+          </SidebarMenuItem> */}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
+              <SidebarMenuButton tooltip="View Documentation">
+                <NotebookTextIcon className="h-4 w-4" />{" "}
+                <span>View Documentation</span>
+                <ArrowUpRight className="h-1 w-1" />
+              </SidebarMenuButton>
+            </Link>{" "}
           </SidebarMenuItem>
-          <SidebarSeparator />
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Settings"
@@ -129,20 +186,6 @@ export function AppSidebar() {
                 <span>Settings</span>
               </Link>
             </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarSeparator />
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
-              <SidebarMenuButton tooltip="View Documentation">
-                <NotebookTextIcon className="h-4 w-4" />{" "}
-                <span>View Documentation</span>
-                <ArrowUpRight className="h-1 w-1" />
-              </SidebarMenuButton>
-            </Link>{" "}
           </SidebarMenuItem>
           <SidebarSeparator />
           <SidebarMenuItem>
