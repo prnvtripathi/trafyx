@@ -23,7 +23,7 @@ export function RunTestCases({ api_id }: { api_id: string }) {
   async function runCases(apiId: string, testType: string) {
     try {
       setLoading(true);
-      const response = await fetch(`/api/execute/${testType}`, {
+      const response = await fetch(`/api/execute/${testType.toLowerCase()}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export function RunTestCases({ api_id }: { api_id: string }) {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => runCases(api_id, "kestra")}
-          // disabled
+          disabled
           className="flex items-center justify-between"
         >
           <span className="flex items-center">
