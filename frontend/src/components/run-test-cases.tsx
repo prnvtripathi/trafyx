@@ -6,14 +6,14 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Loader from "./ui/loader";
 
-export function GenerateTestCases({ api_id }: { api_id: string }) {
+export function RunTestCases({ api_id }: { api_id: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  async function generateCases(apiId: string) {
+  async function runCases(apiId: string) {
     try {
       setLoading(true);
-      const response = await fetch(`/api/generate/cases`, {
+      const response = await fetch(`/api/execute/cases`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,12 +22,12 @@ export function GenerateTestCases({ api_id }: { api_id: string }) {
       });
 
       const data = await response.json();
-      toast.success("Test cases generated successfully!");
-      router.push(`/dashboard/all-apis/${apiId}`);
+      toast.success("Test cases executed successfully!");
+      router.push(`/dashboard/test-results/${apiId}`);
     } catch (err) {
       console.log(err);
-      toast.error("Failed to generate cases!");
-      throw new Error("Failed to generate cases!");
+      toast.error("Failed to run cases!");
+      throw new Error("Failed to run cases!");
     } finally {
       setLoading(false);
     }
@@ -37,11 +37,11 @@ export function GenerateTestCases({ api_id }: { api_id: string }) {
     <Button
       variant="default"
       onClick={() => {
-        generateCases(api_id);
+        runCases(api_id);
       }}
       className="w-42"
     >
-      {loading ? <Loader size={2} /> : "Generate Test Cases"}
+      {loading ? <Loader size={2}/> : "Run Test Cases"}
     </Button>
   );
 }
