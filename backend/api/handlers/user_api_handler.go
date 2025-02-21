@@ -171,10 +171,11 @@ func GetUserAPIById(c *gin.Context) {
 	}
 
 	collection := config.MongoDB.Collection("user_apis")
+	testCaseCollection := config.MongoDB.Collection("test_cases")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Perform the find operation
+	// Perform the find operation for user API
 	var userAPI models.UserAPI
 	err = collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&userAPI)
 	if err != nil {
@@ -182,5 +183,23 @@ func GetUserAPIById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, userAPI)
+	// Perform the find operation for test cases related to the API
+	var testCases []models.TestCase
+	cursor, err := testCaseCollection.Find(ctx, bson.M{"apiid": objectID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching test cases"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	if err := cursor.All(ctx, &testCases); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error decoding test cases"})
+		return
+	}
+
+	// Return the API data along with its test cases
+	c.JSON(http.StatusOK, gin.H{
+		"user_api":   userAPI,
+		"test_cases": testCases,
+	})
 }

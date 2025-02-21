@@ -17,7 +17,7 @@ export function GenerateTestCases({ api_id }: { api_id: string }) {
       });
 
       const data = await response.json();
-      router.push(`/dashboard/test-cases/${apiId}`);
+      router.push(`/dashboard/all-apis/${apiId}`);
     } catch (err) {
       console.log(err);
       throw new Error("Failed to generate cases!");
