@@ -17,12 +17,16 @@ export default async function Footer() {
   return (
     <div>
       <footer className="relative border-t border-primary">
-      <div className="absolute bottom-0 w-full rotate-180">
-          <svg className="w-full" viewBox="0 0 1440 116" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path 
-              d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z" 
+        <div className="absolute bottom-0 w-full rotate-180">
+          <svg
+            className="w-full"
+            viewBox="0 0 1440 116"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z"
               className="fill-primary dark:fill-black/50"
-           
             />
           </svg>
         </div>
@@ -33,7 +37,7 @@ export default async function Footer() {
               href="#MainContent"
             >
               <span className="sr-only">Back to top</span>
-              <ChevronUp/>
+              <ChevronUp />
             </Link>
           </div>
           <div className="lg:flex lg:items-end lg:justify-between">
@@ -60,18 +64,17 @@ export default async function Footer() {
             </ul>
           </div>
           <p className="mt-12 text-center text-sm text-gray-500 lg:text-right dark:text-gray-400">
-            Copyright &copy; 2024.
+            Copyright &copy; {new Date().getFullYear()}.
             {session ? (
-            <p className="mt-12 text-center text-sm text-gray-500 lg:text-right dark:text-gray-400">
-              Session valid until:{" "}
-              {session.expires &&
-                new Date(session.expires).toLocaleString("en-US")}
-            </p>
-          ) : (
-            <></>
-          )}
+              <p className="mt-12 text-center text-sm text-gray-500 lg:text-right dark:text-gray-400">
+                Session valid until:{" "}
+                {session.expires &&
+                  new Date(session.expires).toLocaleString("en-US")}
+              </p>
+            ) : (
+              <></>
+            )}
           </p>{" "}
-        
         </div>
       </footer>
     </div>
