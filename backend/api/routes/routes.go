@@ -23,6 +23,8 @@ func RegisterRoutes(router *gin.Engine) {
 			c.JSON(201, gin.H{"message": "Test case added successfully"})
 		})
 
+		api.POST("/save/cases/gen-ai", handlers.AddGenAITestCases)
+
 		// Endpoint for listing all test cases
 		api.GET("/test-cases", handlers.GetTestCasesByAPIID)
 
@@ -62,6 +64,9 @@ func RegisterRoutes(router *gin.Engine) {
 			}
 			c.JSON(200, test_cases)
 		})
+
+		// Delete user API by Id
+		api.DELETE("/user-apis/:id", handlers.DeleteUserAPIById)
 
 		// New endpoints for test results
 		api.POST("/test-results", handlers.AddTestResults)

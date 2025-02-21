@@ -24,6 +24,8 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./test-case-table-columns";
 import { RunTestCases } from "@/components/run-test-cases";
+import { toast } from "sonner";
+import DeleteButton from "./deleteAPI";
 
 async function getApi(apiId: string) {
   try {
@@ -42,14 +44,20 @@ async function getApi(apiId: string) {
 export default async function Page({ params }: { params: { api: string } }) {
   const formatJSON = (data: any) => {
     try {
-      const parsed = typeof data === 'string' ? parseJSON(data) : data;
+      const parsed = typeof data === "string" ? parseJSON(data) : data;
       return JSON.stringify(parsed, null, 2);
     } catch (error) {
-      return 'Invalid JSON';
+      return "Invalid JSON";
     }
   };
 
-  const CodeBlock = ({ title, content }: { title: string; content: string }) => (
+  const CodeBlock = ({
+    title,
+    content,
+  }: {
+    title: string;
+    content: string;
+  }) => (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <p className="font-medium text-slate-200">{title}</p>
@@ -58,15 +66,15 @@ export default async function Page({ params }: { params: { api: string } }) {
         </Badge>
       </div>
       <div className="bg-muted/50 rounded-lg overflow-hidden shadow-lg">
-        <SyntaxHighlighter 
-          language="json" 
+        <SyntaxHighlighter
+          language="json"
           style={vscDarkPlus}
           customStyle={{
             margin: 0,
-            padding: '1.25rem',
-            fontSize: '0.875rem',
-            backgroundColor: 'transparent',
-            borderRadius: '0.5rem',
+            padding: "1.25rem",
+            fontSize: "0.875rem",
+            backgroundColor: "transparent",
+            borderRadius: "0.5rem",
           }}
           wrapLongLines={true}
         >
@@ -102,18 +110,13 @@ export default async function Page({ params }: { params: { api: string } }) {
             {test_cases ? (
               <RunTestCases api_id={apiId} />
             ) : (
-              <GenerateTestCases api_id={apiId} />
+              <GenerateTestCases api_id={apiId} apiSpec={user_api} />
             )}
             <div className="flex space-x-2">
-              {/* Tooltip for Edit Button */}
-             
-
               {/* Tooltip for Delete Button */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="destructive" size="icon">
-                    <Trash2Icon />
-                  </Button>
+                  <DeleteButton apiId={apiId} />
                 </TooltipTrigger>
                 <TooltipContent className="bg-gray-600 dark:bg-gray-900">
                   <p>Delete API</p>
@@ -145,12 +148,9 @@ export default async function Page({ params }: { params: { api: string } }) {
                 </p>
               </div>
               <Separator />
-                <CodeBlock 
-                title="Headers"
-                content={formatJSON(headers)}
-              />
+              <CodeBlock title="Headers" content={formatJSON(headers)} />
 
-              <CodeBlock 
+              <CodeBlock
                 title="Payload"
                 content={payload === null ? "N/A" : formatJSON(payload)}
               />

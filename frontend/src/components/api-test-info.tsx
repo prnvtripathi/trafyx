@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -22,38 +22,96 @@ interface ApiTestInfoProps {
 }
 
 export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
-  const [filter, setFilter] = useState<"all" | "passed" | "failed">("all");
-
-  const passedTests = apiInfo.test_results.filter(
-    (result) => result.test_results_data.test_result
+  const [statusFilter, setStatusFilter] = useState<"all" | "passed" | "failed">(
+    "all"
   );
-  const failedTests = apiInfo.test_results.filter(
-    (result) => !result.test_results_data.test_result
-  );
+  const [runCountFilter, setRunCountFilter] = useState<number | null>(null);
+  const [uniqueRunCounts, setUniqueRunCounts] = useState<number[]>([]);
+  const [filteredResults, setFilteredResults] = useState(apiInfo.test_results);
+  const [stats, setStats] = useState({
+    passed: 0,
+    failed: 0,
+    passRate: 0,
+  });
 
-  const passRate = (passedTests.length / apiInfo.test_results.length) * 100;
-  
-  const filteredResults =
-    filter === "passed"
-      ? passedTests
-      : filter === "failed"
-      ? failedTests
-      : apiInfo.test_results;
+  // Extract unique run counts on component mount
+  useEffect(() => {
+    const runCounts = [
+      ...new Set(
+        apiInfo.test_results.map(
+          (result) => result.test_results_data.run_count || 0
+        )
+      ),
+    ].sort((a, b) => a - b);
 
-  const StatCard = ({ title, value, type }: { title: string; value: number; type: "success" | "error" }) => (
+    setUniqueRunCounts(runCounts);
+
+    // Set the first run count as default if available
+    if (runCounts.length > 0 && runCountFilter === null) {
+      setRunCountFilter(runCounts[0]);
+    }
+  }, [apiInfo.test_results, runCountFilter]);
+
+  // Update filtered results whenever filters change
+  useEffect(() => {
+    // First filter by run count if selected
+    let results = apiInfo.test_results;
+    if (runCountFilter !== null) {
+      results = results.filter(
+        (result) => result.test_results_data.run_count === runCountFilter
+      );
+    }
+
+    // Then filter by status
+    if (statusFilter === "passed") {
+      results = results.filter(
+        (result) => result.test_results_data.test_result
+      );
+    } else if (statusFilter === "failed") {
+      results = results.filter(
+        (result) => !result.test_results_data.test_result
+      );
+    }
+
+    // Update stats for the current filtered set
+    const passedTests = results.filter(
+      (result) => result.test_results_data.test_result
+    );
+    const failedTests = results.filter(
+      (result) => !result.test_results_data.test_result
+    );
+    const passRate =
+      results.length > 0 ? (passedTests.length / results.length) * 100 : 0;
+
+    setStats({
+      passed: passedTests.length,
+      failed: failedTests.length,
+      passRate,
+    });
+
+    setFilteredResults(results);
+  }, [statusFilter, runCountFilter, apiInfo.test_results]);
+
+  const StatCard = ({
+    title,
+    value,
+    type,
+  }: {
+    title: string;
+    value: number;
+    type: "success" | "error";
+  }) => (
     <Card className="">
-      <CardContent className="p-6 bg-muted/10 rounded-lg">
+      <CardContent className="p-4 md:p-6 bg-muted/10 rounded-lg">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-slate-400">{title}</p>
-            <p className="text-2xl font-bold mt-1">
-              {value}
-            </p>
+            <p className="text-xs md:text-sm text-slate-400">{title}</p>
+            <p className="text-xl md:text-2xl font-bold mt-1">{value}</p>
           </div>
           {type === "success" ? (
-            <CircleCheck className="h-8 w-8 text-green-500" />
+            <CircleCheck className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
           ) : (
-            <CircleX className="h-8 w-8 text-red-500" />
+            <CircleX className="h-6 w-6 md:h-8 md:w-8 text-red-500" />
           )}
         </div>
       </CardContent>
@@ -61,95 +119,162 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
   );
 
   return (
-    <div className="container mx-auto p-6">
-      <BackgroundStyle/>
-      <div className="w-full mx-auto ">
-        <CardHeader className="space-y-4">
-          <div className="flex justify-between items-start">
+    <div className="container mx-auto px-2 sm:px-4 md:px-6 py-4 md:py-6">
+      <BackgroundStyle />
+      <div className="w-full mx-auto">
+        <CardHeader className="px-3 py-3 md:px-6 md:py-4 space-y-3 md:space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
             <div>
-              <CardTitle className="text-2xl text-slate-100">API Test Results</CardTitle>
-              <CardDescription className="mt-2 flex items-center space-x-2">
-                <code className="px-2 py-1 bg-slate-800 rounded text-slate-300">{apiInfo.api_id}</code>
-                <ChevronRight className="h-4 w-4 text-slate-600" />
-                <span className="text-slate-400">Total Test Cases: {apiInfo.test_cases}</span>
+              <CardTitle className="text-xl md:text-2xl text-slate-100">
+                API Test Results
+              </CardTitle>
+              <CardDescription className="mt-1 md:mt-2 flex flex-wrap items-center gap-2 md:space-x-2">
+                <code className="px-2 py-1 bg-slate-800 rounded text-xs md:text-sm text-slate-300">
+                  {apiInfo.api_id}
+                </code>
+                <div className="flex items-center">
+                  <ChevronRight className="h-3 w-3 md:h-4 md:w-4 text-slate-600 mr-1 md:mr-2" />
+                  <span className="text-xs md:text-sm text-slate-400">
+                    Total Test Cases: {apiInfo.test_cases}
+                  </span>
+                </div>
               </CardDescription>
             </div>
-            <div className="flex flex-col items-end space-y-2">
+            <div className="flex flex-col items-start sm:items-end space-y-1 md:space-y-2">
               <Badge
-                variant={passRate === 100 ? "default" : "destructive"}
-                className={`px-4 py-1.5 text-sm ${
-                  passRate === 100 ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20' : ''
+                variant={stats.passRate === 100 ? "default" : "destructive"}
+                className={`px-2 md:px-4 py-1 md:py-1.5 text-xs md:text-sm ${
+                  stats.passRate === 100
+                    ? "bg-green-500/10 text-green-400 hover:bg-green-500/20"
+                    : ""
                 }`}
               >
-                {passedTests.length}/{apiInfo.test_results.length} Passed
+                {stats.passed}/{stats.passed + stats.failed} Passed
               </Badge>
-              <p className="text-sm text-slate-400">Pass Rate: {passRate.toFixed(1)}%</p>
+              <p className="text-xs md:text-sm text-slate-400">
+                Pass Rate: {stats.passRate.toFixed(1)}%
+              </p>
             </div>
           </div>
-          
-          <Progress 
-            value={passRate} 
-            className="h-2 bg-slate-800"
+
+          <Progress
+            value={stats.passRate}
+            className="h-1.5 md:h-2 bg-slate-800"
           />
         </CardHeader>
 
-        <CardContent className="space-y-8">
-          <div className="grid grid-cols-2 gap-4">
-            <StatCard 
-              title="Passed Tests" 
-              value={passedTests.length} 
-              type="success" 
+        <CardContent className="px-3 py-3 md:px-6 md:py-4 space-y-6 md:space-y-8">
+          <div className="grid grid-cols-2 xs:grid-cols-2 gap-3 md:gap-4">
+            <StatCard
+              title="Passed Tests"
+              value={stats.passed}
+              type="success"
             />
-            <StatCard 
-              title="Failed Tests" 
-              value={failedTests.length} 
-              type="error" 
-            />
+            <StatCard title="Failed Tests" value={stats.failed} type="error" />
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-100">Test Cases</h3>
-              <div className="flex items-center space-x-2 text-sm text-slate-400">
-                <AlertCircle className="h-4 w-4" />
+          <div className="space-y-3 md:space-y-4">
+            {/* Run Count Filter Tabs */}
+            <div className="mb-4 md:mb-6">
+              <h3 className="text-base md:text-lg font-semibold text-slate-100 mb-2 md:mb-3">
+                Run Count
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  onClick={() => setRunCountFilter(null)}
+                  variant={runCountFilter === null ? "default" : "outline"}
+                  size="sm"
+                  className={`text-xs md:text-sm h-8 md:h-10 px-2 md:px-3
+                    ${
+                      runCountFilter === null
+                        ? "border-slate-700 bg-muted/40 hover:bg-muted/20 text-slate-100"
+                        : "border-slate-700 text-slate-400 hover:text-slate-100"
+                    }
+                  `}
+                >
+                  All Runs
+                </Button>
+                {uniqueRunCounts.map((count) => (
+                  <Button
+                    key={`run-${count}`}
+                    onClick={() => setRunCountFilter(count)}
+                    variant={runCountFilter === count ? "default" : "outline"}
+                    size="sm"
+                    className={`text-xs md:text-sm h-8 md:h-10 px-2 md:px-3
+                      ${
+                        runCountFilter === count
+                          ? "border-slate-700 bg-muted/40 hover:bg-muted/20 text-slate-100"
+                          : "border-slate-700 text-slate-400 hover:text-slate-100"
+                      }
+                    `}
+                  >
+                    Run #{count}
+                    <Badge
+                      variant="outline"
+                      className="ml-1 md:ml-2 text-xs px-1.5 py-0"
+                    >
+                      {
+                        apiInfo.test_results.filter(
+                          (r) => r.test_results_data.run_count === count
+                        ).length
+                      }
+                    </Badge>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 xs:gap-0">
+              <h3 className="text-base md:text-lg font-semibold text-slate-100">
+                Test Cases
+              </h3>
+              <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-slate-400">
+                <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
                 <span>Showing {filteredResults.length} results</span>
               </div>
             </div>
-            
-            <div className="flex space-x-2">
+
+            <div className="flex flex-wrap gap-2">
               {[
                 { key: "all", label: "All Tests" },
                 { key: "passed", label: "Passed" },
-                { key: "failed", label: "Failed" }
+                { key: "failed", label: "Failed" },
               ].map((option) => (
                 <Button
                   key={option.key}
-                  onClick={() => setFilter(option.key as typeof filter)}
-                  variant={filter === option.key ? "default" : "outline"}
-                  className={`
-                    ${filter === option.key 
-                      ? 'border-slate-700 bg-muted/40 hover:bg-muted/20 text-slate-100' 
-                      : 'border-slate-700 text-slate-400 hover:text-slate-100 '
+                  onClick={() =>
+                    setStatusFilter(option.key as typeof statusFilter)
+                  }
+                  variant={statusFilter === option.key ? "default" : "outline"}
+                  size="sm"
+                  className={`text-xs md:text-sm h-8 md:h-10 px-2 md:px-3
+                    ${
+                      statusFilter === option.key
+                        ? "border-slate-700 bg-muted/40 hover:bg-muted/20 text-slate-100"
+                        : "border-slate-700 text-slate-400 hover:text-slate-100"
                     }
                   `}
                 >
                   {option.label}
-                  <Badge 
-                    variant="outline" 
-                    className="ml-2"
+                  <Badge
+                    variant="outline"
+                    className="ml-1 md:ml-2 text-xs px-1.5 py-0"
                   >
-                    {option.key === "all" 
-                      ? apiInfo.test_results.length
-                      : option.key === "passed" 
-                        ? passedTests.length 
-                        : failedTests.length
-                    }
+                    {option.key === "all"
+                      ? filteredResults.length
+                      : option.key === "passed"
+                      ? filteredResults.filter(
+                          (r) => r.test_results_data.test_result
+                        ).length
+                      : filteredResults.filter(
+                          (r) => !r.test_results_data.test_result
+                        ).length}
                   </Badge>
                 </Button>
               ))}
             </div>
 
-            <div className="mt-4 rounded-lg border ">
+            <div className="mt-3 md:mt-4 rounded-lg border">
               <TestCaseList testResults={filteredResults} />
             </div>
           </div>

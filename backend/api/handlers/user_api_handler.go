@@ -203,3 +203,24 @@ func GetUserAPIById(c *gin.Context) {
 		"test_cases": testCases,
 	})
 }
+
+func DeleteUserAPIById(c *gin.Context) {
+	apiID := c.Param("id")
+	objectID, err := primitive.ObjectIDFromHex(apiID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid API ID"})
+		return
+	}
+
+	collection := config.MongoDB.Collection("user_apis")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	filter := bson.M{"_id": objectID}
+	_, err = collection.DeleteOne(ctx, filter)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete API information"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "API deleted successfully", "status": true})
+}
