@@ -1,7 +1,19 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getMethodColor } from "@/lib/helpers";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EditIcon, MoreHorizontal, Trash2Icon } from "lucide-react";
+import Link from "next/link";
 
 export const columns = [
   {
@@ -112,7 +124,7 @@ export const columns = [
         colorClass = "text-red-500";
       }
 
-      return <span className={`font-semibold ${colorClass}`}>{outcome}</span>;
+      return <Badge variant='outline' className={`font-semibold ${colorClass} mx-auto`}>{outcome}</Badge>;
     },
   },
   {
@@ -121,6 +133,37 @@ export const columns = [
     cell: ({ row }: { row: { getValue: (key: string) => any } }) => {
       const date = new Date(row.getValue("created_at"));
       return date.toLocaleString();
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    header: "Actions",
+    cell: ({ row }: { row: { original: { id: string } } }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Link href={`/dashboard/all-apis/${row.original.id}`}>
+              <DropdownMenuItem>
+                <EditIcon className="mr-2 size-4" />
+                Edit API
+              </DropdownMenuItem>
+            </Link>
+
+            <DropdownMenuItem>
+              <Trash2Icon className="mr-2 size-4" /> Delete API
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];

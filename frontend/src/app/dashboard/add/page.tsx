@@ -1,8 +1,9 @@
 import { BackgroundStyle } from "@/components/effects/background-style";
 import { ApiRequestForm } from "./workspaceForm";
 
-export const meta = {
-  title: "New Workspace | Trafix",
+export const metadata = {
+  title: "Add an API | Trafix",
+  description: "Add an API to Trafix to start testing your API endpoints."
 };
 
 export default function Page() {
