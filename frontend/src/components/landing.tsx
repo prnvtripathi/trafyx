@@ -204,84 +204,49 @@ const GridLines = () => {
 
 // Stats Component
 const Stats = () => (
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12">
-    {[
-      { label: "API Tests Run", value: "1M+", icon: Activity },
-      { label: "Success Rate", value: "99.9%", icon: BarChart },
-      { label: "Global CDN", value: "180+", icon: Globe },
-      { label: "CI/CD Integrations", value: "50+", icon: Workflow },
-    ].map((stat, index) => (
-      <motion.div
-        key={index}
-        className="text-center"
-        initial={{ scale: 0.5, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.1 }}
-      >
-        <stat.icon className="mx-auto h-8 w-8 mb-4 text-violet-500" />
-        <div className="text-3xl font-bold mb-2">{stat.value}</div>
-        <div className="text-gray-500 dark:text-gray-400">{stat.label}</div>
-      </motion.div>
-    ))}
+<div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+  <div className="mx-auto max-w-3xl text-center">
+    <h2 className="text-3xl font-bold text-gray-100 sm:text-4xl">Trusted by Developers Worldwide</h2>
+
+    <p className="mt-4 text-gray-500 sm:text-xl">
+      Join thousands of developers who rely on our platform for seamless API testing and monitoring.
+    </p>
   </div>
+
+  <dl
+    className="mt-6 grid grid-cols-1 gap-4 divide-y divide-gray-100 sm:mt-8 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4"
+  >
+    <div className="flex flex-col px-4 py-8 text-center">
+      <dt className="order-last text-lg font-medium text-gray-500">APIs Monitored</dt>
+      <dd className="text-4xl font-extrabold text-primary md:text-5xl">1.2k</dd>
+    </div>
+
+    <div className="flex flex-col px-4 py-8 text-center">
+      <dt className="order-last text-lg font-medium text-gray-500">Tests Generated</dt>
+      <dd className="text-4xl font-extrabold text-primary md:text-5xl">15k</dd>
+    </div>
+
+    <div className="flex flex-col px-4 py-8 text-center">
+      <dt className="order-last text-lg font-medium text-gray-500">Alerts Sent</dt>
+      <dd className="text-4xl font-extrabold text-primary md:text-5xl">3.5k</dd>
+    </div>
+
+    <div className="flex flex-col px-4 py-8 text-center">
+      <dt className="order-last text-lg font-medium text-gray-500">Active Users</dt>
+      <dd className="text-4xl font-extrabold text-primary md:text-5xl">8.6k</dd>
+    </div>
+  </dl>
+</div>
 );
 
-// Integration Logos Component
-const IntegrationLogos = () => (
-  <div className="py-12">
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold mb-2">Works with your stack</h3>
-      <p className="text-gray-500 dark:text-gray-400">
-        Seamlessly integrate with your favorite tools
-      </p>
-    </div>
-    <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center justify-items-center">
-      {[GitBranch, Terminal, Database, Lock, RefreshCcw, Cpu].map(
-        (Icon, index) => (
-          <motion.div
-            key={index}
-            className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 hover:scale-105 transition-transform"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Icon className="h-8 w-8 text-violet-500" />
-          </motion.div>
-        )
-      )}
-    </div>
-  </div>
-);
 
 export default function LandingPage() {
-  // const [isDark, setIsDark] = useState(false)
-
-  // useEffect(() => {
-  //   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  //     setIsDark(true)
-  //     document.documentElement.classList.add('dark')
-  //   }
-  // }, [])
-
-  // const toggleTheme = () => {
-  //   setIsDark(!isDark)
-  //   document.documentElement.classList.toggle('dark')
-  // }
 
   return (
     <div
       className={`min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300 ${inter.className}`}
     >
-      {/* Theme Toggle */}
-      {/* <button
-        onClick={toggleTheme}
-        className="fixed top-4 right-4 z-50 p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-        aria-label="Toggle theme"
-      >
-        {isDark ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-      </button> */}
+  
 
       <GridLines />
 
@@ -310,9 +275,6 @@ export default function LandingPage() {
           />
         ))}
       </div>
-
-      {/* Animated Lines */}
-      {/* This section is now replaced by GridLines component */}
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
@@ -492,19 +454,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="py-24 relative overflow-hidden bg-gray-100/50 dark:bg-black/50">
         {/* Static Grid with Lines */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10" />
-          <div className="absolute inset-0">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="absolute h-px w-full bg-gradient-to-r from-transparent via-violet-500/10 to-transparent"
-                style={{ top: `${(i + 1) * 16.666}%` }}
-              />
-            ))}
-          </div>
-        </div>
-
+  
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -754,32 +704,6 @@ export default function LandingPage() {
                 </motion.div>
               </div>
             </div>
-
-            {/* Decorative Elements
-            <motion.div
-              className="absolute -top-12 -left-12 size-24 rounded-full bg-violet-500/30 blur-2xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            />
-            <motion.div
-              className="absolute -bottom-12 -right-12 size-32 rounded-full bg-blue-500/30 blur-2xl"
-              animate={{
-                scale: [1.2, 1, 1.2],
-                opacity: [0.2, 0.4, 0.2],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            /> */}
           </motion.div>
         </div>
       </section>

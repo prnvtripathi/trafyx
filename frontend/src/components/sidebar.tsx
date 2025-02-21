@@ -46,6 +46,7 @@ import { ModeToggle } from "./theme-button";
 import SpinningLogo from "./effects/spinningLogo";
 import { GearIcon } from "@radix-ui/react-icons";
 import { PageRoutes } from "@/lib/pageroutes";
+import { Badge } from "./ui/badge";
 // import ThemeToggle from "./ui/theme-toggle";
 
 type ApiData = {
@@ -122,11 +123,36 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                   <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent >
-                  asdjlsakhkjhjkhj
+                <CollapsibleContent>
+                <SidebarGroupContent>
+                  {apiData.map((api) => (
+                  <SidebarMenuItem key={api.id} className="pr-2">
+                    <SidebarMenuButton
+                    tooltip={api.name}
+                    isActive={pathname.includes(api.url)}
+                    asChild
+                    className="flex items-center"
+                    >
+                    <Link href={api.url} className="text-sm flex items-center justify-between w-full">
+                      {/* <GitGraphIcon className="h-4 w-4" /> */}
+                        <span>{api.name.length > 20 ? `${api.name.substring(0, 15)}...` : api.name}</span>
+                        <Badge variant='outline'>
+                        <span className={`${
+                          api.method.toUpperCase() === 'GET' ? 'text-green-500' :
+                          api.method.toUpperCase() === 'POST' ? 'text-blue-500' :
+                          api.method.toUpperCase() === 'PUT' ? 'text-yellow-500' :
+                          api.method.toUpperCase() === 'DELETE' ? 'text-red-500' :
+                          'text-xs'
+                        }`}>
+                          {api.method.toUpperCase()}
+                        </span>
+                      </Badge>
+                    </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  ))}
                 </SidebarGroupContent>
-              </CollapsibleContent>
+                </CollapsibleContent>
             </SidebarGroup>
           </Collapsible>
           </SidebarMenuItem>
@@ -147,6 +173,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+        <SidebarSeparator />
           <SidebarMenuItem>
             <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
               <SidebarMenuButton tooltip="View Documentation">

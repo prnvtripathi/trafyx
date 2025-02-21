@@ -8,8 +8,8 @@ import { GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Login | App",
-  description: "Login to your account to access the App",
+  title: "Login | Trafix",
+  description: "Login to your account to access the Trafix dashboard",
 };
 
 // This is the Login component
