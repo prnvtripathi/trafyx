@@ -35,6 +35,9 @@ import {
   ChevronRight,
   GitGraphIcon,
   ChevronDown,
+  PlusIcon,
+  PlusCircleIcon,
+  NotepadText,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,6 +53,7 @@ import { Badge } from "./ui/badge";
 // import ThemeToggle from "./ui/theme-toggle";
 
 type ApiData = {
+  updatedAt: string | number | Date;
   id: string;
   name: string;
   method: string;
@@ -98,21 +102,47 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
           <SidebarSeparator />
           <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
-              tooltip="Workspace"
-              isActive={pathname.includes("/dashboard/workspace")}
+              tooltip="Add new API"
+              isActive={pathname.includes("/dashboard/add")}
               asChild
               className="flex items-center"
             >
-              <Link href="/dashboard/workspace">
-                <BarChart2 className="h-4 w-4" />
-                <span>Workspace</span>
+              <Link href="/dashboard/add">
+                <PlusCircleIcon className="h-4 w-4" />
+                <span>Add new API</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-          <SidebarMenuItem>
+          <SidebarMenuItem className="pr-2">
+            <SidebarMenuButton
+              tooltip="View All APIs"
+              isActive={pathname.includes("/dashboard/all-apis")}
+              asChild
+              className="flex items-center"
+            >
+              <Link href="/dashboard/all-apis">
+                <BarChart2 className="h-4 w-4" />
+                <span>View All APIs</span>
+              </Link>
+            </SidebarMenuButton>{" "}
+          </SidebarMenuItem>
+          <SidebarMenuItem className="pr-2">
+            <SidebarMenuButton
+              tooltip="See Test Results"
+              isActive={pathname.includes("/dashboard/test-results")}
+              asChild
+              className="flex items-center"
+            >
+              <Link href="/dashboard/test-results">
+                <NotepadText className="h-4 w-4" />
+                <span>See Test Results</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>{" "}
+          <SidebarMenuItem className="pr-2">
             <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <SidebarGroupLabel asChild>
+              <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                <SidebarGroupLabel className="group/label" asChild>
                   <CollapsibleTrigger>
                     <>
                       <GitGraphIcon className="h-4 w-4" />
@@ -123,45 +153,47 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                 </SidebarGroupLabel>
                 <CollapsibleContent>
                   <SidebarGroupContent>
-                    {apiData.map((api) => (
+                    {apiData
+                      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                      .slice(0, 8)
+                      .map((api) => (
                       <SidebarMenuItem key={api.id} className="pr-2">
-                        <SidebarMenuButton
-                          tooltip={api.name}
-                          isActive={pathname.includes(api.url)}
-                          asChild
-                          className="flex items-center"
+                      <SidebarMenuButton
+                      tooltip={api.name}
+                      isActive={pathname.includes(api.url)}
+                      asChild
+                      className="flex items-center"
+                      >
+                      <Link
+                        href={`/dashboard/all-apis/${api.id}`}
+                        className="text-sm flex items-center justify-between w-full"
+                      >
+                        <span>
+                        {api.name.length > 20
+                        ? `${api.name.substring(0, 15)}...`
+                        : api.name}
+                        </span>
+                        <Badge variant="outline">
+                        <span
+                        className={`${
+                        api.method.toUpperCase() === "GET"
+                          ? "text-green-500"
+                          : api.method.toUpperCase() === "POST"
+                          ? "text-blue-500"
+                          : api.method.toUpperCase() === "PUT"
+                          ? "text-yellow-500"
+                          : api.method.toUpperCase() === "DELETE"
+                          ? "text-red-500"
+                          : "text-xs"
+                        }`}
                         >
-                          <Link
-                            href={`/dashboard/all-apis/${api.id}`}
-                            className="text-sm flex items-center justify-between w-full"
-                          >
-                            {/* <GitGraphIcon className="h-4 w-4" /> */}
-                            <span>
-                              {api.name.length > 20
-                                ? `${api.name.substring(0, 15)}...`
-                                : api.name}
-                            </span>
-                            <Badge variant="outline">
-                              <span
-                                className={`${
-                                  api.method.toUpperCase() === "GET"
-                                    ? "text-green-500"
-                                    : api.method.toUpperCase() === "POST"
-                                    ? "text-blue-500"
-                                    : api.method.toUpperCase() === "PUT"
-                                    ? "text-yellow-500"
-                                    : api.method.toUpperCase() === "DELETE"
-                                    ? "text-red-500"
-                                    : "text-xs"
-                                }`}
-                              >
-                                {api.method.toUpperCase()}
-                              </span>
-                            </Badge>
-                          </Link>
-                        </SidebarMenuButton>
+                        {api.method.toUpperCase()}
+                        </span>
+                        </Badge>
+                      </Link>
+                      </SidebarMenuButton>
                       </SidebarMenuItem>
-                    ))}
+                      ))}
                   </SidebarGroupContent>
                 </CollapsibleContent>
               </SidebarGroup>
@@ -194,7 +226,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </SidebarMenuButton>
             </Link>{" "}
           </SidebarMenuItem>
-          <SidebarMenuItem className="pr-2">
+          <SidebarMenuItem className="pr-0">
             <SidebarMenuButton
               tooltip="Settings"
               isActive={pathname.includes("/dashboard/settings")}
