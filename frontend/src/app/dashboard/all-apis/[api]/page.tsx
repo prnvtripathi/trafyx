@@ -1,4 +1,6 @@
 import { BackgroundStyle } from "@/components/effects/background-style";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { auth } from "@/auth";
 import {
   Card,
@@ -38,6 +40,42 @@ async function getApi(apiId: string) {
 
 // Page component
 export default async function Page({ params }: { params: { api: string } }) {
+  const formatJSON = (data: any) => {
+    try {
+      const parsed = typeof data === 'string' ? parseJSON(data) : data;
+      return JSON.stringify(parsed, null, 2);
+    } catch (error) {
+      return 'Invalid JSON';
+    }
+  };
+
+  const CodeBlock = ({ title, content }: { title: string; content: string }) => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <p className="font-medium text-slate-200">{title}</p>
+        <Badge variant="outline" className="text-xs">
+          JSON
+        </Badge>
+      </div>
+      <div className="bg-muted/50 rounded-lg overflow-hidden shadow-lg">
+        <SyntaxHighlighter 
+          language="json" 
+          style={vscDarkPlus}
+          customStyle={{
+            margin: 0,
+            padding: '1.25rem',
+            fontSize: '0.875rem',
+            backgroundColor: 'transparent',
+            borderRadius: '0.5rem',
+          }}
+          wrapLongLines={true}
+        >
+          {content}
+        </SyntaxHighlighter>
+      </div>
+    </div>
+  );
+
   const apiId = params.api;
 
   // Authenticate the user and get the session
@@ -68,16 +106,7 @@ export default async function Page({ params }: { params: { api: string } }) {
             )}
             <div className="flex space-x-2">
               {/* Tooltip for Edit Button */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <EditIcon />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-gray-600 dark:bg-gray-900">
-                  <p>Edit API</p>
-                </TooltipContent>
-              </Tooltip>
+             
 
               {/* Tooltip for Delete Button */}
               <Tooltip>
@@ -116,19 +145,15 @@ export default async function Page({ params }: { params: { api: string } }) {
                 </p>
               </div>
               <Separator />
-              <div>
-                <h3 className="font-semibold">Headers</h3>
-                <pre className="text-xs md:text-sm rounded-md overflow-x-auto max-w-full">
-                  {JSON.stringify(headers, null, 2)}
-                </pre>
-              </div>
-              <Separator />
-              <div>
-                <h3 className="font-semibold">Payload</h3>
-                <pre className="text-xs md:text-sm rounded-md overflow-x-auto max-w-full">
-                  {JSON.stringify(payload, null, 2)}
-                </pre>
-              </div>
+                <CodeBlock 
+                title="Headers"
+                content={formatJSON(headers)}
+              />
+
+              <CodeBlock 
+                title="Payload"
+                content={payload === null ? "N/A" : formatJSON(payload)}
+              />
               <Separator />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
