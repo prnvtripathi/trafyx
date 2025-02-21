@@ -5,6 +5,7 @@ import { TechnologyCard } from "@/components/ui/technology-cards";
 import { motion } from "framer-motion";
 import { DeveloperNote } from "./experience";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 const technologies = [
   {
@@ -143,6 +144,24 @@ const technologies = [
       "Markdown processor powered by plugins part of the unified collective.",
     link: "https://remark.js.org/",
   },
+  {
+    name: "bcrypt",
+    description:
+      "A library to help you hash passwords.",
+    link: "https://github.com/kelektiv/node.bcrypt.js",
+  },
+  {
+    name: "@tanstack/table-core",
+    description:
+      "Headless UI for building powerful tables & datagrids.",
+    link: "https://tanstack.com/table/v8",
+  },
+  {
+    name: "tsparticles",
+    description:
+      "A lightweight library for creating particles animations.",
+    link: "https://particles.js.org/",
+  }
 ];
 
 const developers = [
@@ -152,7 +171,7 @@ const developers = [
     quote:
       "Integrating Kestra with our API testing workflow was a game-changer. It allowed us to automate complex testing scenarios with ease.",
     experience:
-      "Working on Trafix during HackFrost 2024 was an incredible experience. Kestra's flexibility allowed us to create dynamic, event-driven workflows that significantly improved our API testing process. The integration between Kestra and our existing tech stack was seamless, enabling us to build a robust, scalable solution in a short amount of time.",
+      "Working on Trafix during Codeक्षेत्र was an incredible experience. Kestra's flexibility allowed us to create dynamic, event-driven workflows that significantly improved our API testing process. The integration between Kestra and our existing tech stack was seamless, enabling us to build a robust, scalable solution in a short amount of time.",
   },
   {
     name: "Pranav Tripathi",
@@ -162,14 +181,14 @@ const developers = [
     experience:
       "Developing the backend for Trafix was a thrilling challenge. Leveraging Kestra's powerful orchestration capabilities, we were able to design and implement sophisticated testing workflows that could adapt to various API structures. The platform's support for multiple programming languages also allowed us to integrate seamlessly with our existing Node.js scripts.",
   },
-  {
-    name: "Anshum Shukla",
-    role: "Documentation Specialist",
-    quote:
-      "Creating comprehensive and clear documentation was crucial for our project's success, and Kestra's intuitive design made it straightforward.",
-    experience:
-      "As the Documentation Specialist for Trafix, my focus was on ensuring that our documentation was thorough and user-friendly. Kestra's well-documented features and straightforward configuration options made it easy to convey complex concepts clearly. The ability to automate parts of the documentation process also saved us valuable time, allowing us to focus on delivering high-quality content.",
-  },
+  // {
+  //   name: "Anshum Shukla",
+  //   role: "Documentation Specialist",
+  //   quote:
+  //     "Creating comprehensive and clear documentation was crucial for our project's success, and Kestra's intuitive design made it straightforward.",
+  //   experience:
+  //     "As the Documentation Specialist for Trafix, my focus was on ensuring that our documentation was thorough and user-friendly. Kestra's well-documented features and straightforward configuration options made it easy to convey complex concepts clearly. The ability to automate parts of the documentation process also saved us valuable time, allowing us to focus on delivering high-quality content.",
+  // },
 ];
 
 export default function AboutPageContent() {
@@ -177,19 +196,19 @@ export default function AboutPageContent() {
     <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white relative overflow-hidden">
       <BackgroundStyle />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-14">
-        {/* HackFrost 2024 Banner */}
+        {/* Codeक्षेत्र Banner */}
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="rounded bg-gradient-to-r from-blue-600 to-violet-600 text-white py-4 px-4 sm:px-6 lg:px-8 text-center"
+          className="rounded text-white py-4 px-4 sm:px-6 lg:px-8 text-center"
         >
           <h2 className="text-2xl font-bold mb-1">
-            Made during HackFrost 2024 by WeMakeDevs
+            Made during Codeक्षेत्र 2.0
           </h2>
-          <p className="text-lg">
-            Trafix: Revolutionizing API Testing, One Hack at a Time
-          </p>
+          <Badge  className="text-lg">
+           By team Serendipity
+          </Badge>
         </motion.div>
 
         <motion.div
