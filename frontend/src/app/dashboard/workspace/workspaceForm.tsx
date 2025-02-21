@@ -33,14 +33,34 @@ import {
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(100, "Name must be less than 100 characters"),
   method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
   url: z.string().url("Invalid URL"),
-  headers: z.string(),
-  payload: z.string(),
-  description: z.string(),
+  headers: z.string().refine((val) => {
+    try {
+      JSON.parse(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }, "Headers must be a valid JSON object"),
+  payload: z.string().refine((val) => {
+    try {
+      JSON.parse(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }, "Payload must be a valid JSON object"),
+  description: z
+    .string()
+    .max(500, "Description must be less than 500 characters"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -91,11 +111,12 @@ export function ApiRequestForm() {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto my-4">
       <CardHeader>
         <CardTitle>API Request Form</CardTitle>
         <CardDescription>Enter your API request details below.</CardDescription>
       </CardHeader>
+      <Separator className="w-11/12 mx-auto"/>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -111,12 +132,11 @@ export function ApiRequestForm() {
                   <FormControl>
                     <Input placeholder="Enter request name" {...field} />
                   </FormControl>
-                 
                   <FormMessage />
                 </FormItem>
               )}
             />
-              <FormField
+            <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -124,19 +144,18 @@ export function ApiRequestForm() {
                   <FormLabel>Description</FormLabel>
                   <FormDescription>
                     A brief description of what this API request does.
-                  </FormDescription> <FormControl>
-               
+                  </FormDescription>
+                  <FormControl>
                     <Textarea
                       placeholder="Describe the purpose of this API request"
                       {...field}
                     />
                   </FormControl>
-              
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+             <FormLabel>Method and Endpoint</FormLabel>
             <FormDescription>
               Select the HTTP method and enter the full URL of your API
               endpoint.
@@ -156,12 +175,20 @@ export function ApiRequestForm() {
                           <SelectValue placeholder="Method" />
                         </SelectTrigger>
                       </FormControl>
-                        <SelectContent>
-                        <SelectItem value="GET" className="text-green-600">GET</SelectItem>
-                        <SelectItem value="POST" className="text-blue-600">POST</SelectItem>
-                        <SelectItem value="PUT" className="text-yellow-600">PUT</SelectItem>
-                        <SelectItem value="DELETE" className="text-red-600">DELETE</SelectItem>
-                        </SelectContent>
+                      <SelectContent>
+                        <SelectItem value="GET" className="text-green-600">
+                          GET
+                        </SelectItem>
+                        <SelectItem value="POST" className="text-blue-600">
+                          POST
+                        </SelectItem>
+                        <SelectItem value="PUT" className="text-yellow-600">
+                          PUT
+                        </SelectItem>
+                        <SelectItem value="DELETE" className="text-red-600">
+                          DELETE
+                        </SelectItem>
+                      </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -183,13 +210,15 @@ export function ApiRequestForm() {
                 )}
               />
             </div>
-        
             <FormField
               control={form.control}
               name="headers"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Headers</FormLabel>
+                  <FormDescription>
+                    Enter headers as a JSON object.
+                  </FormDescription>
                   <FormControl>
                     <Textarea
                       placeholder='{"Content-Type": "application/json"}'
@@ -197,9 +226,7 @@ export function ApiRequestForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter headers as a JSON object.
-                  </FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -210,6 +237,9 @@ export function ApiRequestForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Payload</FormLabel>
+                  <FormDescription>
+                    Enter payload as a JSON object.
+                  </FormDescription>
                   <FormControl>
                     <Textarea
                       placeholder='{"key": "value"}'
@@ -217,14 +247,11 @@ export function ApiRequestForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter payload as a JSON object.
-                  </FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-          
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit Request"}
             </Button>

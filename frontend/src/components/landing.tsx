@@ -67,9 +67,9 @@ const codeExamples = [
     description:
       "Import your OpenAPI spec or connect your endpoints directly. Our platform automatically detects and configures your API structure.",
     code: `
-import apilex from 'apilex';
+import Trafix from 'Trafix';
 
-const myApi = apilex.connect({
+const myApi = Trafix.connect({
   specUrl: 'https://api.example.com/openapi.json',
   // or
   endpoints: [
@@ -577,7 +577,7 @@ export default function LandingPage() {
               variants={fadeIn}
               className="text-3xl md:text-4xl font-bold mb-4"
             >
-              How Apilex Works
+              How Trafix Works
             </motion.h2>
             <motion.p
               variants={fadeIn}
@@ -589,7 +589,7 @@ export default function LandingPage() {
         </div>
 
         <div className="space-y-24 mx-auto flex flex-col justify-center items-center">
-          {codeExamples.map((step, index) => (
+          {/* {codeExamples.map((step, index) => (
             <motion.div
               key={index}
               variants={fadeIn}
@@ -614,6 +614,38 @@ export default function LandingPage() {
               <div
                 className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}
               >
+                <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
+                  <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
+                    <div className="flex gap-1.5">
+                      <div className="size-3 rounded-full bg-red-500" />
+                      <div className="size-3 rounded-full bg-yellow-500" />
+                      <div className="size-3 rounded-full bg-green-500" />
+                    </div>
+                  </div>
+                  <CodeBlock language="javascript" code={step.code} />
+                </div>
+              </div>
+            </motion.div>
+          ))} */}
+          {codeExamples.map((step, index) => (
+            <motion.div
+              key={index}
+              variants={fadeIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-col md:flex-row items-center justify-center gap-8"
+            >
+              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-2" : ""}`}>
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg mx-5">
+                  <div className="text-violet-600 dark:text-violet-400 font-mono text-sm mb-2">
+                    {step.step}
+                  </div>
+                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+                </div>
+              </div>
+              <div className={`md:w-1/2 ${index % 2 === 1 ? "md:order-1" : ""}`}>
                 <div className="relative rounded-xl overflow-hidden backdrop-blur-sm bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-white/10 shadow-2xl w-full">
                   <div className="flex items-center gap-2 p-3 border-b border-gray-200/50 dark:border-white/10">
                     <div className="flex gap-1.5">
