@@ -7,7 +7,7 @@ interface TestCaseListProps {
 export function TestCaseList({ testResults }: TestCaseListProps) {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Test Cases</h3>
+     
       {testResults.map((result, index) => (
         <TestCaseItem
           key={index}

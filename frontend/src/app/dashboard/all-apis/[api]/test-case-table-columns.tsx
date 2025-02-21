@@ -8,22 +8,22 @@ export const columns = [
     accessorKey: "name",
     header: "Name",
   },
-  {
-    accessorKey: "method",
-    header: "Method",
-    cell: ({ row }: { row: { original: { method: string } } }) => {
-      return (
-        <Badge
-          variant={"outline"}
-          className={`text-blue-500 text-xs font-semibold rounded-full px-2 py-1 ${getMethodColor(
-            row.original.method.toLowerCase()
-          )}`}
-        >
-          {row.original.method}
-        </Badge>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "method",
+  //   header: "Method",
+  //   cell: ({ row }: { row: { original: { method: string } } }) => {
+  //     return (
+  //       <Badge
+  //         variant={"outline"}
+  //         className={`text-blue-500 text-xs font-semibold rounded-full px-2 py-1 ${getMethodColor(
+  //           row.original.method.toLowerCase()
+  //         )}`}
+  //       >
+  //         {row.original.method}
+  //       </Badge>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "url",
     header: "URL",
@@ -97,10 +97,23 @@ export const columns = [
   //         </ul>
   //       );
   //     },
-  //   },
   {
     accessorKey: "expected_outcome",
     header: "Expected Outcome",
+    cell: ({ row }: { row: { original: { expected_outcome: number } } }) => {
+      const outcome = row.original.expected_outcome;
+      let colorClass = "";
+
+      if (outcome >= 200 && outcome < 300) {
+        colorClass = "text-green-500";
+      } else if (outcome >= 400 && outcome < 500) {
+        colorClass = "text-yellow-500";
+      } else if (outcome >= 500) {
+        colorClass = "text-red-500";
+      }
+
+      return <span className={`font-semibold ${colorClass}`}>{outcome}</span>;
+    },
   },
   {
     accessorKey: "created_at",
