@@ -109,52 +109,63 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-  
-  <SidebarMenuItem>
-          <Collapsible className="group/collapsible">
-            <SidebarGroup>
-              <SidebarGroupLabel asChild>
-                <CollapsibleTrigger>
-              
+          <SidebarMenuItem>
+            <Collapsible className="group/collapsible">
+              <SidebarGroup>
+                <SidebarGroupLabel asChild>
+                  <CollapsibleTrigger>
                     <>
                       <GitGraphIcon className="h-4 w-4" />
                       <span>All APIs</span>
                     </>
-                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
+                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                  </CollapsibleTrigger>
+                </SidebarGroupLabel>
                 <CollapsibleContent>
-                <SidebarGroupContent>
-                  {apiData.map((api) => (
-                  <SidebarMenuItem key={api.id} className="pr-2">
-                    <SidebarMenuButton
-                    tooltip={api.name}
-                    isActive={pathname.includes(api.url)}
-                    asChild
-                    className="flex items-center"
-                    >
-                    <Link href={api.url} className="text-sm flex items-center justify-between w-full">
-                      {/* <GitGraphIcon className="h-4 w-4" /> */}
-                        <span>{api.name.length > 20 ? `${api.name.substring(0, 15)}...` : api.name}</span>
-                        <Badge variant='outline'>
-                        <span className={`${
-                          api.method.toUpperCase() === 'GET' ? 'text-green-500' :
-                          api.method.toUpperCase() === 'POST' ? 'text-blue-500' :
-                          api.method.toUpperCase() === 'PUT' ? 'text-yellow-500' :
-                          api.method.toUpperCase() === 'DELETE' ? 'text-red-500' :
-                          'text-xs'
-                        }`}>
-                          {api.method.toUpperCase()}
-                        </span>
-                      </Badge>
-                    </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  ))}
-                </SidebarGroupContent>
+                  <SidebarGroupContent>
+                    {apiData.map((api) => (
+                      <SidebarMenuItem key={api.id} className="pr-2">
+                        <SidebarMenuButton
+                          tooltip={api.name}
+                          isActive={pathname.includes(api.url)}
+                          asChild
+                          className="flex items-center"
+                        >
+                          <Link
+                            href={`/dashboard/all-apis/${api.id}`}
+                            className="text-sm flex items-center justify-between w-full"
+                          >
+                            {/* <GitGraphIcon className="h-4 w-4" /> */}
+                            <span>
+                              {api.name.length > 20
+                                ? `${api.name.substring(0, 15)}...`
+                                : api.name}
+                            </span>
+                            <Badge variant="outline">
+                              <span
+                                className={`${
+                                  api.method.toUpperCase() === "GET"
+                                    ? "text-green-500"
+                                    : api.method.toUpperCase() === "POST"
+                                    ? "text-blue-500"
+                                    : api.method.toUpperCase() === "PUT"
+                                    ? "text-yellow-500"
+                                    : api.method.toUpperCase() === "DELETE"
+                                    ? "text-red-500"
+                                    : "text-xs"
+                                }`}
+                              >
+                                {api.method.toUpperCase()}
+                              </span>
+                            </Badge>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarGroupContent>
                 </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
+              </SidebarGroup>
+            </Collapsible>
           </SidebarMenuItem>
           {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
@@ -173,7 +184,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-        <SidebarSeparator />
+          <SidebarSeparator />
           <SidebarMenuItem>
             <Link href={`/docs${PageRoutes[0].href}`} target="_blank">
               <SidebarMenuButton tooltip="View Documentation">

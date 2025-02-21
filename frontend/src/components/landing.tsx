@@ -135,50 +135,63 @@ const GridLines = () => {
 
 // Stats Component
 const Stats = () => (
-<div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-  <div className="mx-auto max-w-3xl text-center">
-    <h2 className="text-3xl font-bold text-gray-100 sm:text-4xl">Trusted by Developers Worldwide</h2>
+  <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div className="mx-auto max-w-3xl text-center">
+      <h2 className="text-3xl font-bold text-gray-100 sm:text-4xl">
+        Trusted by Developers Worldwide
+      </h2>
 
-    <p className="mt-4 text-gray-500 sm:text-xl">
-      Join thousands of developers who rely on our platform for seamless API testing and monitoring.
-    </p>
+      <p className="mt-4 text-gray-500 sm:text-xl">
+        Join thousands of developers who rely on our platform for seamless API
+        testing and monitoring.
+      </p>
+    </div>
+
+    <dl className="mt-6 grid grid-cols-1 gap-4 divide-y divide-gray-100 sm:mt-8 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+      <div className="flex flex-col px-4 py-8 text-center">
+        <dt className="order-last text-lg font-medium text-gray-500">
+          APIs Monitored
+        </dt>
+        <dd className="text-4xl font-extrabold text-primary md:text-5xl">
+          1.2k
+        </dd>
+      </div>
+
+      <div className="flex flex-col px-4 py-8 text-center">
+        <dt className="order-last text-lg font-medium text-gray-500">
+          Tests Generated
+        </dt>
+        <dd className="text-4xl font-extrabold text-primary md:text-5xl">
+          15k
+        </dd>
+      </div>
+
+      <div className="flex flex-col px-4 py-8 text-center">
+        <dt className="order-last text-lg font-medium text-gray-500">
+          Alerts Sent
+        </dt>
+        <dd className="text-4xl font-extrabold text-primary md:text-5xl">
+          3.5k
+        </dd>
+      </div>
+
+      <div className="flex flex-col px-4 py-8 text-center">
+        <dt className="order-last text-lg font-medium text-gray-500">
+          Active Users
+        </dt>
+        <dd className="text-4xl font-extrabold text-primary md:text-5xl">
+          8.6k
+        </dd>
+      </div>
+    </dl>
   </div>
-
-  <dl
-    className="mt-6 grid grid-cols-1 gap-4 divide-y divide-gray-100 sm:mt-8 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4"
-  >
-    <div className="flex flex-col px-4 py-8 text-center">
-      <dt className="order-last text-lg font-medium text-gray-500">APIs Monitored</dt>
-      <dd className="text-4xl font-extrabold text-primary md:text-5xl">1.2k</dd>
-    </div>
-
-    <div className="flex flex-col px-4 py-8 text-center">
-      <dt className="order-last text-lg font-medium text-gray-500">Tests Generated</dt>
-      <dd className="text-4xl font-extrabold text-primary md:text-5xl">15k</dd>
-    </div>
-
-    <div className="flex flex-col px-4 py-8 text-center">
-      <dt className="order-last text-lg font-medium text-gray-500">Alerts Sent</dt>
-      <dd className="text-4xl font-extrabold text-primary md:text-5xl">3.5k</dd>
-    </div>
-
-    <div className="flex flex-col px-4 py-8 text-center">
-      <dt className="order-last text-lg font-medium text-gray-500">Active Users</dt>
-      <dd className="text-4xl font-extrabold text-primary md:text-5xl">8.6k</dd>
-    </div>
-  </dl>
-</div>
 );
 
-
 export default function LandingPage() {
-
   return (
     <div
       className={`min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300 ${inter.className}`}
     >
-  
-
       <GridLines />
 
       {/* Floating Particles */}
@@ -262,9 +275,9 @@ export default function LandingPage() {
               variants={fadeIn}
               className="text-4xl md:text-6xl font-bold tracking-tight"
             >
-              Automated API Testing
-              <span className="block">
-                <Cover>Made Simple</Cover>
+              Effortless API Testing
+              <span className="block mt-4">
+              <Cover>Automated & Simplified</Cover>
               </span>
             </motion.h1>
 
@@ -385,7 +398,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="py-24 relative overflow-hidden bg-gray-100/50 dark:bg-black/50">
         {/* Static Grid with Lines */}
-  
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -471,22 +484,22 @@ export default function LandingPage() {
           <IntegrationLogos />
         </div>
         {/* <WavePattern /> */}
-        <div className="absolute bottom-0 w-full rotate-180">
-          <svg
-            className="w-full"
-            viewBox="0 0 1440 116"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <motion.path
-              d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z"
-              className="fill-gray-100 dark:fill-gray-900/50"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-            />
-          </svg>
-        </div>
+      <div className="absolute bottom-0 w-full rotate-180">
+        <svg
+          className="w-full"
+          viewBox="0 0 1440 116"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.path
+            d="M0 116L60 96.3C120 77 240 37 360 21.7C480 6 600 16 720 31.3C840 47 960 67 1080 72.7C1200 78 1320 68 1380 62.3L1440 57V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V116Z"
+            className="fill-gray-100 dark:fill-gray-900/50"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 2, ease: "easeInOut" }}
+          />
+        </svg>
+      </div>
       {/* </section>  */}
 
       {/* How it Works Section */}
