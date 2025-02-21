@@ -16,11 +16,12 @@ export default async function Layout({
     const response = await fetchUserApis();
 
     const formattedData = response.map(
-      (api: { ID: string; Name: string; Method: string; URL: string }) => ({
+      (api: { ID: string; Name: string; Method: string; URL: string, UpdatedAt: string }) => ({
         id: api.ID,
         name: api.Name,
         method: api.Method,
         url: api.URL,
+        updated_at: api.UpdatedAt,
       })
     );
 
