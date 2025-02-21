@@ -5,11 +5,33 @@ import { AppSidebar } from "@/components/sidebar";
 import Header from "@/components/ui/header";
 import Footer from "@/components/ui/footer";
 import { BackgroundStyle } from "@/components/effects/background-style";
+import { fetchUserApis } from "@/lib/data";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  async function getData() {
+    const response = await fetchUserApis();
+
+    const formattedData = response.map(
+      (api: { ID: string; Name: string; Method: string; URL: string }) => ({
+        id: api.ID,
+        name: api.Name,
+        method: api.Method,
+        url: api.URL,
+      })
+    );
+
+    return formattedData;
+  }
+
+  const apiData = await getData();
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar apiData={apiData} />
 
       <main className="md:flex-1 space-y-2 overflow-hidden relative z-0">
         {/* <BackgroundStyle/> */}

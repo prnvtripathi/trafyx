@@ -37,7 +37,14 @@ import { GearIcon } from "@radix-ui/react-icons";
 import { PageRoutes } from "@/lib/pageroutes";
 // import ThemeToggle from "./ui/theme-toggle";
 
-export function AppSidebar() {
+type ApiData = {
+  id: string;
+  name: string;
+  method: string;
+  url: string;
+};
+
+export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
