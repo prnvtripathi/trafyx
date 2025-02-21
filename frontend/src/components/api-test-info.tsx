@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,8 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { TestCaseList } from "./test-case-list";
-import { formatDate } from "@/lib/helpers";
 
 interface ApiTestInfoProps {
   apiInfo: {
@@ -18,10 +19,21 @@ interface ApiTestInfoProps {
 }
 
 export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
+  const [filter, setFilter] = useState<"all" | "passed" | "failed">("all");
+
   const passedTests = apiInfo.test_results.filter(
     (result) => result.test_results_data.test_result
-  ).length;
-  const failedTests = apiInfo.test_results.length - passedTests;
+  );
+  const failedTests = apiInfo.test_results.filter(
+    (result) => !result.test_results_data.test_result
+  );
+
+  const filteredResults =
+    filter === "passed"
+      ? passedTests
+      : filter === "failed"
+      ? failedTests
+      : apiInfo.test_results;
 
   return (
     <div className="container mx-auto p-4">
@@ -31,12 +43,12 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
             <span>API Test Results</span>
             <Badge
               variant={
-                passedTests === apiInfo.test_results.length
+                passedTests.length === apiInfo.test_results.length
                   ? "default"
                   : "destructive"
               }
             >
-              {passedTests}/{apiInfo.test_results.length} Passed
+              {passedTests.length}/{apiInfo.test_results.length} Passed
             </Badge>
           </CardTitle>
           <CardDescription>
@@ -49,15 +61,37 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
               <div>
                 <h3 className="font-semibold">Passed Tests</h3>
                 <p className="text-2xl font-bold text-green-600">
-                  {passedTests}
+                  {passedTests.length}
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold">Failed Tests</h3>
-                <p className="text-2xl font-bold text-red-600">{failedTests}</p>
+                <p className="text-2xl font-bold text-red-600">
+                  {failedTests.length}
+                </p>
               </div>
             </div>
-            <TestCaseList testResults={apiInfo.test_results} />
+            <div className="flex space-x-2">
+              <Button
+                onClick={() => setFilter("all")}
+                variant={filter === "all" ? "default" : "outline"}
+              >
+                All
+              </Button>
+              <Button
+                onClick={() => setFilter("passed")}
+                variant={filter === "passed" ? "default" : "outline"}
+              >
+                Passed
+              </Button>
+              <Button
+                onClick={() => setFilter("failed")}
+                variant={filter === "failed" ? "default" : "outline"}
+              >
+                Failed
+              </Button>
+            </div>
+            <TestCaseList testResults={filteredResults} />
           </div>
         </CardContent>
       </Card>
