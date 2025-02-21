@@ -1,0 +1,108 @@
+id: execute_api_tests
+namespace: apilux
+tasks:
+  - id: fetch_test_cases
+    type: io.kestra.plugin.mongodb.Find
+    connection:
+      uri: "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net"
+    database: "apilux"
+    collection: "test_cases"
+    filter:
+      apiid:
+        $oid: "{{ inputs.api_id }}"
+
+  - id: log_fetch_test_cases
+    type: io.kestra.plugin.core.log.Log
+    level: INFO
+    message: "{{ outputs.fetch_test_cases.rows | json }}"
+
+  - id: execute_test_cases
+    type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      test_cases.json: "{{ outputs.fetch_test_cases.rows | json }}"
+    outputFiles:
+      - "results.json"
+    script: |
+      import json
+      import requests
+      import time
+
+      # Load test cases from the input file
+      with open('test_cases.json', 'r') as f:
+          raw_test_cases = json.load(f)
+
+      # Ensure the input is a list
+      test_cases = raw_test_cases if isinstance(raw_test_cases, list) else [raw_test_cases]
+
+      results = []
+      for test_case in test_cases:
+          # Parse test case data
+          test_case_id = test_case.get("_id")
+          method = test_case.get("method")
+          url = test_case.get("url")
+          headers = json.loads(test_case.get("headers", "{}"))
+          payload = test_case.get("payload", "")
+          expected_outcome = test_case.get("expectedoutcome")
+
+          start_time = time.time()
+          try:
+              # Execute the API request
+              response = requests.request(
+                  method=method,
+                  url=url,
+                  headers=headers,
+                  data=payload
+              )
+              duration = time.time() - start_time
+              results.append({
+                  "test_case_id": test_case_id,
+                  "status_code": response.status_code,
+                  "response": response.text,
+                  "expected_outcome": expected_outcome,
+                  "test_result": response.status_code == expected_outcome,
+                  "duration": duration,
+                  "executed_at": start_time
+              })
+          except Exception as e:
+              # Handle exceptions
+              duration = time.time() - start_time
+              results.append({
+                  "test_case_id": test_case_id,
+                  "status_code": 0,
+                  "response": str(e),
+                  "expected_outcome": expected_outcome,
+                  "test_result": False,
+                  "duration": duration,
+                  "executed_at": start_time
+              })
+
+      # Save results as a JSON file
+      with open("results.json", "w") as f:
+          json.dump(results, f, indent=4)
+
+  - id: log_test_results
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.execute_test_cases.outputFiles['results.json'] | json }}"
+
+  - id: send_results_to_backend
+    type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      results.json: "{{ outputs.execute_test_cases.outputFiles['results.json'] }}"
+    script: |
+      import json
+      import requests
+
+      # Load results from the input file
+      with open('results.json', 'r') as f:
+          results = json.load(f)
+
+      # Send results to the backend
+      response = requests.post(
+          url="http://host.docker.internal:5000/api/test-results",
+          json={"results": results},
+          headers={"Content-Type": "application/json"}
+      )
+
+inputs:
+  - id: api_id
+    type: STRING

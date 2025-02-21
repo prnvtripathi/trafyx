@@ -138,18 +138,69 @@ func runTestCases(testCases []models.TestCase) ([]models.TestResult, error) {
 	return results, nil
 }
 
-// function to save the results directly in the DB
+// Function to save the results directly in the DB with updated RunCount
 func saveResultsInDB(results []models.TestResult) (bool, error) {
 	collection := config.MongoDB.Collection("test_results")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	// Extract all TestCaseIDs from the results to query existing run counts
+	testCaseIDs := make([]primitive.ObjectID, len(results))
+	for i, result := range results {
+		testCaseIDs[i] = result.TestCaseID
+	}
+
+	// Pipeline to find the maximum RunCount for each TestCaseID
+	pipeline := bson.A{
+		bson.D{{"$match", bson.D{{"test_case_id", bson.D{{"$in", testCaseIDs}}}}}},
+		bson.D{{
+			"$group", bson.D{
+				{"_id", "$test_case_id"},
+				{"maxRunCount", bson.D{{"$max", "$run_count"}}},
+			},
+		}},
+	}
+
+	// Execute the aggregation to get max RunCounts
+	cursor, err := collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		return false, err
+	}
+	defer cursor.Close(ctx)
+
+	// Decode the aggregation results into a map
+	var maxRunCounts []struct {
+		ID          primitive.ObjectID `bson:"_id"`
+		MaxRunCount int                `bson:"maxRunCount"`
+	}
+	if err = cursor.All(ctx, &maxRunCounts); err != nil {
+		return false, err
+	}
+
+	// Create a map from TestCaseID to its max RunCount
+	maxRunCountMap := make(map[primitive.ObjectID]int)
+	for _, item := range maxRunCounts {
+		maxRunCountMap[item.ID] = item.MaxRunCount
+	}
+
+	// Update each TestResult's RunCount based on the max found
+	for i := range results {
+		testCaseID := results[i].TestCaseID
+		currentMax, exists := maxRunCountMap[testCaseID]
+		if !exists {
+			currentMax = 0 // If no previous runs, start at 1
+		}
+		results[i].RunCount = currentMax + 1
+	}
+
+	// Prepare documents for insertion
 	var insertDocs []interface{}
 	for _, result := range results {
 		insertDocs = append(insertDocs, result)
 	}
 
-	_, err := collection.InsertMany(ctx, insertDocs)
+	// Insert the updated results
+	_, err = collection.InsertMany(ctx, insertDocs)
 	if err != nil {
 		return false, err
 	}

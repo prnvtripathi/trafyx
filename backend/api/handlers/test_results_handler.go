@@ -46,23 +46,116 @@ func AddTestResults(c *gin.Context) {
 		}
 		executedAt := primitive.NewDateTimeFromTime(time.Unix(int64(executedAtFloat), 0))
 
-		// Parse other fields
+		// Safely convert remaining fields
+		statusCodeFloat, ok := rawResult["status_code"].(float64)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "status_code must be a number"})
+			return
+		}
+		response, ok := rawResult["response"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "response must be a string"})
+			return
+		}
+		expectedOutcomeFloat, ok := rawResult["expected_outcome"].(float64)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "expected_outcome must be a number"})
+			return
+		}
+		testResult, ok := rawResult["test_result"].(bool)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "test_result must be a bool"})
+			return
+		}
+		duration, ok := rawResult["duration"].(float64)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "duration must be a number"})
+			return
+		}
+
 		result := models.TestResult{
 			TestCaseID:      testCaseID,
-			StatusCode:      int(rawResult["status_code"].(float64)), // Convert float64 to int
-			Response:        rawResult["response"].(string),
-			ExpectedOutcome: int(rawResult["expected_outcome"].(float64)), // Convert float64 to int
-			TestResult:      rawResult["test_result"].(bool),
-			Duration:        rawResult["duration"].(float64),
+			StatusCode:      int(statusCodeFloat),
+			Response:        response,
+			ExpectedOutcome: int(expectedOutcomeFloat),
+			TestResult:      testResult,
+			Duration:        duration,
 			ExecutedAt:      executedAt,
 		}
 		results = append(results, result)
 	}
 
-	// Insert into MongoDB
+	// Calculate RunCount for each test case
 	collection := config.MongoDB.Collection("test_results")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	if collection == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to connect to database"})
+		return
+	}
+
+	// Get existing max RunCount values for the test cases in this batch
+	testCaseIDs := make([]primitive.ObjectID, len(results))
+	for i, res := range results {
+		testCaseIDs[i] = res.TestCaseID
+	}
+
+	// Create context for aggregation (note: we now capture the context in aggCtx)
+	aggCtx, aggCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer aggCancel()
+
+	// Build aggregation pipeline with properly structured stages
+	pipeline := bson.A{
+		bson.D{{"$match", bson.D{{"test_case_id", bson.D{{"$in", testCaseIDs}}}}}},
+		bson.D{{"$group", bson.D{
+			{"_id", "$test_case_id"},
+			{"maxRunCount", bson.D{{"$max", "$run_count"}}},
+		}}},
+	}
+
+	cursor, err := collection.Aggregate(aggCtx, pipeline)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer cursor.Close(aggCtx)
+
+	var maxCounts []struct {
+		ID  primitive.ObjectID `bson:"_id"`
+		Max int                `bson:"maxRunCount"`
+	}
+	if err = cursor.All(aggCtx, &maxCounts); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Create a map of max counts per test case
+	maxCountMap := make(map[primitive.ObjectID]int)
+	for _, item := range maxCounts {
+		maxCountMap[item.ID] = item.Max
+	}
+
+	// Calculate sequential RunCounts (including multiple runs in same batch)
+	currentCounts := make(map[primitive.ObjectID]int)
+	for testCaseID, max := range maxCountMap {
+		currentCounts[testCaseID] = max + 1
+	}
+
+	// Initialize counts for new test cases that have no previous run count
+	for _, res := range results {
+		if _, exists := currentCounts[res.TestCaseID]; !exists {
+			currentCounts[res.TestCaseID] = 1
+		}
+	}
+
+	// Assign RunCount values sequentially for each result in the batch
+	for i := range results {
+		testCaseID := results[i].TestCaseID
+		results[i].RunCount = currentCounts[testCaseID]
+		currentCounts[testCaseID]++
+	}
+
+	// Insert the test results into MongoDB
+	insertCtx, insertCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer insertCancel()
 
 	var docs []interface{}
 	for _, result := range results {
@@ -74,10 +167,11 @@ func AddTestResults(c *gin.Context) {
 			"test_result":      result.TestResult,
 			"duration":         result.Duration,
 			"executed_at":      result.ExecutedAt,
+			"run_count":        result.RunCount,
 		})
 	}
 
-	_, err := collection.InsertMany(ctx, docs)
+	_, err = collection.InsertMany(insertCtx, docs)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

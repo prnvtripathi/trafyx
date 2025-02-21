@@ -26,8 +26,11 @@ func RegisterRoutes(router *gin.Engine) {
 		// Endpoint for listing all test cases
 		api.GET("/test-cases", handlers.GetTestCasesByAPIID)
 
-		// Endpoint for running all test cases
-		api.GET("/test-cases/run", handlers.ExecuteTestCases)
+		// Endpoint for running all test cases using golang
+		api.GET("/test-cases/golang/run", handlers.ExecuteTestCases)
+
+		// Endpoint for running test cases using Kestra
+		api.GET("/test-cases/kestra/run", handlers.ExecuteAPITest)
 
 		// Endpoint for adding user API information
 		api.POST("/user-apis", handlers.AddUserAPI)

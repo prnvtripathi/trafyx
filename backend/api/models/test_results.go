@@ -13,4 +13,5 @@ type TestResult struct {
 	TestResult      bool               `json:"test_result" bson:"test_result"`
 	Duration        float64            `json:"duration" bson:"duration"`
 	ExecutedAt      primitive.DateTime `json:"executed_at,omitempty" bson:"executed_at,omitempty"`
+	RunCount        int                `json:"run_count" bson:"run_count"`
 }

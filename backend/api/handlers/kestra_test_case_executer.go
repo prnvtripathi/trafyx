@@ -1,16 +1,18 @@
-package services
+package handlers
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"mime/multipart"
 	"net/http"
 )
 
-func ExecuteAPITest(apiID string) error {
+func ExecuteAPITest(c *gin.Context) {
+	apiId := c.Query("api_id")
 	// Validate the input
-	if apiID == "" {
-		return fmt.Errorf("API ID cannot be empty")
+	if apiId == "" {
+		fmt.Println("API ID cannot be empty")
 	}
 
 	// Define the API endpoint
@@ -21,21 +23,21 @@ func ExecuteAPITest(apiID string) error {
 	writer := multipart.NewWriter(body)
 
 	// Add the form field for 'api_id'
-	err := writer.WriteField("api_id", apiID)
+	err := writer.WriteField("api_id", apiId)
 	if err != nil {
-		return fmt.Errorf("failed to write api_id field: %v", err)
+		fmt.Printf("failed to write api_id field: %v\n", err)
 	}
 
 	// Close the writer to finalize the multipart form data
 	err = writer.Close()
 	if err != nil {
-		return fmt.Errorf("failed to close writer: %v", err)
+		fmt.Printf("failed to close writer: %v", err)
 	}
 
 	// Create a new HTTP request
 	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
-		return fmt.Errorf("failed to create request: %v", err)
+		fmt.Printf("failed to create request: %v", err)
 	}
 
 	// Set the appropriate content type
@@ -45,15 +47,14 @@ func ExecuteAPITest(apiID string) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf("failed to send request: %v", err)
+		fmt.Printf("failed to send request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	// Log the response status
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected response status: %v", resp.Status)
+		fmt.Printf("unexpected response status: %v", resp.Status)
 	}
 
-	fmt.Println("API test executed successfully with status:", resp.Status)
-	return nil
+	fmt.Printf("API test executed successfully with status:", resp.Status)
 }
