@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { authenticate } from "@/lib/actions";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
+import { GithubIcon } from "lucide-react";
 
 const LoginForm = () => {
   const [state, formAction] = useFormState(authenticate, undefined);
@@ -23,12 +24,6 @@ const LoginForm = () => {
           </p>
         </div>
         <Card className="mx-auto max-w-sm">
-          {/* <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-              Enter your email below to login to your account
-            </CardDescription>
-          </CardHeader> */}
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="grid gap-2">
@@ -42,17 +37,6 @@ const LoginForm = () => {
                   required
                 />
               </div>
-              {/* <div className="grid gap-2">
-                {/* Label and input for company ID */}
-              {/* <Label htmlFor="companyid">Company ID</Label>
-                <Input
-                  id="companyid"
-                  name="companyid"
-                  type="text"
-                  placeholder="Company ID"
-                  required
-                />
-              </div> */}
               <div className="grid gap-2">
                 <div className="flex items-center">
                   {/* Label and input for password */}
@@ -71,10 +55,23 @@ const LoginForm = () => {
                 Login
               </Button>
             </div>
+
+            <div className="mt-4 text-center">
+          <p className="text-gray-500 dark:text-gray-400">Or sign up using</p>
+          <div className="flex justify-center space-x-4 mt-2">
+            {/* Github sign up button */}
+            <Button variant="outline" className="w-full">
+             <GithubIcon/> Github
+            </Button>
+            {/* Google sign up button */}
+            <Button variant="outline" className="w-full">
+              Google
+            </Button>
+          </div>
+        </div>
           </CardContent>
         </Card>
         {/* Display state if available */}
-
         <div className="hidden">{state && toast.error(state)}</div>
         <div className="mt-4 text-center text-sm">
           {/* Link to sign up page */}
@@ -83,6 +80,7 @@ const LoginForm = () => {
             Sign up
           </Link>
         </div>
+        
       </form>
     </div>
   );
