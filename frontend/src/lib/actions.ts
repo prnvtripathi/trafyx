@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { User } from "./models";
 import { connectToDB } from "./utils";
-import { redirect } from "next/navigation";
+import { redirect, permanentRedirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { toast } from "sonner";
 import { signIn, auth, signOut } from "@/auth";
