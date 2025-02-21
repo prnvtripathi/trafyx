@@ -3,29 +3,29 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
-            url: 'https://apilux.vercel.app',
+            url: 'https://trafix.vercel.app',
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 1,
         },
         {
-            url: 'https://apilux.vercel.app/about',
+            url: 'https://trafix.vercel.app/about',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         }, {
-            url: 'https://apilux.vercel.app/login',
+            url: 'https://trafix.vercel.app/login',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         }, {
-            url: 'https://apilux.vercel.app/signup',
+            url: 'https://trafix.vercel.app/signup',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: 'https://apilux.vercel.app/docs',
+            url: 'https://trafix.vercel.app/docs',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,

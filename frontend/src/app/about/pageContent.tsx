@@ -152,7 +152,7 @@ const developers = [
     quote:
       "Integrating Kestra with our API testing workflow was a game-changer. It allowed us to automate complex testing scenarios with ease.",
     experience:
-      "Working on Apilux during HackFrost 2024 was an incredible experience. Kestra's flexibility allowed us to create dynamic, event-driven workflows that significantly improved our API testing process. The integration between Kestra and our existing tech stack was seamless, enabling us to build a robust, scalable solution in a short amount of time.",
+      "Working on Trafix during HackFrost 2024 was an incredible experience. Kestra's flexibility allowed us to create dynamic, event-driven workflows that significantly improved our API testing process. The integration between Kestra and our existing tech stack was seamless, enabling us to build a robust, scalable solution in a short amount of time.",
   },
   {
     name: "Pranav Tripathi",
@@ -160,7 +160,7 @@ const developers = [
     quote:
       "Kestra's ability to handle complex data pipelines made our backend processes much more efficient and reliable.",
     experience:
-      "Developing the backend for Apilux was a thrilling challenge. Leveraging Kestra's powerful orchestration capabilities, we were able to design and implement sophisticated testing workflows that could adapt to various API structures. The platform's support for multiple programming languages also allowed us to integrate seamlessly with our existing Node.js scripts.",
+      "Developing the backend for Trafix was a thrilling challenge. Leveraging Kestra's powerful orchestration capabilities, we were able to design and implement sophisticated testing workflows that could adapt to various API structures. The platform's support for multiple programming languages also allowed us to integrate seamlessly with our existing Node.js scripts.",
   },
   {
     name: "Anshum Shukla",
@@ -168,7 +168,7 @@ const developers = [
     quote:
       "Creating comprehensive and clear documentation was crucial for our project's success, and Kestra's intuitive design made it straightforward.",
     experience:
-      "As the Documentation Specialist for Apilux, my focus was on ensuring that our documentation was thorough and user-friendly. Kestra's well-documented features and straightforward configuration options made it easy to convey complex concepts clearly. The ability to automate parts of the documentation process also saved us valuable time, allowing us to focus on delivering high-quality content.",
+      "As the Documentation Specialist for Trafix, my focus was on ensuring that our documentation was thorough and user-friendly. Kestra's well-documented features and straightforward configuration options made it easy to convey complex concepts clearly. The ability to automate parts of the documentation process also saved us valuable time, allowing us to focus on delivering high-quality content.",
   },
 ];
 
@@ -188,7 +188,7 @@ export default function AboutPageContent() {
             Made during HackFrost 2024 by WeMakeDevs
           </h2>
           <p className="text-lg">
-            Apilux: Revolutionizing API Testing, One Hack at a Time
+            Trafix: Revolutionizing API Testing, One Hack at a Time
           </p>
         </motion.div>
 
@@ -198,9 +198,9 @@ export default function AboutPageContent() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">About Apilux</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">About Trafix</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Apilux is built on a foundation of cutting-edge technologies,
+            Trafix is built on a foundation of cutting-edge technologies,
             enabling us to deliver a powerful and efficient API testing
             platform. Here&apos;s a look at the key technologies powering our
             solution:
@@ -229,7 +229,7 @@ export default function AboutPageContent() {
             Our Commitment to Innovation
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            By leveraging these powerful technologies, Apilux delivers a
+            By leveraging these powerful technologies, Trafix delivers a
             seamless, efficient, and feature-rich API testing experience. Our
             commitment to using the latest and most robust tools ensures that
             you have access to a cutting-edge platform that evolves with the

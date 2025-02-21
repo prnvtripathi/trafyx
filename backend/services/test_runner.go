@@ -14,7 +14,7 @@ func ExecuteAPITest(apiID string) error {
 	}
 
 	// Define the API endpoint
-	url := "http://localhost:8080/api/v1/executions/apilux/execute_api_tests"
+	url := "http://localhost:8080/api/v1/executions/trafix/execute_api_tests"
 
 	// Create a buffer to hold the multipart form data
 	body := &bytes.Buffer{}

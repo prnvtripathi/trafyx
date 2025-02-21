@@ -6,7 +6,7 @@ import { columns } from "./test-case-table-columns";
 
 // Metadata for the page
 export const metadata = {
-  title: "Test Cases | Apilux",
+  title: "Test Cases | Trafix",
 };
 
 // Type for the fetched data

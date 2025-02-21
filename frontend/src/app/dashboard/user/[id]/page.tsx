@@ -44,7 +44,7 @@ const profileSchema = z
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export const metadata = {
-  title: "Edit Profile | Apilux",
+  title: "Edit Profile | Trafix",
 };
 
 interface PageParams {

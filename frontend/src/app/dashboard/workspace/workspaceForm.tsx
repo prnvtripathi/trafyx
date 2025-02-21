@@ -105,16 +105,42 @@ export function ApiRequestForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter request name" {...field} />
-                  </FormControl>
                   <FormDescription>
                     A descriptive name for your API request.
                   </FormDescription>
+                  <FormControl>
+                    <Input placeholder="Enter request name" {...field} />
+                  </FormControl>
+                 
                   <FormMessage />
                 </FormItem>
               )}
             />
+              <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormDescription>
+                    A brief description of what this API request does.
+                  </FormDescription> <FormControl>
+               
+                    <Textarea
+                      placeholder="Describe the purpose of this API request"
+                      {...field}
+                    />
+                  </FormControl>
+              
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormDescription>
+              Select the HTTP method and enter the full URL of your API
+              endpoint.
+            </FormDescription>
             <div className="grid grid-cols-[auto_1fr] gap-2">
               <FormField
                 control={form.control}
@@ -130,12 +156,12 @@ export function ApiRequestForm() {
                           <SelectValue placeholder="Method" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="GET">GET</SelectItem>
-                        <SelectItem value="POST">POST</SelectItem>
-                        <SelectItem value="PUT">PUT</SelectItem>
-                        <SelectItem value="DELETE">DELETE</SelectItem>
-                      </SelectContent>
+                        <SelectContent>
+                        <SelectItem value="GET" className="text-green-600">GET</SelectItem>
+                        <SelectItem value="POST" className="text-blue-600">POST</SelectItem>
+                        <SelectItem value="PUT" className="text-yellow-600">PUT</SelectItem>
+                        <SelectItem value="DELETE" className="text-red-600">DELETE</SelectItem>
+                        </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -157,10 +183,7 @@ export function ApiRequestForm() {
                 )}
               />
             </div>
-            <FormDescription>
-              Select the HTTP method and enter the full URL of your API
-              endpoint.
-            </FormDescription>
+        
             <FormField
               control={form.control}
               name="headers"
@@ -201,25 +224,7 @@ export function ApiRequestForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe the purpose of this API request"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    A brief description of what this API request does.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit Request"}
             </Button>

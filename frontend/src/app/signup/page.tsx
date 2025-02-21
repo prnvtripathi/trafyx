@@ -12,8 +12,8 @@ import  Footer  from "@/components/ui/footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Sign Up | Apilux",
-  description: "Sign up to create an account on Apilux",
+  title: "Sign Up | Trafix",
+  description: "Sign up to create an account on Trafix",
 };
 
 // This is the main component for the sign-in page
@@ -29,7 +29,7 @@ export default function Signin() {
             <div className="bg-primary rounded-full shadow-xl text-white  p-1">
               <GearIcon className=" m-0 h-6 p-0 rounded-full w-full" />
             </div>{" "}
-            <h1 className="text-2xl font-bold">Apilux</h1>
+            <h1 className="text-2xl font-bold">Trafix</h1>
           </Link>
           <nav className="flex items-center space-x-3">
             <ModeToggle />

@@ -10,6 +10,9 @@ import {
   SidebarMenuButton,
   useSidebar,
   SidebarSeparator,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
@@ -31,6 +34,7 @@ import {
   ArrowUpRight,
   ChevronRight,
   GitGraphIcon,
+  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -82,7 +86,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                 transition={{ delay: 0.2 }}
                 className="text-2xl font-bold"
               >
-                Apilux
+                Trafix
               </motion.span>
             </AnimatePresence>
           )}
@@ -104,56 +108,27 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-          {/* <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="All APIs"
-              isActive={pathname.includes("/dashboard/all-apis")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/all-apis">
-                <LucideFileChartColumnIncreasing className="h-4 w-4" />
-                <span>All APIs</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem> */}
-          <SidebarMenuItem className="w-full flex pr-2">
-            <Collapsible className="w-full">
-              <CollapsibleTrigger className="flex w-full">
-          
-               <SidebarMenuButton
-              tooltip="Workspace"
-              isActive={pathname.includes("/dashboard/workspace")}
-              asChild
-              className="flex items-center w-full"
-            >
-                <>
-                <GitGraphIcon className="h-4 w-4" />
-                <span>All APIs</span>
-                <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" /> 
-               </>
-               </SidebarMenuButton>
-         
-           </CollapsibleTrigger>
+  
+  <SidebarMenuItem>
+          <Collapsible className="group/collapsible">
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger>
+              
+                    <>
+                      <GitGraphIcon className="h-4 w-4" />
+                      <span>All APIs</span>
+                    </>
+                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
               <CollapsibleContent>
-                <SidebarMenu>
-                  {/* {item.items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={item.isActive}>
-                        <a href={item.url}>{item.title}</a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))} */}
-                  <SidebarMenuItem>
-                    <Link href="/dashboard/all-apis">
-                      <SidebarMenuButton tooltip="All APIs">
-                        <span>All APIs</span>
-                      </SidebarMenuButton>
-                    </Link>
-                  </SidebarMenuItem>
-                </SidebarMenu>
+                <SidebarGroupContent >
+                  asdjlsakhkjhjkhj
+                </SidebarGroupContent>
               </CollapsibleContent>
-            </Collapsible>
+            </SidebarGroup>
+          </Collapsible>
           </SidebarMenuItem>
           {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton

@@ -584,7 +584,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Integration Logos Section */}
+      {/* Integration Logos Section
       <section className="relative py-24">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <IntegrationLogos />
@@ -606,7 +606,7 @@ export default function LandingPage() {
             />
           </svg>
         </div>
-      </section>
+      {/* </section>  */}
 
       {/* How it Works Section */}
       <section className="py-24 relative overflow-hidden bg-white dark:bg-gray-900/50">
@@ -707,7 +707,7 @@ export default function LandingPage() {
                   variants={fadeIn}
                   className="text-lg text-gray-600 dark:text-gray-200"
                 >
-                  Join thousands of developers who trust Apilux for their API
+                  Join thousands of developers who trust Trafix for their API
                   testing needs.
                 </motion.p>
                 <motion.ul
@@ -755,7 +755,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Decorative Elements */}
+            {/* Decorative Elements
             <motion.div
               className="absolute -top-12 -left-12 size-24 rounded-full bg-violet-500/30 blur-2xl"
               animate={{
@@ -779,7 +779,7 @@ export default function LandingPage() {
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
-            />
+            /> */}
           </motion.div>
         </div>
       </section>
