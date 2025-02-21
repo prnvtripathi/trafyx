@@ -12,22 +12,43 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  async function getData() {
-    const response = await fetchUserApis();
+  // async function getData() {
+  //   const response = await fetchUserApis();
 
-    const formattedData = response.map(
-      (api: { ID: string; Name: string; Method: string; URL: string }) => ({
-        id: api.ID,
-        name: api.Name,
-        method: api.Method,
-        url: api.URL,
-      })
-    );
+  //   const formattedData = response.map(
+  //     (api: { ID: string; Name: string; Method: string; URL: string }) => ({
+  //       id: api.ID,
+  //       name: api.Name,
+  //       method: api.Method,
+  //       url: api.URL,
+  //     })
+  //   );
 
-    return formattedData;
-  }
+  //   return formattedData;
+  // }
 
-  const apiData = await getData();
+  // const apiData = await getData();
+
+  const apiData = [
+    {
+      id: "1",
+      name: "Dashboard user demographics",
+      method: "GET",
+      url: "https://api.example.com/1",
+    },
+    {
+      id: "2",
+      name: "API 2",
+      method: "POST",
+      url: "https://api.example.com/2",
+    },
+    {
+      id: "3",
+      name: "API 3",
+      method: "PUT",
+      url: "https://api.example.com/3",
+    },
+  ];
 
   return (
     <SidebarProvider>
