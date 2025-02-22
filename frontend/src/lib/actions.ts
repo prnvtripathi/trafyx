@@ -42,7 +42,6 @@ export const updateUser = async (formData: any) => {
     throw new Error("Failed to update user!");
   }
 
-  console.log(id, "revalidate hogi");
   // Revalidate the users page and redirect
   revalidatePath(`/dashboard/`);
   redirect(`/dashboard/`);

@@ -1,9 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchUser } from "@/lib/data";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/auth";
 import ProfilePage from "../user/[id]/page";
@@ -22,14 +19,14 @@ interface PageParams {
 }
 
 export default async function SettingsPage(params: PageParams) {
-  console.log(params, "is the params");
+  // console.log(params, "is the params");
   const data = await auth();
-  console.log(data, "mil gaya");
+  // console.log(data, "mil gaya");
   const id = data?.user?.id;
-  console.log(id, "li hai maine");
+  // console.log(id, "li hai maine");
   // console.log(id, "is the id");
   const user = await fetchUser(id);
-  console.log(user, "is what we got");
+  // console.log(user, "is what we got");
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -75,19 +72,26 @@ export default async function SettingsPage(params: PageParams) {
                 <Card>
                   <CardContent>
                     <h1 className="font-semibold">Remove Stored API Data</h1>
-                    <p>By removing stored API data, you will clear all cached information related to your account.</p>
+                    <p>
+                      By removing stored API data, you will clear all cached
+                      information related to your account.
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent>
                     <div className="flex flex-row justify-between items-center">
                       <div>
-                        <h1 className="font-semibold">Remove Stored API Test Cases</h1>
+                        <h1 className="font-semibold">
+                          Remove Stored API Test Cases
+                        </h1>
                         <p>
-                        This will remove all generated test cases for the APIs stored within your account. Note that this will not delete the APIs themselves.
+                          This will remove all generated test cases for the APIs
+                          stored within your account. Note that this will not
+                          delete the APIs themselves.
                         </p>
                       </div>{" "}
-                      <DeleteDialog/>
+                      <DeleteDialog />
                     </div>{" "}
                   </CardContent>
                 </Card>
@@ -103,7 +107,7 @@ export default async function SettingsPage(params: PageParams) {
                           account, all your data will be permanently removed.
                         </p>
                       </div>{" "}
-                      <DeleteDialog/>
+                      <DeleteDialog />
                     </div>{" "}
                   </CardContent>
                 </Card>
