@@ -2,8 +2,20 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  LineChart,
+  Line,
+  CartesianGrid,
+  LabelList,
+} from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Loader from "./ui/loader";
@@ -149,34 +161,127 @@ export default function Stats({ userId }: { userId: string }) {
         {/* Charts Grid */}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Test Runs per API Chart */}
-          <motion.div
+            <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-          >
-            <Card className="hover:scale-[1.01] transition-transform">
+            >
+            <Card className=" transition-transform">
               <CardHeader>
-                <CardTitle>Test Runs per API</CardTitle>
+              <CardTitle>Test Runs per API</CardTitle>
+              </CardHeader>
+              <CardContent>
+              <ChartContainer className="h-[300px]" config={{}}>
+                <BarChart
+                data={stats.api_stats}
+                layout="vertical"
+                margin={{ right: 16 }}
+                >
+                <CartesianGrid horizontal={false} />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value) => value.slice(0, 3)}
+                  hide
+                />
+                <XAxis type="number" hide />
+                {/* <ChartTooltip /> */}  <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="test_runs_count"
+                  fill="#a78bfa"
+                  radius={4}
+                  layout="vertical"
+                >
+                  <LabelList
+                  dataKey="name"
+                  position="insideLeft"
+                  offset={8}
+                  className="fill-[--color-label]"
+                  fontSize={12}
+                  />
+                  <LabelList
+                  dataKey="test_runs_count"
+                  position="right"
+                  offset={8}
+                  className="fill-foreground"
+                  fontSize={12}
+                  />
+                </Bar>
+                </BarChart>
+              </ChartContainer>
+              </CardContent>
+            </Card>
+            </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <Card className=" transition-transform">
+              <CardHeader>
+                <CardTitle>Test Runs Over Time</CardTitle>
               </CardHeader>
               <CardContent>
                 <ChartContainer className="h-[300px]" config={{}}>
-                  <BarChart data={stats.api_stats}>
-                    <XAxis
-                      dataKey="name"
-                      angle={-45}
-                      textAnchor="end"
-                      interval={0}
-                      height={70}
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={stats.api_stats}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line
+                        type="monotone"
+                        dataKey="test_runs_count"
+                        stroke="#4f46e5"
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Pass/Fail Distribution Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Card className=" transition-transform">
+              <CardHeader>
+                <CardTitle>Overall Test Results</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer className="h-[300px]" config={{}}>
+                  <PieChart>
+                    <Pie
+                      data={[
+                        {
+                          name: "Passed",
+                          value: stats.passed_test_runs,
+                          fill: "#10b981",
+                        },
+                        {
+                          name: "Failed",
+                          value: stats.failed_test_runs,
+                          fill: "#ef4444",
+                        },
+                      ]}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label
                     />
-                    <YAxis />
-                    <ChartTooltip />
-                    <Bar
-                      dataKey="test_runs_count"
-                      fill="#4f46e5"
-                      radius={[4, 4, 0, 0]}
-                      name="Test Runs"
-                    />
-                  </BarChart>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
                 </ChartContainer>
               </CardContent>
             </Card>
@@ -188,7 +293,7 @@ export default function Stats({ userId }: { userId: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <Card className="hover:scale-[1.01] transition-transform">
+            <Card className=" transition-transform">
               <CardHeader>
                 <CardTitle>API Success Rates</CardTitle>
               </CardHeader>
@@ -203,47 +308,13 @@ export default function Stats({ userId }: { userId: string }) {
                       height={70}
                     />
                     <YAxis unit="%" />
-                    <ChartTooltip
-                      formatter={(value) =>
-                        `${
-                          typeof value === "number" ? value.toFixed(1) : value
-                        }%`
-                      }
-                    />
+                  <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar
                       dataKey="success_rate"
                       fill="#10b981"
                       radius={[4, 4, 0, 0]}
                       name="Success Rate"
                     />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Pass/Fail Distribution Chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <Card className="hover:scale-[1.01] transition-transform">
-              <CardHeader>
-                <CardTitle>Overall Test Results</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer className="h-[300px]" config={{}}>
-                  <BarChart
-                    data={[
-                      { name: "Passed", value: stats.passed_test_runs },
-                      { name: "Failed", value: stats.failed_test_runs },
-                    ]}
-                  >
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <ChartTooltip />
-                    <Bar dataKey="value" fill="#4f46e5" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ChartContainer>
               </CardContent>
