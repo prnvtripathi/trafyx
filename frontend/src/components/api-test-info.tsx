@@ -25,6 +25,7 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
   const [statusFilter, setStatusFilter] = useState<"all" | "passed" | "failed">(
     "all"
   );
+  // Default remains null, representing "All Runs"
   const [runCountFilter, setRunCountFilter] = useState<number | null>(null);
   const [uniqueRunCounts, setUniqueRunCounts] = useState<number[]>([]);
   const [filteredResults, setFilteredResults] = useState(apiInfo.test_results);
@@ -34,7 +35,7 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
     passRate: 0,
   });
 
-  // Extract unique run counts on component mount
+  // Extract unique run counts on component mount or when test_results change
   useEffect(() => {
     const runCounts = [
       ...new Set(
@@ -43,26 +44,39 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
         )
       ),
     ].sort((a, b) => a - b);
-
     setUniqueRunCounts(runCounts);
+  }, [apiInfo.test_results]);
 
-    // Set the first run count as default if available
-    if (runCounts.length > 0 && runCountFilter === null) {
-      setRunCountFilter(runCounts[0]);
-    }
-  }, [apiInfo.test_results, runCountFilter]);
+  // Compute run-only results based on runCountFilter (ignoring status filter)
+  const resultsByRun =
+    runCountFilter !== null
+      ? apiInfo.test_results.filter(
+          (result) => result.test_results_data.run_count === runCountFilter
+        )
+      : apiInfo.test_results;
 
-  // Update filtered results whenever filters change
+  // Compute overall stats solely based on resultsByRun
   useEffect(() => {
-    // First filter by run count if selected
-    let results = apiInfo.test_results;
-    if (runCountFilter !== null) {
-      results = results.filter(
-        (result) => result.test_results_data.run_count === runCountFilter
-      );
-    }
+    const passedTests = resultsByRun.filter(
+      (result) => result.test_results_data.test_result
+    );
+    const failedTests = resultsByRun.filter(
+      (result) => !result.test_results_data.test_result
+    );
+    const passRate =
+      resultsByRun.length > 0
+        ? (passedTests.length / resultsByRun.length) * 100
+        : 0;
+    setStats({
+      passed: passedTests.length,
+      failed: failedTests.length,
+      passRate,
+    });
+  }, [resultsByRun]);
 
-    // Then filter by status
+  // Compute filtered results for the test case list based on run and status filters
+  useEffect(() => {
+    let results = resultsByRun;
     if (statusFilter === "passed") {
       results = results.filter(
         (result) => result.test_results_data.test_result
@@ -72,25 +86,8 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
         (result) => !result.test_results_data.test_result
       );
     }
-
-    // Update stats for the current filtered set
-    const passedTests = results.filter(
-      (result) => result.test_results_data.test_result
-    );
-    const failedTests = results.filter(
-      (result) => !result.test_results_data.test_result
-    );
-    const passRate =
-      results.length > 0 ? (passedTests.length / results.length) * 100 : 0;
-
-    setStats({
-      passed: passedTests.length,
-      failed: failedTests.length,
-      passRate,
-    });
-
     setFilteredResults(results);
-  }, [statusFilter, runCountFilter, apiInfo.test_results]);
+  }, [statusFilter, resultsByRun]);
 
   const StatCard = ({
     title,
@@ -149,7 +146,7 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
                     : ""
                 }`}
               >
-                {stats.passed}/{stats.passed + stats.failed} Passed
+                {stats.passed}/{resultsByRun.length} Passed
               </Badge>
               <p className="text-xs md:text-sm text-slate-400">
                 Pass Rate: {stats.passRate.toFixed(1)}%
@@ -261,12 +258,12 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
                     className="ml-1 md:ml-2 text-xs px-1.5 py-0"
                   >
                     {option.key === "all"
-                      ? filteredResults.length
+                      ? resultsByRun.length
                       : option.key === "passed"
-                      ? filteredResults.filter(
+                      ? resultsByRun.filter(
                           (r) => r.test_results_data.test_result
                         ).length
-                      : filteredResults.filter(
+                      : resultsByRun.filter(
                           (r) => !r.test_results_data.test_result
                         ).length}
                   </Badge>

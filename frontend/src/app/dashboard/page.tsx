@@ -8,9 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {FormInputIcon, ViewIcon} from "lucide-react";
+import { FormInputIcon, ViewIcon } from "lucide-react";
 import { BackgroundStyle } from "@/components/effects/background-style";
 import Stats from "@/components/stats";
+import { auth } from "@/auth";
 
 type Props = {};
 
@@ -18,7 +19,7 @@ export default async function page({}: Props) {
   // Define the cards to be displayed on the dashboard
   // const cards = [
   //   {
-  //     link: "/dashboard/workspace",
+  //     link: "/dashboard/add",
   //     title: "Open New Workspace",
   //     description: "Write a new API within the workspace to generate test cases",
   //     icon: <FormInputIcon className="size-8 text-muted-foreground" />,
@@ -33,6 +34,10 @@ export default async function page({}: Props) {
 
   //   // Add more card objects as needed
   // ];
+
+  const session = await auth();
+  const user = session?.user;
+  const user_id = user?.id;
 
   return (
     <div className="space-y-4 min-h-screen">
@@ -55,7 +60,7 @@ export default async function page({}: Props) {
           </Link>
         ))}
       </div> */}
-      <Stats/>
+      {user_id && <Stats userId={user_id} />}
     </div>
   );
 }

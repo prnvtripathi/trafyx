@@ -1,5 +1,5 @@
 import { BackgroundStyle } from "@/components/effects/background-style";
-import { ApiRequestForm } from "../workspace/workspaceForm";
+import { ApiRequestForm } from "../add/workspaceForm";
 
 export const metadata = {
   title: "Add an API | Trafix",

@@ -72,5 +72,8 @@ func RegisterRoutes(router *gin.Engine) {
 		api.POST("/test-results", handlers.AddTestResults)
 		api.GET("/test-results", handlers.GetTestResults)
 		api.DELETE("/test-results", handlers.DeleteTestResults)
+
+		//	User stats API
+		api.GET("/user-stats", handlers.GetUserStats)
 	}
 }

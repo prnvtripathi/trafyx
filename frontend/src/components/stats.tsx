@@ -1,9 +1,20 @@
-'use client'
+"use client";
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 // Mock data for the charts
 const mockApiData = {
@@ -32,71 +43,119 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Stats() {
+interface APIStat {
+  api_id: string;
+  name: string;
+  test_cases_count: number;
+  test_runs_count: number;
+  passed_test_runs: number;
+  failed_test_runs: number;
+  success_rate: number;
+  average_duration: number;
+}
+
+export default function Stats({ userId }: { userId: string }) {
+  const [stats, setStats] = useState<APIStat[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch(`/api/stats?user_id=${userId}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch stats");
+        }
+        const data: APIStat[] = await res.json();
+        console.log("Fetched stats:", data);
+        setStats(data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  }, [userId]);
   return (
     <div className="p-8">
       <div className="mx-auto max-w-7xl">
         {/* Key Metrics */}
         <AnimatePresence>
-            <motion.div
+          <motion.div
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8 bg-transparent"
             initial="hidden"
             animate="visible"
             variants={{
               visible: {
-              transition: {
-                staggerChildren: 0.1,
-                ease: "easeInOut",
-                mass: 10,
-                type: "spring",
-              },
+                transition: {
+                  staggerChildren: 0.1,
+                  ease: "easeInOut",
+                  mass: 10,
+                  type: "spring",
+                },
               },
             }}
-            >
+          >
             <motion.div variants={cardVariants}>
               <Card className="transform transition-all hover:scale-[1.02]">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total APIs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{mockApiData.totalApis}</div>
-              </CardContent>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total APIs
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {mockApiData.totalApis}
+                  </div>
+                </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={cardVariants}>
               <Card className="transform transition-all hover:scale-[1.02]">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Tests</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{mockApiData.totalTests}</div>
-              </CardContent>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Tests
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {mockApiData.totalTests}
+                  </div>
+                </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={cardVariants}>
               <Card className="transform transition-all hover:scale-[1.02]">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Pass Rate</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">{mockApiData.passRate}%</div>
-              </CardContent>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Pass Rate
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-green-600">
+                    {mockApiData.passRate}%
+                  </div>
+                </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={cardVariants}>
               <Card className="transform transition-all hover:scale-[1.02]">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Runs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{mockApiData.totalRuns}</div>
-              </CardContent>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Runs
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {mockApiData.totalRuns}
+                  </div>
+                </CardContent>
               </Card>
             </motion.div>
-            </motion.div>
+          </motion.div>
         </AnimatePresence>
 
         {/* Charts */}
@@ -117,11 +176,7 @@ export default function Stats() {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <ChartTooltip />
-                    <Bar 
-                      dataKey="runs" 
-                      fill="#4f46e5"
-                      radius={[4, 4, 0, 0]}
-                    />
+                    <Bar dataKey="runs" fill="#4f46e5" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ChartContainer>
               </CardContent>
@@ -151,7 +206,10 @@ export default function Stats() {
                       dataKey="value"
                     >
                       {mockApiData.testTypeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
                       ))}
                     </Pie>
                     <ChartTooltip />
@@ -160,11 +218,13 @@ export default function Stats() {
                 <div className="absolute mt-[300px] flex gap-4">
                   {mockApiData.testTypeData.map((entry, index) => (
                     <div key={entry.name} className="flex items-center gap-2">
-                      <div 
-                        className="h-3 w-3 rounded-sm" 
+                      <div
+                        className="h-3 w-3 rounded-sm"
                         style={{ backgroundColor: COLORS[index] }}
                       />
-                      <span className="text-sm text-gray-600">{entry.name}</span>
+                      <span className="text-sm text-gray-600">
+                        {entry.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -175,4 +235,4 @@ export default function Stats() {
       </div>
     </div>
   );
-};
+}
