@@ -5,6 +5,8 @@ import { connectToDB } from "./lib/utils";
 import { User } from "@/lib/models";
 import bcrypt from "bcrypt";
 import "next-auth/jwt";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 declare module "next-auth" {
   interface User {
@@ -84,6 +86,14 @@ export const {
           return null;
         }
       },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
   ],
   // ADD ADDITIONAL INFORMATION TO SESSION
