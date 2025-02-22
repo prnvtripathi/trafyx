@@ -2,6 +2,7 @@ import React from "react";
 import { auth } from "@/auth";
 import { fetchUserApis } from "@/lib/data";
 import LoadTestForm from "./load-test-form";
+import { BackgroundStyle } from "@/components/effects/background-style";
 
 export const metadata = {
   title: "All APIs | Trafix",
@@ -56,6 +57,7 @@ export default async function page({}: Props) {
 
   return (
     <div className="overflow-hidden">
+      <BackgroundStyle/>
       <LoadTestForm apiData={sortedData} />
     </div>
   );

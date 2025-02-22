@@ -39,6 +39,9 @@ import {
   PlusIcon,
   PlusCircleIcon,
   NotepadText,
+  HammerIcon,
+  DumbbellIcon,
+  Lock,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -118,6 +121,20 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
+          <SidebarMenuItem className="pr-2">
+            <SidebarMenuButton
+              tooltip="Create & Run Load Tests"
+              isActive={pathname.includes("/dashboard/load-test")}
+              asChild
+              className="flex items-center"
+            >
+              <Link href="/dashboard/load-test">
+                <DumbbellIcon className="h-4 w-4" />
+                <span>Load Test APIs</span>
+              </Link>
+            </SidebarMenuButton>
+            <SidebarMenuAction><Lock className="mr-2 text-muted-foreground"/></SidebarMenuAction>
+          </SidebarMenuItem>
             {apiData?.length > 0 && (
             <>
               <SidebarMenuItem className="pr-2">
@@ -142,7 +159,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               >
                 <Link href="/dashboard/test-results">
                 <NotepadText className="h-4 w-4" />
-                <span>See Test Results</span>
+                <span>API Test Results</span>
                 </Link>
               </SidebarMenuButton>
               </SidebarMenuItem>
@@ -162,6 +179,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                   </div>
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
+              <CollapsibleContent className="group/content">
                 {sortedData?.length > 0 ? (
                 sortedData.slice(0, 8).map((api) => (
                   <SidebarMenuItem key={api.id} className="pr-2">
@@ -207,21 +225,10 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                   <span className="text-sm">No APIs yet.</span><Link className="hover:underline hover:text-gray-200" href='/dashboard/add'>Create one!</Link></SidebarMenuButton>
                 </SidebarMenuItem>
                 )}
+                </CollapsibleContent>
             </SidebarGroup>
           </Collapsible>
-          {/* <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="Create & Run Test Cases"
-              isActive={pathname.includes("/dashboard/test-cases")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/test-cases">
-                <TestTubeDiagonal className="h-4 w-4" />
-                <span>Test Cases</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem> */}
+        
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
