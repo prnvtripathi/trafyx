@@ -222,7 +222,7 @@ function ExplainDialog({ testCase, testResult }: TestCaseItemProps) {
               className="gap-2"
             >
               <RefreshCcw className="h-4 w-4" />
-              Refresh
+              Rephrase
             </Button>
           )}
         </div>
