@@ -5,7 +5,7 @@ import LoadTestForm from "./load-test-form";
 import { BackgroundStyle } from "@/components/effects/background-style";
 
 export const metadata = {
-  title: "All APIs | Trafix",
+  title: "Laod Test APIs | Trafix",
 };
 
 type Props = {};

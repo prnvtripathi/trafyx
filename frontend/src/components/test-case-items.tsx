@@ -33,7 +33,7 @@ export function TestCaseItem({ testCase, testResult }: TestCaseItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card className="group hover:bg-muted/10 transition-all duration-300 hover:shadow-lg border-opacity-50 relative">
+    <Card className="group bg-black/10 hover:bg-black/20 transition-all duration-300 hover:shadow-lg border-opacity-50 relative">
       {/* Lightbulb button appears on hover */}
       <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <ExplainDialog testCase={testCase} testResult={testResult} />
@@ -68,11 +68,11 @@ export function TestCaseItem({ testCase, testResult }: TestCaseItemProps) {
                 </label>
                 <p className="font-medium">{testCase.description}</p>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 flex flex-col">
                 <label className="text-xs uppercase tracking-wider text-gray-500">
                   Method
                 </label>
-                <p>
+                <Badge variant="outline" className="w-fit">
                   <span
                     className={cn(
                       "font-medium",
@@ -89,7 +89,7 @@ export function TestCaseItem({ testCase, testResult }: TestCaseItemProps) {
                   >
                     {testCase.method}
                   </span>
-                </p>
+                </Badge>
               </div>
             </div>
             <div className="space-y-1">
