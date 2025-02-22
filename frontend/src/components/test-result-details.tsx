@@ -15,14 +15,20 @@ export function TestResultDetails({
 }: TestResultDetailsProps) {
   const formatJSON = (data: any) => {
     try {
-      const parsed = typeof data === 'string' ? parseJSON(data) : data;
+      const parsed = typeof data === "string" ? parseJSON(data) : data;
       return JSON.stringify(parsed, null, 2);
     } catch (error) {
-      return 'Invalid JSON';
+      return "Invalid JSON";
     }
   };
 
-  const CodeBlock = ({ title, content }: { title: string; content: string }) => (
+  const CodeBlock = ({
+    title,
+    content,
+  }: {
+    title: string;
+    content: string;
+  }) => (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <p className="font-medium text-slate-200">{title}</p>
@@ -31,15 +37,15 @@ export function TestResultDetails({
         </Badge>
       </div>
       <div className="bg-muted/50 rounded-lg overflow-hidden shadow-lg">
-        <SyntaxHighlighter 
-          language="json" 
+        <SyntaxHighlighter
+          language="json"
           style={vscDarkPlus}
           customStyle={{
             margin: 0,
-            padding: '1.25rem',
-            fontSize: '0.875rem',
-            backgroundColor: 'transparent',
-            borderRadius: '0.5rem',
+            padding: "1.25rem",
+            fontSize: "0.875rem",
+            backgroundColor: "transparent",
+            borderRadius: "0.5rem",
           }}
           wrapLongLines={true}
         >
@@ -72,21 +78,25 @@ export function TestResultDetails({
 
           <div className="space-y-4 divide-y divide-slate-700">
             <div className="pb-4">
-              <InfoRow 
+              <InfoRow
                 label="Created At"
                 value={formatDate(testCase.createdat)}
               />
             </div>
 
             <div className="pt-4 space-y-4">
-              <CodeBlock 
+              <CodeBlock
                 title="Headers"
                 content={formatJSON(testCase.headers)}
               />
 
-              <CodeBlock 
+              <CodeBlock
                 title="Payload"
-                content={testCase.payload === "null" ? "N/A" : formatJSON(testCase.payload)}
+                content={
+                  testCase.payload === "null"
+                    ? "N/A"
+                    : formatJSON(testCase.payload)
+                }
               />
             </div>
           </div>
@@ -98,8 +108,8 @@ export function TestResultDetails({
             <h4 className="text-lg font-semibold text-slate-100">
               Test Result Details
             </h4>
-            <Badge 
-              variant="outline" 
+            <Badge
+              variant="outline"
               className="bg-green-600/10 text-green-400 border-green-400/20"
             >
               Completed
@@ -108,18 +118,18 @@ export function TestResultDetails({
 
           <div className="space-y-4 divide-y divide-slate-700">
             <div className="pb-4 grid grid-cols-2 gap-4">
-              <InfoRow 
+              <InfoRow
                 label="Executed At"
                 value={formatDate(testResult.executed_at)}
               />
-              <InfoRow 
+              <InfoRow
                 label="Duration"
                 value={`${testResult.duration.toFixed(4)} seconds`}
               />
             </div>
 
             <div className="pt-4">
-              <CodeBlock 
+              <CodeBlock
                 title="Response"
                 content={formatJSON(testResult.response)}
               />

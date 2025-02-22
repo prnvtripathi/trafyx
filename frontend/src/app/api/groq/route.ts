@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system" as const,
-          content: isMarkdownNeeded ? markdownNeededSystemPrompt : "You're a chatbot that gives reasonable and to the point answers for the questions",
+          content: isMarkdownNeeded ? markdownNeededSystemPrompt : "You're a chatbot that gives small and to the point answers for the questions",
         },
         {
           role: "user" as const,
