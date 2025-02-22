@@ -49,15 +49,31 @@ export default async function page({}: Props) {
     return formattedData;
   }
 
+  interface ApiData {
+    id: string;
+    user_id: string;
+    name: string;
+    method: string;
+    url: string;
+    headers: string;
+    payload: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   // Fetch the data
   const data = await getData();
+  const sortedData: ApiData[] = data.sort((a: ApiData, b: ApiData) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
   const user = session?.user;
   const user_id = user?.id;
   return (
     <div className="overflow-hidden">
       <BackgroundStyle />
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={sortedData} />
       {user_id && <Stats userId={user_id} />}
     </div>
   );

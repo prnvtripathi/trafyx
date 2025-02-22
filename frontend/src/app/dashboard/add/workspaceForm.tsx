@@ -8,12 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -35,14 +30,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Send,
-  Plus,
-  Copy,
-  Trash2,
-  Code,
-  ExternalLink,
-} from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Send, Plus, Copy, Trash2, Code, ExternalLink } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // ---------------------
 // Parameters Table (UI Only)
@@ -52,7 +48,9 @@ interface ParamsTableProps {
 }
 
 const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
-  const [params, setParams] = useState([{ id: 1, key: "", value: "", enabled: true }]);
+  const [params, setParams] = useState([
+    { id: 1, key: "", value: "", enabled: true },
+  ]);
 
   const updateParam = (id: number, field: string, value: any) => {
     setParams((prev) => {
@@ -61,12 +59,23 @@ const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
       );
 
       // Add a new row if the last row has a key or value
-      if (updated[updated.length - 1].key || updated[updated.length - 1].value) {
-        updated.push({ id: updated.length + 1, key: "", value: "", enabled: true });
+      if (
+        updated[updated.length - 1].key ||
+        updated[updated.length - 1].value
+      ) {
+        updated.push({
+          id: updated.length + 1,
+          key: "",
+          value: "",
+          enabled: true,
+        });
       }
 
       // Remove empty rows except the last one
-      const filtered = updated.filter((param, index) => param.key || param.value || index === updated.length - 1);
+      const filtered = updated.filter(
+        (param, index) =>
+          param.key || param.value || index === updated.length - 1
+      );
 
       return filtered;
     });
@@ -79,7 +88,10 @@ const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
   useEffect(() => {
     const queryString = params
       .filter((param) => param.enabled && param.key)
-      .map((param) => `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`)
+      .map(
+        (param) =>
+          `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`
+      )
       .join("&");
 
     onParamsChange(queryString);
@@ -89,13 +101,28 @@ const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex space-x-2">
-          <Button variant="outline" size="sm" onClick={() => setParams([...params, { id: params.length + 1, key: "", value: "", enabled: true }])}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              setParams([
+                ...params,
+                { id: params.length + 1, key: "", value: "", enabled: true },
+              ])
+            }
+          >
             <Plus className="h-4 w-4 mr-1" />
             Add Parameter
           </Button>
-        
         </div>
-        <Button variant="ghost" size="sm" className="text-red-500" onClick={() => setParams([{ id: 1, key: "", value: "", enabled: true }])}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-red-500"
+          onClick={() =>
+            setParams([{ id: 1, key: "", value: "", enabled: true }])
+          }
+        >
           <Trash2 className="h-4 w-4 mr-1" />
           Clear All
         </Button>
@@ -118,14 +145,18 @@ const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
                   <input
                     type="checkbox"
                     checked={param.enabled}
-                    onChange={(e) => updateParam(param.id, "enabled", e.target.checked)}
+                    onChange={(e) =>
+                      updateParam(param.id, "enabled", e.target.checked)
+                    }
                     className="rounded border-gray-300"
                   />
                 </TableCell>
                 <TableCell>
                   <Input
                     value={param.key}
-                    onChange={(e) => updateParam(param.id, "key", e.target.value)}
+                    onChange={(e) =>
+                      updateParam(param.id, "key", e.target.value)
+                    }
                     placeholder="Parameter key"
                     className="border-0 focus-visible:ring-0"
                   />
@@ -133,14 +164,21 @@ const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
                 <TableCell>
                   <Input
                     value={param.value}
-                    onChange={(e) => updateParam(param.id, "value", e.target.value)}
+                    onChange={(e) =>
+                      updateParam(param.id, "value", e.target.value)
+                    }
                     placeholder="Parameter value"
                     className="border-0 focus-visible:ring-0"
                   />
                 </TableCell>
                 <TableCell>
                   {params.length > 1 && (
-                    <Button variant="ghost" size="sm" className="text-red-500 h-8 w-8 p-0" onClick={() => deleteParam(param.id)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500 h-8 w-8 p-0"
+                      onClick={() => deleteParam(param.id)}
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   )}
@@ -256,13 +294,7 @@ export function ApiRequestForm() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <CardTitle className="text-xl">New Request</CardTitle>
-            <Badge variant="outline" className="text-slate-500">
-              Draft
-            </Badge>
           </div>
-          <Button type="submit" disabled={isLoading} className="w-fit">
-              {isLoading ? "Submitting..." : "Submit Request"}
-            </Button>
         </div>
       </CardHeader>
 
@@ -300,7 +332,11 @@ export function ApiRequestForm() {
                     >
                       <SelectTrigger className="w-[120px]">
                         <SelectValue
-                          className={methodColors[field.value as keyof typeof methodColors]}
+                          className={
+                            methodColors[
+                              field.value as keyof typeof methodColors
+                            ]
+                          }
                         />
                       </SelectTrigger>
                       <SelectContent>
@@ -332,7 +368,6 @@ export function ApiRequestForm() {
             {/* Tabs for additional fields */}
             <Tabs defaultValue="params" className="w-full">
               <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
-              
                 <TabsTrigger
                   value="headers"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent"
@@ -351,15 +386,13 @@ export function ApiRequestForm() {
                 >
                   Authorization
                 </TabsTrigger> */}
-                  <TabsTrigger
+                <TabsTrigger
                   value="params"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent"
                 >
                   Params
                 </TabsTrigger>
               </TabsList>
-
-           
 
               <TabsContent value="headers" className="mt-4">
                 <FormField
@@ -408,11 +441,13 @@ export function ApiRequestForm() {
               </TabsContent>
 
               <TabsContent value="params" className="mt-4">
-                <ParamsTable onParamsChange={(queryString) => {
-                  // Currently not integrated into form state.
-                }} />
+                <ParamsTable
+                  onParamsChange={(queryString) => {
+                    // Currently not integrated into form state.
+                  }}
+                />
               </TabsContent>
-              
+
               {/* <TabsContent value="auth" className="mt-4">
                 <div className="space-y-4">
                   <FormLabel>Authorization</FormLabel>
@@ -430,8 +465,9 @@ export function ApiRequestForm() {
                 </div>
               </TabsContent> */}
             </Tabs>
-
-            
+            <Button type="submit" disabled={isLoading} className="w-fit">
+              {isLoading ? "Submitting..." : "Submit Request"}
+            </Button>
           </form>
         </Form>
       </CardContent>

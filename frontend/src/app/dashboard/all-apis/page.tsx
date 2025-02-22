@@ -17,10 +17,7 @@ export default async function page({}: Props) {
 
   // Function to fetch and format customer data
   async function getData() {
-    const response = session?.user?.id
-      ? await fetchUserApis()
-      : [];
-
+    const response = session?.user?.id ? await fetchUserApis() : [];
 
     const formattedData = response.map(
       (api: {
@@ -53,12 +50,31 @@ export default async function page({}: Props) {
 
   // Fetch the data
   const data = await getData();
+  console.log("data", data);
+
+  interface ApiData {
+    id: string;
+    user_id: string;
+    name: string;
+    method: string;
+    url: string;
+    headers: string;
+    payload: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  const sortedData: ApiData[] = data.sort((a: ApiData, b: ApiData) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <div className="overflow-hidden">
       <BackgroundStyle />
       <DataTable
         columns={columns}
-        data={data}
+        data={sortedData}
         addNewLink="/dashboard/add/"
         addNewText="Add new API"
       />

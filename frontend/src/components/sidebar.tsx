@@ -65,6 +65,10 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
   const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
 
+  const sortedData: ApiData[] = apiData.sort((a: ApiData, b: ApiData) => {
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -139,65 +143,60 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-       <SidebarSeparator />
-            <Collapsible defaultOpen className="group/collapsible">
-              <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-                <SidebarGroupLabel className="group/label" asChild>
-                  <CollapsibleTrigger className="w-full flex items-center p-0">
-                    <div className="rounded-lg hover:bg-muted/60 flex w-full items-center p-1">
-                      <GitGraphIcon className="h-4 w-4 mr-2 -translate-x-2 text-white" />
-                      <span className="text-sm text-white -translate-x-2">Recent APIs</span>
-                  
-                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />  </div>
-                  </CollapsibleTrigger>
-                </SidebarGroupLabel>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    {apiData
-                      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                      .slice(0, 8)
-                      .map((api) => (
-                      <SidebarMenuItem key={api.id} className="pr-2">
-                      <SidebarMenuButton
-                      tooltip={api.name}
-                      isActive={pathname.includes(api.url)}
-                      asChild
-                      className="flex items-center"
-                      >
-                      <Link
-                        href={`/dashboard/all-apis/${api.id}`}
-                        className="text-sm flex items-center justify-between w-full"
-                      >
-                        <span>
+          <SidebarSeparator />
+          <Collapsible defaultOpen className="group/collapsible">
+            <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+              <SidebarGroupLabel className="group/label" asChild>
+                <CollapsibleTrigger className="w-full flex items-center p-0">
+                  <div className="rounded-lg hover:bg-muted/60 flex w-full items-center p-1">
+                    <GitGraphIcon className="h-4 w-4 mr-2 -translate-x-2 text-white" />
+                    <span className="text-sm text-white -translate-x-2">
+                      Recent APIs
+                    </span>
+                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />{" "}
+                  </div>
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              {sortedData.slice(0, 8).map((api) => (
+                <SidebarMenuItem key={api.id} className="pr-2">
+                  <SidebarMenuButton
+                    tooltip={api.name}
+                    isActive={pathname.includes(api.url)}
+                    asChild
+                    className="flex items-center"
+                  >
+                    <Link
+                      href={`/dashboard/all-apis/${api.id}`}
+                      className="text-sm flex items-center justify-between w-full"
+                    >
+                      <span>
                         {api.name.length > 20
-                        ? `${api.name.substring(0, 15)}...`
-                        : api.name}
-                        </span>
-                        <Badge variant="outline">
+                          ? `${api.name.substring(0, 15)}...`
+                          : api.name}
+                      </span>
+                      <Badge variant="outline">
                         <span
-                        className={`${
-                        api.method.toUpperCase() === "GET"
-                          ? "text-green-500"
-                          : api.method.toUpperCase() === "POST"
-                          ? "text-blue-500"
-                          : api.method.toUpperCase() === "PUT"
-                          ? "text-yellow-500"
-                          : api.method.toUpperCase() === "DELETE"
-                          ? "text-red-500"
-                          : "text-xs"
-                        }`}
+                          className={`${
+                            api.method.toUpperCase() === "GET"
+                              ? "text-green-500"
+                              : api.method.toUpperCase() === "POST"
+                              ? "text-blue-500"
+                              : api.method.toUpperCase() === "PUT"
+                              ? "text-yellow-500"
+                              : api.method.toUpperCase() === "DELETE"
+                              ? "text-red-500"
+                              : "text-xs"
+                          }`}
                         >
-                        {api.method.toUpperCase()}
+                          {api.method.toUpperCase()}
                         </span>
-                        </Badge>
-                      </Link>
-                      </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      ))}
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
+                      </Badge>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarGroup>
+          </Collapsible>
           {/* <SidebarMenuItem className="pr-2">
             <SidebarMenuButton
               tooltip="Create & Run Test Cases"

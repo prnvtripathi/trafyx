@@ -148,35 +148,35 @@ export const columns = [
   //     );
   //   },
   // },
-  {
-    id: "actions",
-    enableHiding: false,
-    header: "Actions",
-    cell: ({ row }: { row: { original: { id: string } } }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link href={`/dashboard/all-apis/${row.original.id}`}>
-              <DropdownMenuItem>
-                <EditIcon className="mr-2 size-4" />
-                Edit API
-              </DropdownMenuItem>
-            </Link>
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   header: "Actions",
+  //   cell: ({ row }: { row: { original: { id: string } } }) => {
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuSeparator />
+  //           <Link href={`/dashboard/all-apis/${row.original.id}`}>
+  //             <DropdownMenuItem>
+  //               <EditIcon className="mr-2 size-4" />
+  //               Edit API
+  //             </DropdownMenuItem>
+  //           </Link>
 
-            <DropdownMenuItem>
-              <Trash2Icon className="mr-2 size-4" /> Delete API
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  //           <DropdownMenuItem>
+  //             <Trash2Icon className="mr-2 size-4" /> Delete API
+  //           </DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];
