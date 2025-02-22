@@ -15,7 +15,7 @@ export default async function Layout({
   async function getData() {
     const response = await fetchUserApis();
 
-    const formattedData = response.map(
+    const formattedData = response?.map(
       (api: { ID: string; Name: string; Method: string; URL: string, UpdatedAt: string }) => ({
         id: api.ID,
         name: api.Name,

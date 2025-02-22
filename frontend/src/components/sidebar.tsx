@@ -13,6 +13,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarMenuAction,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
@@ -65,7 +66,7 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
   const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
 
-  const sortedData: ApiData[] = apiData.sort((a: ApiData, b: ApiData) => {
+  const sortedData: ApiData[] = apiData?.sort((a: ApiData, b: ApiData) => {
     return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
   });
 
@@ -117,32 +118,36 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>{" "}
-          <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="View All APIs"
-              isActive={pathname.includes("/dashboard/all-apis")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/all-apis">
+            {apiData?.length > 0 && (
+            <>
+              <SidebarMenuItem className="pr-2">
+              <SidebarMenuButton
+                tooltip="View All APIs"
+                isActive={pathname.includes("/dashboard/all-apis")}
+                asChild
+                className="flex items-center"
+              >
+                <Link href="/dashboard/all-apis">
                 <BarChart2 className="h-4 w-4" />
                 <span>View All APIs</span>
-              </Link>
-            </SidebarMenuButton>{" "}
-          </SidebarMenuItem>
-          <SidebarMenuItem className="pr-2">
-            <SidebarMenuButton
-              tooltip="See Test Results"
-              isActive={pathname.includes("/dashboard/test-results")}
-              asChild
-              className="flex items-center"
-            >
-              <Link href="/dashboard/test-results">
+                </Link>
+              </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem className="pr-2">
+              <SidebarMenuButton
+                tooltip="See Test Results"
+                isActive={pathname.includes("/dashboard/test-results")}
+                asChild
+                className="flex items-center"
+              >
+                <Link href="/dashboard/test-results">
                 <NotepadText className="h-4 w-4" />
                 <span>See Test Results</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>{" "}
+                </Link>
+              </SidebarMenuButton>
+              </SidebarMenuItem>
+            </>
+            )}
           <SidebarSeparator />
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -157,8 +162,9 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                   </div>
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
-              {sortedData.slice(0, 8).map((api) => (
-                <SidebarMenuItem key={api.id} className="pr-2">
+                {sortedData?.length > 0 ? (
+                sortedData.slice(0, 8).map((api) => (
+                  <SidebarMenuItem key={api.id} className="pr-2">
                   <SidebarMenuButton
                     tooltip={api.name}
                     isActive={pathname.includes(api.url)}
@@ -166,35 +172,41 @@ export function AppSidebar({ apiData }: { apiData: ApiData[] }) {
                     className="flex items-center"
                   >
                     <Link
-                      href={`/dashboard/all-apis/${api.id}`}
-                      className="text-sm flex items-center justify-between w-full"
+                    href={`/dashboard/all-apis/${api.id}`}
+                    className="text-sm flex items-center justify-between w-full"
                     >
-                      <span>
-                        {api.name.length > 20
-                          ? `${api.name.substring(0, 15)}...`
-                          : api.name}
+                    <span>
+                      {api.name.length > 20
+                      ? `${api.name.substring(0, 15)}...`
+                      : api.name}
+                    </span>
+                    <Badge variant="outline">
+                      <span
+                      className={`${
+                        api.method.toUpperCase() === "GET"
+                        ? "text-green-500"
+                        : api.method.toUpperCase() === "POST"
+                        ? "text-blue-500"
+                        : api.method.toUpperCase() === "PUT"
+                        ? "text-yellow-500"
+                        : api.method.toUpperCase() === "DELETE"
+                        ? "text-red-500"
+                        : "text-xs"
+                      }`}
+                      >
+                      {api.method.toUpperCase()}
                       </span>
-                      <Badge variant="outline">
-                        <span
-                          className={`${
-                            api.method.toUpperCase() === "GET"
-                              ? "text-green-500"
-                              : api.method.toUpperCase() === "POST"
-                              ? "text-blue-500"
-                              : api.method.toUpperCase() === "PUT"
-                              ? "text-yellow-500"
-                              : api.method.toUpperCase() === "DELETE"
-                              ? "text-red-500"
-                              : "text-xs"
-                          }`}
-                        >
-                          {api.method.toUpperCase()}
-                        </span>
-                      </Badge>
+                    </Badge>
                     </Link>
                   </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+                ) : (
+                <SidebarMenuItem className="pr-2">
+                  <SidebarMenuButton>
+                  <span className="text-sm">No APIs yet.</span><Link className="hover:underline hover:text-gray-200" href='/dashboard/add'>Create one!</Link></SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+                )}
             </SidebarGroup>
           </Collapsible>
           {/* <SidebarMenuItem className="pr-2">

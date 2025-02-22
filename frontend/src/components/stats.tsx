@@ -19,6 +19,9 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Loader from "./ui/loader";
+import { PlusCircle } from "lucide-react";
+import Link from "next/link";
+import { Button } from "./ui/button";
 
 interface APIStats {
   api_id: string;
@@ -68,9 +71,74 @@ export default function Stats({ userId }: { userId: string }) {
     fetchStats();
   }, [userId]);
 
-  if (loading) return <Loader size={12} />;
-  if (!stats)
-    return <div className="p-8 text-center">Failed to load stats</div>;
+  if (loading) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          key="loader"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <Loader size={12} />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          key="error"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="p-8 text-center"
+        >
+          Failed to load stats
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  if (
+    stats.total_apis === 0 &&
+    stats.total_test_cases === 0 &&
+    stats.total_test_runs === 0 &&
+    stats.passed_test_runs === 0 &&
+    stats.failed_test_runs === 0
+  ) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          key="no-data"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="p-8 text-center"
+        >
+          <Card>
+            <CardContent>
+              <p className="mb-4 text-lg text-muted-foreground">
+                It looks like you haven't created any APIs yet.
+              </p>
+              <Button variant='outline'
+                className="btn btn-primary flex items-center justify-center mx-auto"
+                onClick={() => {
+                  /* logic to create a new request */
+                }}
+              >
+                <PlusCircle className="mr-2" />
+                <Link href="/dashboard/add">Create New Request</Link>
+              </Button>
+            </CardContent>{" "}
+          </Card>{" "}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
     <div className="p-8">
