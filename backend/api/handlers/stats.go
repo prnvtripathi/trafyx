@@ -98,7 +98,7 @@ func GetUserStats(c *gin.Context) {
 
 	// 5. Get all test cases associated with the user's APIs.
 	testCasesColl := config.MongoDB.Collection("test_cases")
-	cursor, err = testCasesColl.Find(ctx, bson.M{"api_id": bson.M{"$in": apiIDs}})
+	cursor, err = testCasesColl.Find(ctx, bson.M{"apiid": bson.M{"$in": apiIDs}})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch test cases"})
 		return
