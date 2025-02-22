@@ -122,7 +122,7 @@ export default function Stats({ userId }: { userId: string }) {
           <Card>
             <CardContent>
               <p className="mb-4 text-lg text-muted-foreground">
-                It looks like you haven't created any APIs yet.
+                It looks like you haven&apos;t created any APIs yet.
               </p>
               <Button variant='outline'
                 className="btn btn-primary flex items-center justify-center mx-auto"
