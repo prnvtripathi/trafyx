@@ -202,7 +202,7 @@ export default function Stats({ userId }: { userId: string }) {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-green-600">
-                    {stats.success_rate.toFixed(1)}%
+                    {stats?.success_rate?.toFixed(1)}%
                   </div>
                 </CardContent>
               </Card>
@@ -218,7 +218,7 @@ export default function Stats({ userId }: { userId: string }) {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {stats.average_duration.toFixed(2)}s
+                    {stats?.average_duration?.toFixed(2)}s
                   </div>
                 </CardContent>
               </Card>

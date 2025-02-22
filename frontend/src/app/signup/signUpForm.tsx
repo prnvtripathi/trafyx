@@ -8,14 +8,13 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { Icons } from "@/components/ui/icons"
 import Link from "next/link";
-import { GitlabIcon, Loader2Icon } from "lucide-react";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { GithubIcon, Loader2Icon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useFormState } from "react-dom";
 import { signup } from "@/lib/actions";
-import MagneticEffect from "@/components/effects/magnetic-effect";
+import { signIn } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa6";
 
 // Define the schema for form validation
 const signUpSchema = z
@@ -47,19 +46,6 @@ const signUpSchema = z
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
-  // const [isLoading, setIsLoading] = useState(false)
-  // const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
-  //   resolver: zodResolver(signUpSchema),
-  // })
-
-  // async function onSubmit(data: SignUpFormValues) {
-  //   setIsLoading(true)
-  //   // Simulate API call
-  //   await new Promise(resolve => setTimeout(resolve, 2000))
-  //   console.log(data)
-  //   setIsLoading(false)
-  // }
-
   const [state, formAction] = useFormState(signup, undefined);
   const {
     register,
@@ -72,6 +58,7 @@ export function SignUpForm() {
   const onSubmit = async (data: SignUpFormValues) => {
     await formAction(data);
   };
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -145,6 +132,32 @@ export function SignUpForm() {
                 )}
               </div>
             </div>
+            <div className="mt-4 text-center">
+                <div className="flex items-center justify-center">
+                <div className="border-t border-gray-300/20 flex-grow mr-3"></div>
+                <p className="text-gray-500 dark:text-gray-400">Or sign up using</p>
+                <div className="border-t border-gray-300/20 flex-grow ml-3"></div>
+                </div>
+              <div className="flex justify-center space-x-4 mt-2">
+                {/* Github sign up button */}
+                <Button
+                  variant="outline"
+                  className="w-full bg-transparent"
+                  onClick={() => signIn("github")}
+                >
+                  <GithubIcon /> Github
+                </Button>
+                {/* Google sign up button */}
+                <Button
+                  variant="outline"
+                  className="w-full bg-transparent"
+                  onClick={() => signIn("google")}
+                >
+                 <FaGoogle className=""/> Google
+                </Button>
+              </div>
+            </div>
+
             <Button className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting && (
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
