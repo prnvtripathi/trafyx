@@ -89,5 +89,8 @@ func RegisterRoutes(router *gin.Engine) {
 
 		//	User stats API
 		api.GET("/user-stats", handlers.GetUserStats)
+
+		// Load test endpoint
+		api.POST("/load-test", handlers.ExecuteLoadTest)
 	}
 }

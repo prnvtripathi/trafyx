@@ -1,9 +1,7 @@
-import { DataTable } from "@/components/ui/data-table";
 import React from "react";
-import { columns } from "./api-table-columns";
 import { auth } from "@/auth";
 import { fetchUserApis } from "@/lib/data";
-import { BackgroundStyle } from "@/components/effects/background-style";
+import LoadTestForm from "./load-test-form";
 
 export const metadata = {
   title: "All APIs | Trafix",
@@ -52,32 +50,26 @@ export default async function page({}: Props) {
   const data = await getData();
   // console.log("data", data);
 
-  interface ApiData {
-    id: string;
-    user_id: string;
-    name: string;
-    method: string;
-    url: string;
-    headers: string;
-    payload: string;
-    description: string;
-    createdAt: string;
-    updatedAt: string;
-  }
-
   const sortedData: ApiData[] = data.sort((a: ApiData, b: ApiData) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
   return (
     <div className="overflow-hidden">
-      <BackgroundStyle />
-      <DataTable
-        columns={columns}
-        data={sortedData}
-        addNewLink="/dashboard/add/"
-        addNewText="Add new API"
-      />
+      <LoadTestForm apiData={sortedData} />
     </div>
   );
+}
+
+export interface ApiData {
+  id: string;
+  user_id: string;
+  name: string;
+  method: string;
+  url: string;
+  headers: string;
+  payload: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
 }
