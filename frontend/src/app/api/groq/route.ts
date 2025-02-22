@@ -18,14 +18,16 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system" as const,
-          content: isMarkdownNeeded ? markdownNeededSystemPrompt : "You're a chatbot that gives small and to the point answers for the questions",
+          content: isMarkdownNeeded
+            ? markdownNeededSystemPrompt
+            : "You're a chatbot that gives small and to the point answers for the questions",
         },
         {
           role: "user" as const,
           content: prompt,
         },
       ],
-      model: "llama3-8b-8192",
+      model: "qwen-2.5-coder-32b",
       temperature: 1,
       max_completion_tokens: maxTokens || 1800,
       top_p: 1,
