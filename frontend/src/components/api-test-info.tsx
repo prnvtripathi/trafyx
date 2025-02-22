@@ -271,7 +271,7 @@ export function ApiTestInfo({ apiInfo }: ApiTestInfoProps) {
               ))}
             </div>
 
-            <div className="mt-3 md:mt-4 rounded-lg border">
+            <div className="mt-3 md:mt-4">
               <TestCaseList testResults={filteredResults} />
             </div>
           </div>

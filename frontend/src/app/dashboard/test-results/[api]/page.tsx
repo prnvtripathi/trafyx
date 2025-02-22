@@ -37,7 +37,6 @@ export default function ApiTestInfoPage({
   );
 }
 
-// const apiTestData = {
 //   api_id: "674af5c4eb10b74f40d901bf",
 //   test_cases: 24,
 //   test_results: [
