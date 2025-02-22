@@ -8,6 +8,7 @@ import Footer from "@/components/ui/footer";
 import { auth } from "@/auth";
 import { SessionProvider } from "@/components/AuthProvider";
 import ProgressBars from "@/components/ui/ProgressBarProvider";
+import {Analytics} from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <SessionProvider session={session}>
+          <Analytics/>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
