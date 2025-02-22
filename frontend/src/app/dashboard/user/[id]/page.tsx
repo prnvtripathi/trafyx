@@ -59,7 +59,7 @@ interface PageParams {
 }
 
 export default async function ProfilePage(params: PageParams) {
-  console.log(params, "is the params");
+  // console.log(params, "is the params");
   const { id } = params.params;
   // console.log(id, "is the id");
   const user = await fetchUser(id);
@@ -114,6 +114,13 @@ export default async function ProfilePage(params: PageParams) {
                         required
                         defaultValue={user.name}
                         className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-violet-500 transition duration-200"
+                      />
+                      <Input
+                        id="id"
+                        name="id"
+                        required
+                        value={id}
+                        type="hidden"
                       />
                     </div>
                     <div className="space-y-2">

@@ -39,6 +39,8 @@ export default async function page({}: Props) {
   const user = session?.user;
   const user_id = user?.id;
 
+  console.log("User ID: ", user);
+
   return (
     <div className="space-y-4 min-h-screen">
       <BackgroundStyle />
