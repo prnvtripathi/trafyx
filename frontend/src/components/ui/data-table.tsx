@@ -71,9 +71,9 @@ export function DataTable({ columns, data, addNewLink, addNewText }: DataTablePr
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter..."
-          value={(table.getColumn(columns[0].accessorKey)?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn(columns[1].accessorKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn(columns[0].accessorKey)?.setFilterValue(event.target.value)
+            table.getColumn(columns[1].accessorKey)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

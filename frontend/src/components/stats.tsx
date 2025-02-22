@@ -52,6 +52,9 @@ interface APIStat {
   failed_test_runs: number;
   success_rate: number;
   average_duration: number;
+  total_apis: number;
+  total_test_cases: number;
+  total_test_runs: number;
 }
 
 export default function Stats({ userId }: { userId: string }) {
