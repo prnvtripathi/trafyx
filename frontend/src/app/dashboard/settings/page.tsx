@@ -6,6 +6,8 @@ import { auth } from "@/auth";
 import ProfilePage from "../user/[id]/page";
 import { BackgroundStyle } from "@/components/effects/background-style";
 import DeleteDialog from "@/app/dashboard/settings/deleteAccount";
+import PricingPage from "@/components/pricing";
+import { Badge } from "@/components/ui/badge";
 
 interface PageParams {
   params: {
@@ -37,6 +39,7 @@ export default async function SettingsPage(params: PageParams) {
             <TabsList>
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="other">Data and Privacy</TabsTrigger>
+              <TabsTrigger value="plan">Subscription Status</TabsTrigger>
             </TabsList>
             <TabsContent value="profile" className="space-y-4">
               <div className="space-y-0.5">
@@ -113,6 +116,22 @@ export default async function SettingsPage(params: PageParams) {
                 </Card>
               </form>
             </TabsContent>
+            <TabsContent value="plan" className="space-y-4">
+              <div className="space-y-0.5">
+              <h2 className="text-2xl font-bold tracking-tight">Subscription Status</h2>
+              <p className="text-muted-foreground">
+                Manage your subscription plan and view your current status.
+              </p>
+              </div>
+                <Card className="shadow-lg border rounded-lg">
+                <CardContent className="p-6">
+                  <h1 className="font-semibold text-xl mb-2">Current Subscription</h1>
+                  <p className="">Current Tier: <Badge variant='outline' className="font-medium ">Free</Badge></p>
+                  <p className="">Next billing date: <Badge variant='outline' className="font-medium ">NA</Badge></p>
+                </CardContent>
+                </Card>
+              <PricingPage/>
+              </TabsContent>
           </Tabs>
         </main>
       </div>
