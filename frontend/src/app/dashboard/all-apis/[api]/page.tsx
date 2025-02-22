@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { getMethodColor } from "@/lib/helpers";
 import { GenerateTestCases } from "@/components/generate-test-cases";
 import { Button } from "@/components/ui/button";
-import { EditIcon, Trash2Icon } from "lucide-react";
+import { ArrowUpRight, EditIcon, Trash2Icon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -26,6 +26,7 @@ import { columns } from "./test-case-table-columns";
 import { RunTestCases } from "@/components/run-test-cases";
 import { toast } from "sonner";
 import DeleteButton from "./deleteAPI";
+import Link from "next/link";
 
 async function getApi(apiId: string) {
   try {
@@ -107,6 +108,8 @@ export default async function Page({ params }: { params: { api: string } }) {
         <div className="flex flex-col md:flex-row justify-between mb-4">
           <h1 className="text-2xl font-bold">API Information</h1>
           <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
+    <Link href={`/dashboard/test-results/${apiId}`}> <Button variant='outline'> View Previous Results   <ArrowUpRight className="h-3 w-3" /></Button> </Link>
+
             {test_cases ? (
               <RunTestCases api_id={apiId} />
             ) : (
@@ -185,7 +188,7 @@ export default async function Page({ params }: { params: { api: string } }) {
             </div>
           </CardContent>
         </Card>
-        {test_cases ? <DataTable columns={columns} data={test_cases} /> : null}
+        {test_cases ? <DataTable columns={columns} data={test_cases} addNewText='Add custom Test' addNewLink="/test-cases/" /> : null}
       </div>
     </div>
   );
