@@ -1,36 +1,13 @@
-import NextAuth, { DefaultSession, User as NextAuthUser } from "next-auth";
+import NextAuth from "next-auth";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+import client from "./lib/db";
 import { authConfig } from "@/authconfig";
 import { connectToDB } from "./lib/utils";
 import { User } from "@/lib/models";
 import bcrypt from "bcrypt";
-import "next-auth/jwt";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-
-declare module "next-auth" {
-  interface User {
-    img?: string | null;
-    name?: string | null;
-    id?: string;
-  }
-
-  interface Session {
-    user: {
-      img?: string | null;
-      name?: string | null;
-      id?: string;
-    };
-  }
-}
-
-declare module "@auth/core/adapters" {
-  interface AdapterUser {
-    img: string | null;
-    name: string | null;
-    id: string;
-  }
-}
 
 // Function to handle user login
 const login = async (credentials: any) => {
@@ -71,6 +48,7 @@ export const {
   handlers: { GET, POST },
 } = NextAuth({
   ...authConfig,
+  adapter: MongoDBAdapter(client),
   providers: [
     CredentialsProvider({
       async authorize(credentials) {
@@ -87,44 +65,24 @@ export const {
         }
       },
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
+    Google,
+    GitHub,
   ],
   // ADD ADDITIONAL INFORMATION TO SESSION
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.name = user.name;
-        // token.username = user.username;
-        token.img = (user as ExtendedUser).img;
         token.id = user.id;
       }
-      // console.log(token, "is the token");
       return token;
     },
     async session({ session, token }) {
       if (token && session && session.user) {
         session.user.name = token.name ?? null;
-        // session.user.username = token.username;
-        session.user.img = token.img as string | null;
         session.user.id = token.id as string;
       }
-      // console.log(session, "is the session");
       return session;
     },
   },
 });
-
-// Extend the built-in session types
-interface ExtendedUser extends NextAuthUser {
-  username: string;
-  img: string;
-  password: string;
-  userid: number;
-}

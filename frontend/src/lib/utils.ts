@@ -13,10 +13,10 @@ const connection: { isConnected?: boolean } = {};
 export const connectToDB = async () => {
   try {
     if (connection.isConnected) return;
-    if (!process.env.MONGO) {
+    if (!process.env.MONGODB_URI) {
       throw new Error("MONGO environment variable is not defined");
     }
-    const db = await mongoose.connect(process.env.MONGO);
+    const db = await mongoose.connect(process.env.MONGODB_URI);
     connection.isConnected = db.connections[0].readyState === 1;
     console.log("Successfully connected to the database");
   } catch (error) {
