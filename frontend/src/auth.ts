@@ -1,88 +1,133 @@
-import NextAuth from "next-auth";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+import NextAuth, { DefaultSession, User as NextAuthUser } from "next-auth";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcryptjs";
+import "next-auth/jwt";
 import client from "./lib/db";
-import { authConfig } from "@/authconfig";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { connectToDB } from "./lib/utils";
-import { User } from "@/lib/models";
-import bcrypt from "bcrypt";
+import { User } from "./lib/models";
 
-// Function to handle user login
-const login = async (credentials: any) => {
+interface ExtendedUser extends NextAuthUser {
+  _id: string;
+  image: string;
+  password: string;
+}
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      _id: string;
+      image: string;
+    } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    _id?: string;
+    image?: string;
+  }
+}
+
+// Ensure that `authorize` returns `ExtendedUser | null`
+export const { handlers, signIn, signOut, auth } = NextAuth(() => {
+  return {
+    adapter: MongoDBAdapter(client),
+    trustHost: true,
+    providers: [
+      GitHub,
+      Google,
+      CredentialsProvider({
+        credentials: {
+          email: { label: "Email", type: "email" },
+          password: { label: "Password", type: "password" },
+        },
+        async authorize(credentials) {
+          if (!credentials) return null;
+
+          try {
+            const user = await login(credentials as LoginCredentials);
+            if (user) {
+              return user as ExtendedUser; // Ensure we return ExtendedUser
+            }
+            return null;
+          } catch (error) {
+            if (error instanceof Error) {
+              // console.log("Authentication error:", error.message);
+            } else {
+              // console.log("Unexpected error:", error);
+            }
+            return null;
+          }
+        },
+      }),
+    ],
+    pages: {
+      signIn: "/login",
+    },
+    session: {
+      strategy: "jwt",
+    },
+    callbacks: {
+      async jwt({ token, user }) {
+        if (user) {
+          token._id = (user as ExtendedUser)._id.toString();
+          token.image = (user as ExtendedUser).image;
+        }
+        return token;
+      },
+      async session({ session, token }) {
+        if (token) {
+          session.user._id = token._id || "";
+          session.user.image = token.image || "";
+        }
+        return session;
+      },
+    },
+  };
+});
+
+// Define LoginCredentials for typing
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+// Modify `login` to return `ExtendedUser | null`
+async function login(
+  credentials: LoginCredentials
+): Promise<ExtendedUser | null> {
+  const { email, password } = credentials;
+
   try {
-    connectToDB();
+    // Get the database instance from your MongoDB client
+    await connectToDB();
 
-    // Check if the user exists
+    // Find the user with the matching email
     const user = await User.findOne({
-      username: credentials.username,
+      email: credentials.email,
     });
 
     if (!user) {
-      throw new Error("INVALID_USERNAME");
+      throw new Error("User not found");
     }
 
-    // Check the password
-    const isPasswordCorrect = await bcrypt.compare(
-      credentials.password,
-      user.password
-    );
-
-    if (!isPasswordCorrect) {
-      throw new Error("INVALID_PASSWORD");
+    // Compare the provided password with the stored hashed password
+    const isValid = await compare(password, user.password);
+    if (!isValid) {
+      throw new Error("Invalid credentials");
     }
 
-    return user;
-  } catch (err) {
-    console.log(err);
-    throw err; // Propagate the error
+    // Return the user cast as ExtendedUser
+    return user as ExtendedUser;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Authentication error:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    return null;
   }
-};
-
-// Exported functions for sign in, sign out, and authentication
-export const {
-  signIn,
-  signOut,
-  auth,
-  handlers: { GET, POST },
-} = NextAuth({
-  ...authConfig,
-  adapter: MongoDBAdapter(client),
-  providers: [
-    CredentialsProvider({
-      async authorize(credentials) {
-        try {
-          const user = await login(credentials);
-          return user;
-        } catch (err) {
-          if (err instanceof Error) {
-            console.log("Authentication error:", err.message);
-          } else {
-            console.log("Authentication error:", err);
-          }
-          return null;
-        }
-      },
-    }),
-    Google,
-    GitHub,
-  ],
-  // ADD ADDITIONAL INFORMATION TO SESSION
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.name = user.name;
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token && session && session.user) {
-        session.user.name = token.name ?? null;
-        session.user.id = token.id as string;
-      }
-      return session;
-    },
-  },
-});
+}

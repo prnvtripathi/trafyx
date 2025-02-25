@@ -31,7 +31,7 @@ export default async function HomePageGreeting() {
       <Card className="border-none -mt-4">
         <CardHeader className="flex flex-row items-center">
           <Avatar className="size-20 md:size-28 mr-4">
-            <AvatarImage src={user?.img || "/noavatar.png"} />
+            <AvatarImage src={user?.image || "/noavatar.png"} />
             <AvatarFallback className="text-3xl md:text-5xl">
               {user?.name?.[0] || "?"}
             </AvatarFallback>

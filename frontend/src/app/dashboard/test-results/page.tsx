@@ -18,7 +18,7 @@ export default async function page({}: Props) {
 
   // Function to fetch and format customer data
   async function getData() {
-    const response = session?.user?.id ? await fetchUserApis() : [];
+    const response = session?.user?._id ? await fetchUserApis() : [];
 
     const formattedData = response.map(
       (api: {

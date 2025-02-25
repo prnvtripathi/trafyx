@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { User } from "./models";
-import { UserApi } from "./models";
 import { connectToDB } from "./utils";
 import { auth } from "@/auth";
 
@@ -46,7 +45,7 @@ export const fetchUserApis = async () => {
   const session = await auth();
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/user-apis?user_id=${session?.user?.id}`
+      `${process.env.BACKEND_URL}/api/user-apis?user_id=${session?.user?._id}`
     );
     const user_apis = await response.json();
     return user_apis;

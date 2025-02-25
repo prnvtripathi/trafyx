@@ -1,22 +1,22 @@
 import AuthForm from "@/components/auth-form";
+import { ModeToggle } from "@/components/theme-button";
 import Image from "next/image";
 import Link from "next/link";
-import { ModeToggle } from "@/components/theme-button";
 
 export default function LoginPage() {
   return (
     <>
       <main className="flex min-h-screen bg-black">
         <section className="flex w-full flex-col justify-center lg:w-1/2">
-          <AuthForm variant="login" />
+          <AuthForm variant="register" />
 
           <span className="text-neutral-400 text-center block mt-4">
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/register"
+              href="/login"
               className="text-white underline underline-offset-2"
             >
-              Register
+              Login
             </Link>
           </span>
 

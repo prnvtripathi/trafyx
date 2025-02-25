@@ -28,7 +28,7 @@ export default async function Home() {
               <>
                 <Avatar className="size-8 md:size-10 mr-4">
                   <AvatarImage
-                    src={user?.img || "/noavatar.png"}
+                    src={user?.image || "/noavatar.png"}
                     className="rounded-full"
                   />
                   <AvatarFallback className="text-3xl md:text-5xl rounded-full">
@@ -44,7 +44,7 @@ export default async function Home() {
                 <Link href="/login">
                   <Button variant="secondary">Login</Button>
                 </Link>
-                <Link href="/signup">
+                <Link href="/register">
                   <Button>Signup</Button>
                 </Link>
               </>

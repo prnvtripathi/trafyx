@@ -25,7 +25,7 @@ export default function DeleteDialog() {
     setInputID(e.target.value);
   };
 
-  const isDeleteDisabled = inputID !== session?.user?.id;
+  const isDeleteDisabled = inputID !== session?.user?._id;
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function DeleteDialog() {
             <AlertDialogDescription className="mt-2">
               Type your ID &apos;
               <span className="text-red-500 font-semibold">
-                {session?.user?.id}
+                {session?.user?._id}
               </span>
               &apos; in the below input field to confirm.
               <Input

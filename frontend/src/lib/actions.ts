@@ -125,7 +125,7 @@ export const deleteUser = async (formData: any) => {
   const { id: inputID } = Object.fromEntries(formData);
   // console.log("inputID is", inputID);
 
-  const currentID = session?.user?.id;
+  const currentID = session?.user?._id;
   try {
     await connectToDB();
 

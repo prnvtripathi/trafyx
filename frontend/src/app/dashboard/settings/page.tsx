@@ -16,7 +16,7 @@ interface PageParams {
     name: string;
     username: string;
     password: string;
-    img: string;
+    image: string;
   };
 }
 
@@ -51,12 +51,11 @@ export default async function SettingsPage(params: PageParams) {
               {/* <ProfileForm /> */}
               <ProfilePage
                 params={{
-                  id: user.id,
+                  id: user._id,
                   email: user.email,
                   name: user.name,
-                  username: user.username,
                   password: user.password,
-                  img: user.img,
+                  image: user.image,
                 }}
               />
             </TabsContent>
@@ -118,20 +117,34 @@ export default async function SettingsPage(params: PageParams) {
             </TabsContent>
             <TabsContent value="plan" className="space-y-4">
               <div className="space-y-0.5">
-              <h2 className="text-2xl font-bold tracking-tight">Subscription Status</h2>
-              <p className="text-muted-foreground">
-                Manage your subscription plan and view your current status.
-              </p>
+                <h2 className="text-2xl font-bold tracking-tight">
+                  Subscription Status
+                </h2>
+                <p className="text-muted-foreground">
+                  Manage your subscription plan and view your current status.
+                </p>
               </div>
-                <Card className="shadow-lg border rounded-lg">
+              <Card className="shadow-lg border rounded-lg">
                 <CardContent className="p-6">
-                  <h1 className="font-semibold text-xl mb-2">Current Subscription</h1>
-                  <p className="">Current Tier: <Badge variant='outline' className="font-medium ">Free</Badge></p>
-                  <p className="">Next billing date: <Badge variant='outline' className="font-medium ">NA</Badge></p>
+                  <h1 className="font-semibold text-xl mb-2">
+                    Current Subscription
+                  </h1>
+                  <p className="">
+                    Current Tier:{" "}
+                    <Badge variant="outline" className="font-medium ">
+                      Free
+                    </Badge>
+                  </p>
+                  <p className="">
+                    Next billing date:{" "}
+                    <Badge variant="outline" className="font-medium ">
+                      NA
+                    </Badge>
+                  </p>
                 </CardContent>
-                </Card>
-              <PricingPage/>
-              </TabsContent>
+              </Card>
+              <PricingPage />
+            </TabsContent>
           </Tabs>
         </main>
       </div>

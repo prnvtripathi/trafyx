@@ -52,9 +52,8 @@ interface PageParams {
     id: string;
     email: string;
     name: string;
-    username: string;
     password: string;
-    img: string;
+    image: string;
   };
 }
 
@@ -78,7 +77,7 @@ export default async function ProfilePage(params: PageParams) {
       <Card className="w-full">
         <CardHeader className="flex flex-row items-center gap-4 space-y-0">
           <Avatar className="h-32 w-32">
-            <AvatarImage src={user.img} alt={user.name} />
+            <AvatarImage src={user.image} alt={user.name} />
             <AvatarFallback>
               {user.name
                 .split(" ")
@@ -158,17 +157,17 @@ export default async function ProfilePage(params: PageParams) {
                     </div>
                     <div className="space-y-2">
                       <Label
-                        htmlFor="img"
+                        htmlFor="image"
                         className="text-violet-600 dark:text-violet-400"
                       >
                         Profile Picture URL
                       </Label>
                       <Input
-                        id="img"
+                        id="image"
                         type="url"
-                        name="img"
+                        name="image"
                         placeholder="https://example.com/image.jpg"
-                        defaultValue={user.img}
+                        defaultValue={user.image}
                         className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-violet-500 transition duration-200"
                       />
                     </div>

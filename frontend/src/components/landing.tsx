@@ -566,7 +566,7 @@ export default function LandingPage() {
                   variants={fadeIn}
                   className="flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
-                  <Link href="/signup">
+                  <Link href="/register">
                     <Button
                       size="lg"
                       className="relative group bg-violet-600 hover:bg-violet-700 dark:bg-violet-500 dark:hover:bg-violet-600 text-white"

@@ -243,7 +243,7 @@ const methodColors: { [key: string]: string } = {
 // ---------------------
 export function ApiRequestForm() {
   const { data: session } = useSession();
-  const userID = session?.user.id;
+  const userID = session?.user._id;
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

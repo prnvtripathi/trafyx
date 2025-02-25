@@ -30,7 +30,7 @@ function page({}: Props) {
             <Link href="/login">
               <Button variant="secondary">Login</Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/register">
               <Button>Signup</Button>
             </Link>
             <ModeToggle />
