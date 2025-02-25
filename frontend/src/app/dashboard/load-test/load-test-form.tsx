@@ -31,6 +31,8 @@ import { cn } from "@/lib/utils";
 import type { ApiData } from "./page";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 interface Payload {
   url: string;
   method: string;
@@ -437,7 +439,7 @@ export default function LoadTestForm({ apiData }: { apiData: ApiData[] }) {
                   ) : (
                     <div className="space-y-4">
                       <p className="text-sm leading-relaxed whitespace-pre-line">
-                        <SyntaxHighlighter
+                        {/* <SyntaxHighlighter
                           language="markdown"
                           style={vscDarkPlus}
                           customStyle={{
@@ -450,7 +452,10 @@ export default function LoadTestForm({ apiData }: { apiData: ApiData[] }) {
                           wrapLongLines={true}
                         >
                           {explanation}
-                        </SyntaxHighlighter>
+                        </SyntaxHighlighter> */}
+                        <Markdown remarkPlugins={[remarkGfm]}>
+                          {explanation}
+                        </Markdown>
                       </p>
                       <Button
                         onClick={() => fetchExplanation(result)}
