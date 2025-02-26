@@ -1,11 +1,11 @@
 "use client";
 
-import { BackgroundStyle } from "@/components/effects/background-style";
-import { TechnologyCard } from "@/components/ui/technology-cards";
+import { BackgroundStyle } from "../../components/effects/background-style";
+import { TechnologyCard } from "../../components/ui/technology-cards";
 import { motion } from "framer-motion";
 import { DeveloperNote } from "./experience";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { Separator } from "../../components/ui/separator";
+import { Badge } from "../../components/ui/badge";
 
 const technologies = [
   {
