@@ -1,11 +1,11 @@
 "use client";
 
-import { BackgroundStyle } from "@/components/effects/background-style";
-import { TechnologyCard } from "@/components/ui/technology-cards";
+import { BackgroundStyle } from "../../components/effects/background-style";
+import { TechnologyCard } from "../../components/ui/technology-cards";
 import { motion } from "framer-motion";
 import { DeveloperNote } from "./experience";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { Separator } from "../../components/ui/separator";
+import { Badge } from "../../components/ui/badge";
 
 const technologies = [
   {
@@ -197,7 +197,7 @@ export default function AboutPageContent() {
       <BackgroundStyle />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-14">
         {/* Codeक्षेत्र Banner */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -209,7 +209,7 @@ export default function AboutPageContent() {
           <Badge  className="text-lg">
            By team Serendipity
           </Badge>
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

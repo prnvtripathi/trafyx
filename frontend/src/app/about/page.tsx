@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import React from "react";
 import AboutPageContent from "./pageContent";
-import Footer from "@/components/ui/footer";
-import { ModeToggle } from "@/components/theme-button";
+import Footer from "../../components/ui/footer";
+import { ModeToggle } from "../../components/theme-button";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import { GearIcon } from "@radix-ui/react-icons";
 
 export const metadata: Metadata = {
