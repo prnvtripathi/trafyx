@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { User } from "./models";
 import { connectToDB } from "./utils";
 import { redirect, permanentRedirect } from "next/navigation";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { toast } from "sonner";
 import { signIn, auth, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
