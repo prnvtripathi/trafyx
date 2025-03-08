@@ -11,10 +11,22 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO = "mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux?retryWrites=true&w=majority&appName=CRMCluster"
-      - ENVIRONMENT = "production"
+      - REDIS_HOST=redis:6379
     networks:
       - app-network
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  redis:
+    image: "redis"
+    networks:
+      - app-network
+    ports:
+      - "6379:6379"
 
 networks:
   app-network:
