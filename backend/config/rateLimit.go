@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -16,8 +17,13 @@ var redisClient *redis.Client
 
 // ConnectRedis initializes and tests the Redis connection
 func ConnectRedis() error {
+	redisAddr := os.Getenv("REDIS_HOST")
+	if redisAddr == "" {
+		redisAddr = "localhost:6379" // Default to localhost for development
+	}
+
 	redisClient = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     redisAddr,
 		Password: "",
 		DB:       0,
 	})
