@@ -8,8 +8,6 @@ services:
   backend:
     build:
       context: ./backend
-    ports:
-      - "5000:5000"
     environment:
       - REDIS_HOST=redis:6379
     networks:
@@ -19,14 +17,14 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
+    environment:
+      - BACKEND_URL=http://backend:5000
     networks:
       - app-network
   redis:
     image: "redis"
     networks:
       - app-network
-    ports:
-      - "6379:6379"
 
 networks:
   app-network:
