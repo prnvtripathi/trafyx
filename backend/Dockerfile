@@ -23,7 +23,7 @@ FROM alpine:latest
 WORKDIR /root/
 
 # Copy the environment file to the container
-COPY .env .
+ENV MONGODB_URI="mongodb+srv://Ishaan:ishaan@crmcluster.yemfrh4.mongodb.net/apilux"
 
 # Copy the pre-built binary file from the builder stage
 COPY --from=builder /app/main .
