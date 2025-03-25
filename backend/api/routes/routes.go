@@ -3,7 +3,7 @@ package routes
 import (
 	"backend/api/handlers"
 	"backend/api/models"
-	// "backend/config"
+	"backend/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,31 +29,31 @@ func RegisterRoutes(router *gin.Engine) {
 		// Endpoint for listing all test cases
 		api.GET("/test-cases", handlers.GetTestCasesByAPIID)
 
-		// if config.IsRedisConnected() {
-		// 	// Endpoint for running all test cases using golang
-		// 	api.GET("/test-cases/golang/run", config.RateLimiter(), func(c *gin.Context) {
-		// 		handlers.ExecuteTestCases(c)
-		// 	})
+		if config.IsRedisConnected() {
+			// Endpoint for running all test cases using golang
+			api.GET("/test-cases/golang/run", config.RateLimiter(), func(c *gin.Context) {
+				handlers.ExecuteTestCases(c)
+			})
 
-		// 	// Endpoint for running test cases using Kestra
-		// 	api.GET("/test-cases/kestra/run", config.RateLimiter(), func(c *gin.Context) {
-		// 		handlers.ExecuteAPITest(c)
-		// 	})
-		// } else {
-		// 	api.GET("/test-cases/golang/run", func(c *gin.Context) {
-		// 		c.JSON(500, gin.H{"message": "Redis connection failed"})
-		// 	})
-		// 	api.GET("/test-cases/kestra/run", func(c *gin.Context) {
-		// 		c.JSON(500, gin.H{"message": "Redis connection failed"})
-		// 	})
-		// }
+			// Endpoint for running test cases using Kestra
+			api.GET("/test-cases/kestra/run", config.RateLimiter(), func(c *gin.Context) {
+				handlers.ExecuteAPITest(c)
+			})
+		} else {
+			api.GET("/test-cases/golang/run", func(c *gin.Context) {
+				c.JSON(500, gin.H{"message": "Redis connection failed"})
+			})
+			api.GET("/test-cases/kestra/run", func(c *gin.Context) {
+				c.JSON(500, gin.H{"message": "Redis connection failed"})
+			})
+		}
 
-		// Remove redis rate limiter
-		// Endpoint for running all test cases using golang
-		api.GET("/test-cases/golang/run", handlers.ExecuteTestCases)
+		// // Remove redis rate limiter
+		// // Endpoint for running all test cases using golang
+		// api.GET("/test-cases/golang/run", handlers.ExecuteTestCases)
 
-		// Endpoint for running test cases using Kestra
-		api.GET("/test-cases/kestra/run", handlers.ExecuteAPITest)
+		// // Endpoint for running test cases using Kestra
+		// api.GET("/test-cases/kestra/run", handlers.ExecuteAPITest)
 
 		// Endpoint for adding user API information
 		api.POST("/user-apis", handlers.AddUserAPI)

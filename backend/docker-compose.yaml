@@ -11,6 +11,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - REDIS_HOST=redis:6379
+    ports:
+      - "3000:3000"
     networks:
       - app-network
 
