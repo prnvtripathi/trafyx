@@ -7,7 +7,8 @@ volumes:
 services:
   backend:
     build:
-      context: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     environment:
       - REDIS_HOST=redis:6379
     networks:
