@@ -1,0 +1,23 @@
+volumes:
+  postgres-data:
+    driver: local
+  kestra-data:
+    driver: local
+
+services:
+  backend:
+    build:
+      context: Dockerfile
+    environment:
+      - REDIS_HOST=redis:6379
+    networks:
+      - app-network
+
+  redis:
+    image: "redis"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
