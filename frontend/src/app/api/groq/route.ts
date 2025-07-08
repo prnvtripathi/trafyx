@@ -20,14 +20,14 @@ export async function POST(req: Request) {
           role: "system" as const,
           content: isMarkdownNeeded
             ? markdownNeededSystemPrompt
-            : "You're a chatbot that gives small and to the point answers for the questions",
+            : "You're a chatbot that gives small and to the point answers for the questions. Do not use markdown formatting. Keep the response concise and relevant to the question asked.",
         },
         {
           role: "user" as const,
           content: prompt,
         },
       ],
-      model: "qwen-2.5-coder-32b",
+      model: "compound-beta",
       temperature: 1,
       max_completion_tokens: maxTokens || 1800,
       top_p: 1,
