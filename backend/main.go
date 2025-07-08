@@ -24,11 +24,11 @@ func main() {
 	}
 	config.ConnectDatabase()
 
-	// Connect to Redis
-	err := config.ConnectRedis()
-	if err != nil {
-		log.Fatalf("Redis connection failed: %v", err)
-	}
+	// // Connect to Redis
+	// err := config.ConnectRedis()
+	// if err != nil {
+	// 	log.Fatalf("Redis connection failed: %v", err)
+	// }
 
 	r := gin.Default()
 	routes.RegisterRoutes(r)

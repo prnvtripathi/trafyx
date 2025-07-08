@@ -48,6 +48,13 @@ func RegisterRoutes(router *gin.Engine) {
 			})
 		}
 
+		// // Remove redis rate limiter
+		// // Endpoint for running all test cases using golang
+		// api.GET("/test-cases/golang/run", handlers.ExecuteTestCases)
+
+		// // Endpoint for running test cases using Kestra
+		// api.GET("/test-cases/kestra/run", handlers.ExecuteAPITest)
+
 		// Endpoint for adding user API information
 		api.POST("/user-apis", handlers.AddUserAPI)
 

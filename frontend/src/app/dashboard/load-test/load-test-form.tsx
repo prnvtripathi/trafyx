@@ -29,15 +29,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ApiData } from "./page";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Textarea } from "@/components/ui/textarea";
 interface Payload {
   url: string;
   method: string;
   rate: number;
   duration: number;
+  payload?: string;
 }
 
 interface Result {
@@ -173,6 +173,7 @@ export default function LoadTestForm({ apiData }: { apiData: ApiData[] }) {
       method: selectedApi.method,
       rate: Number(rate),
       duration: Number(duration),
+      payload: selectedApi.payload,
     };
 
     try {
@@ -253,6 +254,14 @@ export default function LoadTestForm({ apiData }: { apiData: ApiData[] }) {
                         "bg-muted font-medium",
                         methodColors[selectedApi.method] || "text-foreground"
                       )}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Body</Label>
+                    <Textarea
+                      readOnly
+                      value={selectedApi.payload}
+                      className={cn("bg-muted font-medium text-foreground")}
                     />
                   </div>
 

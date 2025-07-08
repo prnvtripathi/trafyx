@@ -14,6 +14,7 @@ type LoadTestParams struct {
 	Method   string `json:"method"`   // HTTP method to use (default: GET)
 	Rate     int    `json:"rate"`     // Requests per second
 	Duration int    `json:"duration"` // Duration in seconds
+	Payload  string `json:"payload"`  // Optional request body
 }
 
 // ExecuteLoadTest runs a load test on the specified API endpoint using Vegeta.
@@ -44,6 +45,7 @@ func ExecuteLoadTest(c *gin.Context) {
 	target := vegeta.Target{
 		Method: params.Method,
 		URL:    params.URL,
+		Body:   []byte(params.Payload),
 	}
 	targeter := vegeta.NewStaticTargeter(target)
 	attacker := vegeta.NewAttacker()

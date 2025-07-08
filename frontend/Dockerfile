@@ -1,12 +1,12 @@
-FROM node:20.15.0-alpine as base
+FROM node:20.15.0-alpine AS base
 
-FROM base as deps
+FROM base AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm i
 
-FROM base as builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -14,7 +14,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
 
-FROM base as runner
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
