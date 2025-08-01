@@ -73,7 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth(() => {
     callbacks: {
       async jwt({ token, user }) {
         if (user) {
-          token._id = (user as ExtendedUser)._id.toString();
+          token._id = (user as ExtendedUser)._id;
           token.image = (user as ExtendedUser).image;
         }
         return token;
