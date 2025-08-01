@@ -1,9 +1,0 @@
-{
-  "name": "backend",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "air",
-    "build": "go build -o main ."
-  }
-}
