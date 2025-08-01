@@ -34,6 +34,7 @@ declare module "next-auth/jwt" {
 // Ensure that `authorize` returns `ExtendedUser | null`
 export const { handlers, signIn, signOut, auth } = NextAuth(() => {
   return {
+    secret: process.env.AUTH_SECRET,
     adapter: MongoDBAdapter(client),
     trustHost: true,
     providers: [
