@@ -19,14 +19,11 @@ import (
 
 func main() {
 	// Load .env only if running locally (not in production)
-	env := os.Getenv("ENVIRONMENT") // "ENVIRONMENT" determines the environment
-	if env != "production" {
-		err := godotenv.Load(".env")
-		if err != nil {
-			log.Printf("Warning: No .env file found. Continuing without it.")
-		} else {
-			fmt.Println("Environment variables loaded from .env")
-		}
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Printf("Warning: No .env file found. Continuing without it.")
+	} else {
+		fmt.Println("Environment variables loaded from .env")
 	}
 	config.ConnectDatabase()
 
