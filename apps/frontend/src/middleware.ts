@@ -7,11 +7,24 @@ const authRoutes = ["/login", "/register"];
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+
+  // Debug: Log environment and request info
+  console.log("[Middleware] Pathname:", pathname);
+  console.log("[Middleware] AUTH_SECRET exists:", Boolean(process.env.AUTH_SECRET));
+  console.log("[Middleware] Cookies:", request.cookies.getAll());
+
+  // Use a fallback for secret if not set (for debugging only, remove fallback in production)
+  const secret = process.env.AUTH_SECRET || "development-secret";
+  if (!process.env.AUTH_SECRET) {
+    console.warn("[Middleware] AUTH_SECRET is not set! Using fallback. This is insecure for production.");
+  }
+
   // Get the token from the request
   const token = await getToken({
     req: request,
-    secret: process.env.AUTH_SECRET,
+    secret,
   });
+  console.log("[Middleware] Token:", token);
 
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
