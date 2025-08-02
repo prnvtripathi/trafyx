@@ -75,8 +75,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth(() => {
     callbacks: {
       async jwt({ token, user }) {
         if (user) {
-          token._id = (user as ExtendedUser)._id;
-          token.image = (user as ExtendedUser).image;
+          const extendedUser = user as ExtendedUser;
+          token._id = extendedUser._id ? String(extendedUser._id) : "";
+          token.image = extendedUser.image || "";
         }
         return token;
       },
@@ -122,8 +123,16 @@ async function login(
       throw new Error("Invalid credentials");
     }
 
+    // Convert the user document to a plain object
+    const userObject: ExtendedUser = {
+      ...user.toObject(),
+      _id: user._id.toString(), // Ensure _id is a string
+      image: user.image || "",
+      password: user.password || "",
+    };
+
     // Return the user cast as ExtendedUser
-    return user as ExtendedUser;
+    return userObject as ExtendedUser;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error("Authentication error:", error.message);
