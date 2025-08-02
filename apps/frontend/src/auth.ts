@@ -37,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth(() => {
     secret: process.env.AUTH_SECRET,
     adapter: MongoDBAdapter(client),
     trustHost: true,
+    debug: process.env.NODE_ENV === "development",
     providers: [
       GitHub,
       Google,
