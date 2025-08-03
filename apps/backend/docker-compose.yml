@@ -6,9 +6,39 @@ services:
     container_name: trafyx-backend
     env_file:
       - ./.env
-    ports:
-      - "5000:5000"
     environment:
       - PORT=5000
       - GIN_MODE=release
+    networks:
+      - trafyx-net
     restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: trafyx-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/letsencrypt
+      - ./nginx/www:/var/www/html
+    depends_on:
+      - backend
+    networks:
+      - trafyx-net
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    container_name: trafyx-certbot
+    volumes:
+      - ./nginx/ssl:/etc/letsencrypt
+      - ./nginx/www:/var/www/html
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do sleep 1; done"
+    networks:
+      - trafyx-net
+
+networks:
+  trafyx-net:
+    driver: bridge
