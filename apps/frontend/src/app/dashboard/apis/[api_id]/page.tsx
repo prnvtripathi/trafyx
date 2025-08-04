@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import { useAPIById } from "@/hooks/use-user-apis";
 import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
-import { PencilIcon, Trash2Icon } from "lucide-react";
+import EditAPIButton from "@/components/dashboard/apis/api/edit-button";
+import DeleteAPIButton from "@/components/dashboard/apis/api/delete-button";
 import APIPageCard from "@/components/dashboard/apis/api/card";
 import TestCaseDetails from "@/components/dashboard/apis/api/test-case-details";
 
@@ -20,20 +20,8 @@ export default function APIPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
                 <Heading title="API Details" description="Review your API configuration and generate test cases." />
                 <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        className="hover:bg-muted/70"
-                    >
-                        <PencilIcon className="size-4 mr-1" />
-                        Edit
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="hover:text-destructive *:hover:bg-destructive/20"
-                    >
-                        <Trash2Icon className="size-4 mr-1" />
-                        Delete
-                    </Button>
+                    {api && <EditAPIButton api={api} variant="default" />}
+                    {api && <DeleteAPIButton api={api} variant="default" />}
                 </div>
             </div>
             {/* API Details */}

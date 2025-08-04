@@ -8,15 +8,14 @@ import {
     CardFooter
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
-    PencilIcon,
-    Trash2Icon,
     ClockIcon,
     ExternalLinkIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { formatTimeAgo } from "@/lib/utils";
+import EditAPIButton from "./api/edit-button";
+import DeleteAPIButton from "./api/delete-button";
 
 const methodColors = {
     GET: "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-900/50 dark:text-emerald-200 dark:border-emerald-700 shadow-emerald-200/20 dark:shadow-emerald-900/20",
@@ -71,30 +70,11 @@ export default function APICard({
                     </div>
 
                     <CardAction className="flex items-center gap-2">
-                        {onEdit && (
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => onEdit(api)}
-                                className="opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-muted/70"
-                            >
-                                <PencilIcon className="size-4 mr-1" />
-                            </Button>
-                        )}
-                        {onDelete && (
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => onDelete(api)}
-                                className="opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
-                            >
-                                <Trash2Icon className="size-4 mr-1" />
-                            </Button>
-                        )}
+                        {onEdit && <EditAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />}
+                        {onDelete && <DeleteAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />}
                     </CardAction>
                 </div>
             </CardHeader>
-
             <CardFooter className="">
                 <div className="flex items-center justify-between w-full text-xs">
                     <div className="flex items-center gap-2 text-muted-foreground/70 bg-muted/20 px-2 py-1 rounded-md">

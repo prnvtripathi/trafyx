@@ -60,3 +60,9 @@ export type GetAPIByIdResponse = {
   message?: string;
   error?: string;
 };
+
+export type APIActionResponse = {
+  success?: boolean;
+  message?: string;
+  error?: string;
+};
