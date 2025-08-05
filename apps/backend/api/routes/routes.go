@@ -20,6 +20,12 @@ func RegisterRoutes(router *gin.Engine) {
 		// Fetching all the test cases for an API id
 		api.GET("/test-case", handlers.FetchTestCasesByAPIId)
 
+		// Update test case
+		api.PUT("/test-case", handlers.UpdateTestCase)
+
+		// Delete test case
+		api.DELETE("/test-case", handlers.DeleteTestCase)
+
 		// Generating the Test cases using go lang
 		api.POST("/test-case/generate", handlers.GenerateTestCases)
 

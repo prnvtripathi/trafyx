@@ -3,8 +3,9 @@ package models
 import "go.mongodb.org/mongo-driver/v2/bson"
 
 type TestCase struct {
-	ID              bson.ObjectID `bson:"_id,omitempty" json:"id"`                  // MongoDB's ObjectID
+	ID              bson.ObjectID `bson:"_id,omitempty" json:"_id"`                  // MongoDB's ObjectID
 	CreatedAt       bson.DateTime `bson:"created_at,omitempty" json:"created_at"`   // Creation timestamp
+	UpdatedAt       bson.DateTime `bson:"updated_at,omitempty" json:"updated_at"`   // Last update timestamp
 	APIID           bson.ObjectID `bson:"api_id,omitempty" json:"api_id"`           // Associated API ID
 	Name            string        `bson:"name" json:"name"`                         // Test case name
 	Method          string        `bson:"method" json:"method"`                     // HTTP method

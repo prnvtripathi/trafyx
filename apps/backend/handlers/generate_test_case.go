@@ -101,6 +101,7 @@ func storeTestCases(apiID string, testCases []models.TestCase, createdBy string)
 	for _, tc := range testCases {
 		tc.ID = bson.NewObjectID()
 		tc.CreatedAt = bson.NewDateTimeFromTime(time.Now())
+		tc.UpdatedAt = bson.NewDateTimeFromTime(time.Now())
 		tc.APIID, _ = bson.ObjectIDFromHex(apiID)
 		tc.CreatedBy = createdBy
 
