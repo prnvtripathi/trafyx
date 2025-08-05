@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkle } from 'lucide-react';
 import { Pacifico } from 'next/font/google';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const pacifico = Pacifico({
   subsets: ['latin'],
@@ -84,8 +85,8 @@ export default function HeroComponent({
   title1 = "API Testing",
   title2 = "Automated & Simplified",
   description = "Test your REST APIs with automatically generated test cases and see where they stand in the field.",
-  buttonText1 = "Get Started",
-  buttonText2 = "View Documentation",
+  buttonText1 = "Let's Begin",
+  buttonText2 = "Dashboard",
 }: {
   badge?: string;
   title1?: string;
@@ -218,7 +219,9 @@ export default function HeroComponent({
               size="lg"
               className="rounded-full border-none bg-gradient-to-r from-primary to-rose-500 shadow-md shadow-primary/10 hover:from-primary/90 hover:to-rose-500/90"
             >
-              {buttonText1}
+              <Link href="/login" className="flex items-center">
+                {buttonText1}
+              </Link>
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
