@@ -7,6 +7,7 @@ import { TestCase } from "@/types/test-case.type";
 import { Clock, User, Globe, ChevronRight, BrainCog, Brain } from "lucide-react";
 import { FaGolang } from "react-icons/fa6";
 import { useState } from "react";
+import { EditTestCaseButton, DeleteTestCaseButton } from "./test-case-actions";
 
 const getMethodColor = (method: TestCase['method']) => {
     const methodName = method.toLowerCase();
@@ -72,7 +73,7 @@ export default function TestCaseCard({ testCase }: { testCase: TestCase }) {
     }
 
     return (
-        <Card className="w-full transition-all duration-200 hover:shadow-lg hover:border-foreground/20 dark:hover:border-foreground/30">
+        <Card className="w-full transition-all duration-200 hover:shadow-lg hover:border-foreground/20 dark:hover:border-foreground/30 group">
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
@@ -85,7 +86,7 @@ export default function TestCaseCard({ testCase }: { testCase: TestCase }) {
                             </CardDescription>
                         )}
                     </div>
-                    <div className="flex flex-col gap-1 items-end flex-shrink-0">
+                    <div className="flex flex-col md:flex-row gap-1 items-end">
                         <Badge variant="outline" className={getMethodColor(testCase.method)}>
                             {testCase.method.toUpperCase()}
                         </Badge>
@@ -107,14 +108,21 @@ export default function TestCaseCard({ testCase }: { testCase: TestCase }) {
                     </div>
 
                     {/* Metadata */}
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground max-w-fit">
-                        <div className="flex items-center gap-2">
-                            <Clock className="h-3 w-3" />
-                            <span>{formatDate(testCase.created_at)}</span>
+                    <div className="flex items-center justify-between w-full h-8">
+                        <div className="flex items-center gap-2  text-xs text-muted-foreground">
+                            <div className="flex items-center gap-2">
+                                <Clock className="h-3 w-3" />
+                                <span>{formatDate(testCase.created_at)}</span>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                                <CreatedByIcon />
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-1">
-                            <CreatedByIcon />
+                        <div className="hidden group-hover:flex items-center gap-2">
+                            <EditTestCaseButton testCase={testCase} />
+                            <DeleteTestCaseButton testCaseId={testCase._id} />
                         </div>
                     </div>
 

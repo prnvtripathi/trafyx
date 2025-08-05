@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useGenerateTestCases } from "@/hooks/use-test-cases";
 import Loader from "@/components/ui/loader";
 import TestCaseCard from "./test-case-card";
+import { AddTestCaseButton } from "./test-case-actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function TestCaseDetails({
@@ -67,7 +68,10 @@ export default function TestCaseDetails({
     return (
         <Card className="mt-5">
             <CardHeader>
-                <CardTitle className="text-xl font-semibold text-primary-foreground">Test Cases</CardTitle>
+                <div className="flex items-center justify-between">
+                    <CardTitle className="text-xl font-semibold text-primary-foreground">Test Cases</CardTitle>
+                    {apiId && <AddTestCaseButton apiId={apiId} />}
+                </div>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">

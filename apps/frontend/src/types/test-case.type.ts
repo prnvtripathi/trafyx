@@ -14,6 +14,8 @@ export type TestCase = {
   created_by?: "go" | "user" | "ai";
 };
 
+export type NewTestCase = Omit<TestCase, "_id" | "created_at">;
+
 export type GenerateTestCasesRequest = {
   api_id: string;
   created_by: "go" | "user" | "ai";
