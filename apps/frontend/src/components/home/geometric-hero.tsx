@@ -86,7 +86,7 @@ export default function HeroComponent({
   title2 = "Automated & Simplified",
   description = "Test your REST APIs with automatically generated test cases and see where they stand in the field.",
   buttonText1 = "Let's Begin",
-  buttonText2 = "Dashboard",
+  buttonText2 = "Book a Demo",
 }: {
   badge?: string;
   title1?: string;
@@ -229,7 +229,9 @@ export default function HeroComponent({
               variant="outline"
               className="rounded-full border-primary/30 shadow-sm hover:bg-primary/5"
             >
-              {buttonText2}
+              <Link href={"https://cal.com/prnvtripathi/trafyx"} className="flex items-center" target='_blank' rel='noopener noreferrer'>
+                {buttonText2}
+              </Link>
             </Button>
           </motion.div>
         </div>
