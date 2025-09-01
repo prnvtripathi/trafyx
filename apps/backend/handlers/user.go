@@ -28,7 +28,7 @@ func DeleteUserFromDB(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	users := config.MongoDB.Collection("users")
+	users := config.MongoDB.Collection("user")
 	cursor := users.FindOne(ctx, bson.M{"_id": userObjID})
 	if err := cursor.Err(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "error": "Failed to find the user"})

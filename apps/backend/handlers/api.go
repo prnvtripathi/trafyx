@@ -55,7 +55,7 @@ func SaveAPIToDB(c *gin.Context) {
 	}
 
 	// Check if the user exists in the database
-	userCollection := config.MongoDB.Collection("users")
+	userCollection := config.MongoDB.Collection("user")
 	userFilter := bson.M{"_id": userAPI.UserID}
 	userCount, err := userCollection.CountDocuments(context.Background(), userFilter)
 	if err != nil {
