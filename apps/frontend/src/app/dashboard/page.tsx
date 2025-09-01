@@ -1,15 +1,18 @@
 import HomePageGreeting from "@/components/dashboard/greeting";
 import Stats from "@/components/dashboard/user-stats";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 
 export default async function DashboardPage() {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
     const user = session?.user;
-    const user_id = user?._id;
+    const userId = user?.id;
     return (
         <div className="flex flex-col h-full">
             <HomePageGreeting />
-            {user_id && <Stats userId={user_id} />}
+            {userId && <Stats userId={userId} />}
         </div>
     );
 }

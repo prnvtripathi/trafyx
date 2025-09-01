@@ -3,13 +3,15 @@
 import { useAPIsWithTestResults } from "@/hooks/use-test-results";
 import { Card, CardContent } from "@/components/ui/card";
 import Loader from "@/components/ui/loader";
-import { useSession } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import Heading from "@/components/heading";
 import APICard from "@/components/dashboard/results/api-card";
 
 export default function ResultsPage() {
-    const { data: session } = useSession();
-    const userId = session?.user?._id;
+    const {
+        data: session,
+    } = authClient.useSession()
+    const userId = session?.user?.id;
 
     const { data, error, isLoading } = useAPIsWithTestResults(userId as string);
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -8,7 +8,9 @@ import { ArrowRight } from "lucide-react";
 
 export default function AvatarComponent() {
 
-    const { data: session } = useSession();
+    const {
+        data: session,
+    } = authClient.useSession()
     const user = session?.user;
 
 
@@ -43,7 +45,7 @@ export default function AvatarComponent() {
             ) : (
                 <>
                     <Link
-                        href="/login"
+                        href="/auth/login"
                         className="px-4 py-2 text-sm font-medium text-foreground/80 transition-colors duration-200 hover:text-foreground"
                     >
                         Sign In
@@ -67,7 +69,9 @@ export default function AvatarComponent() {
 }
 
 export function AvatarMobile({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (open: boolean) => void }) {
-    const { data: session } = useSession();
+    const {
+        data: session,
+    } = authClient.useSession()
     const user = session?.user;
 
     const mobileItemVariants = {
@@ -91,7 +95,7 @@ export function AvatarMobile({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (op
             ) : (
                 <>
                     <Link
-                        href="/login"
+                        href="/auth/login"
                         className="block w-full rounded-lg py-3 text-center font-medium text-foreground transition-colors duration-200 hover:bg-muted"
                         onClick={() => setIsMobileMenuOpen(false)}
                     >

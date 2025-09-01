@@ -1,4 +1,6 @@
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import DeleteAccount from "@/components/profile/delete-account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,11 +11,13 @@ import Stats from "@/components/dashboard/user-stats";
 import Heading from "@/components/heading";
 
 export default async function ProfilePage() {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
     const user = session?.user as {
         image?: string | null;
         name?: string | null;
-        _id?: string;
+        id?: string;
         email?: string | null;
     };
 
@@ -43,10 +47,14 @@ export default async function ProfilePage() {
                                 Dashboard
                             </Button>
                         </Link>
-                        <form action={async () => {
-                            "use server";
-                            await signOut({ redirectTo: "/" });
-                        }}>
+                        <form
+                            action={async () => {
+                                "use server";
+                                await auth.api.signOut({
+                                    headers: await headers(),
+                                });
+                                redirect("/auth/login");
+                            }}>
                             <Button type="submit" variant="destructive" size="sm">
                                 <LogOut className="w-4 h-4" />
                                 Sign Out
@@ -76,10 +84,10 @@ export default async function ProfilePage() {
                                     <Mail className="w-4 h-4 mr-2" />
                                     {user?.email || "No email provided"}
                                 </div>
-                                {user?._id && (
+                                {user?.id && (
                                     <div className="flex items-center text-sm text-gray-500 mt-1">
                                         <User className="w-3 h-3 mr-2" />
-                                        ID: {user._id}
+                                        ID: {user.id}
                                     </div>
                                 )}
                             </div>
@@ -115,13 +123,13 @@ export default async function ProfilePage() {
                             </div>
                         </div>
 
-                        {user?._id && (
+                        {user?.id && (
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     User ID
                                 </label>
                                 <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border font-mono text-sm">
-                                    {user._id}
+                                    {user.id}
                                 </div>
                             </div>
                         )}
@@ -129,16 +137,16 @@ export default async function ProfilePage() {
                 </Card>
 
                 {/* Stats Section */}
-                {user?._id && (
+                {user?.id && (
                     <Card className="bg-accent/40 dark:bg-accent/40 shadow-lg">
-                        <Stats userId={user._id} showCharts={false} />
+                        <Stats userId={user.id} showCharts={false} />
                     </Card>
                 )}
 
                 <Heading title="Danger Zone" />
 
                 {/* Delete Profile */}
-                {user?._id && user?.email && <DeleteAccount userId={user._id} email={user.email} />}
+                {user?.id && user?.email && <DeleteAccount userId={user.id} email={user.email} />}
 
             </div>
         </div>

@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { signup, authenticate } from "@/lib/authenticate";
 import { toast } from "sonner";
-import { AuthFormData, SignupFormData } from "@/types/auth.type";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 type CredentialsFormProps = {
@@ -25,48 +24,58 @@ export default function CredentialsForm({ variant }: CredentialsFormProps) {
       const formData = new FormData(event.currentTarget);
 
       if (variant === "login") {
-        const data: AuthFormData = {
+        const { data, error } = await authClient.signIn.email({
           email: formData.get("email") as string,
           password: formData.get("password") as string,
-        };
+          callbackURL: "/dashboard",
+          rememberMe: true
+        }, {
+          onRequest: () => {
+          },
+          onSuccess: () => {
+            toast.success("Logged in successfully");
+          },
+          onError: (ctx) => {
+            setIsLoading(false);
+            toast.error(ctx.error.message || "Invalid credentials");
+          }
+        });
 
-        const result = await authenticate(null, data);
-
-        if (result?.message === "success") {
-          toast.success("Logged in successfully");
-          // Add a small delay to allow the toast to show
-          setTimeout(() => {
-            router.push("/dashboard");
-            router.refresh(); // Refresh to update authentication state
-          }, 1000);
-        } else {
-          toast.error(result?.error || "Invalid credentials");
+        // Handle error if callbacks don't fire
+        if (error) {
+          setIsLoading(false);
+          toast.error(error.message || "Invalid credentials");
         }
       } else {
-        const data: SignupFormData = {
+        const { data, error } = await authClient.signUp.email({
           name: formData.get("name") as string,
           email: formData.get("email") as string,
           password: formData.get("password") as string,
-          imageSrc: formData.get("imageSrc") as string,
-        };
+          image: formData.get("imageSrc") as string || undefined,
+          callbackURL: "/dashboard"
+        }, {
+          onRequest: () => {
+          },
+          onSuccess: () => {
+            toast.success("Account created successfully");
+            router.push("/dashboard");
+          },
+          onError: (ctx) => {
+            setIsLoading(false);
+            toast.error(ctx.error.message || "An error occurred during signup");
+          }
+        });
 
-        const result = await signup(null, data);
-
-        if (result?.message === "success") {
-          toast.success("Account created successfully");
-          // Add a small delay to allow the toast to show
-          setTimeout(() => {
-            router.push("/login");
-          }, 1000);
-        } else {
-          toast.error(result?.error || "An error occurred during signup");
+        // Handle error if callbacks don't fire
+        if (error) {
+          setIsLoading(false);
+          toast.error(error.message || "An error occurred during signup");
         }
       }
     } catch (error) {
       console.error("Form submission error:", error);
-      toast.error("An unexpected error occurred");
-    } finally {
       setIsLoading(false);
+      toast.error("An unexpected error occurred");
     }
   };
 
@@ -136,8 +145,8 @@ export default function CredentialsForm({ variant }: CredentialsFormProps) {
           {isLoading
             ? "Please wait..."
             : variant === "login"
-            ? "Login"
-            : "Create account"}
+              ? "Login"
+              : "Create account"}
         </Button>
       </div>
     </form>

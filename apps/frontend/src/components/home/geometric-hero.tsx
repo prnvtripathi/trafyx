@@ -219,7 +219,7 @@ export default function HeroComponent({
               size="lg"
               className="rounded-full border-none bg-gradient-to-r from-primary to-rose-500 shadow-md shadow-primary/10 hover:from-primary/90 hover:to-rose-500/90"
             >
-              <Link href="/login" className="flex items-center">
+              <Link href="/auth/login" className="flex items-center">
                 {buttonText1}
               </Link>
               <ArrowRight className="ml-2 h-4 w-4" />
