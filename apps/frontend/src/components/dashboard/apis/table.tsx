@@ -1,15 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useUserAPIs } from "@/hooks/use-user-apis";
-import { useSession } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import APICard from "./card";
 import { UserAPI } from "@/types/api.type";
 
 export default function UserAPITable() {
-    const { data: session } = useSession();
-    const userId = session?.user._id;
-    const router = useRouter();
+    const {
+        data: session,
+    } = authClient.useSession()
+    const userId = session?.user?.id;
 
     if (!userId) {
         return <p>Please log in to view your APIs.</p>;

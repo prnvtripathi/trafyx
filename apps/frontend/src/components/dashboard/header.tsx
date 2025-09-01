@@ -8,13 +8,16 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
+import { headers } from "next/headers";
 import DynamicBreadcrumb from "./breadcrumbs";
-
 import { LogOut, User } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function Header() {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
     const user = session?.user as {
         image?: string | null;
         name?: string | null;
@@ -66,9 +69,9 @@ export default async function Header() {
                             <DropdownMenuItem asChild>
                                 <Link
                                     href={`/profile`}
-                                    className="flex space-x-4 items-center"
+                                    className="flex items-center"
                                 >
-                                    <User className="mr-4" />
+                                    <User className="mr-2" />
                                     View Profile
                                 </Link>
                             </DropdownMenuItem>
@@ -77,13 +80,16 @@ export default async function Header() {
                                     className="w-full"
                                     action={async () => {
                                         "use server";
-                                        await signOut();
+                                        await auth.api.signOut({
+                                            headers: await headers(),
+                                        });
+                                        redirect("/auth/login");
                                     }}
                                 >
                                     <button className="w-full text-left hover:text-red-500 transition flex items-center">
                                         {" "}
                                         <LogOut className="mr-4" />
-                                        Logout
+                                        Log Out
                                     </button>
                                 </form>
                             </DropdownMenuItem>

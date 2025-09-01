@@ -9,15 +9,12 @@ import {
     SidebarMenuItem,
     SidebarMenuButton,
     useSidebar,
-    SidebarSeparator,
 } from "@/components/ui/sidebar";
 import {
     BarChart2,
     Settings,
     LogOut,
     ChevronsLeft,
-    NotebookTextIcon,
-    ArrowUpRight,
     PlusCircleIcon,
     NotepadText,
     DumbbellIcon,
@@ -27,13 +24,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { PageRoutes } from "@/lib/page-routes";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function AppSidebar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const { toggleSidebar } = useSidebar();
     const pathname = usePathname();
+    const router = useRouter();
 
 
     return (
@@ -164,8 +162,9 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             tooltip="Logout"
-                            onClick={() => {
-                                signOut({ redirect: true, redirectTo: "/login" });
+                            onClick={async () => {
+                                await authClient.signOut();
+                                router.push("/auth/login");
                             }}
                         >
                             <LogOut className="h-4 w-4" />
