@@ -1,16 +1,17 @@
 import React from "react";
 import {
     Card,
-    CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 
 export default async function HomePageGreeting() {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
     const user = session?.user;
 
     const getGreeting = () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -201,8 +201,10 @@ const apiRequestSchema = z.object({
 
 // Main Form Component
 export function ApiRequestForm() {
-    const { data: session } = useSession();
-    const userID = session?.user._id;
+    const {
+        data: session,
+    } = authClient.useSession()
+    const userId = session?.user?.id;
     const router = useRouter();
     const { saveUserAPI, data, error, isSaving: isLoading } = useSaveUserAPI();
     const [activeTab, setActiveTab] = useState("body");
@@ -224,7 +226,7 @@ export function ApiRequestForm() {
         e.preventDefault();
 
         // Validate user authentication
-        if (!userID) {
+        if (!userId) {
             toast.error("You must be logged in to save API requests.");
             return;
         }
@@ -239,7 +241,7 @@ export function ApiRequestForm() {
         try {
             // Save the API request
             await saveUserAPI({
-                user_id: userID,
+                user_id: userId,
                 ...validationResult.data,
             });
 

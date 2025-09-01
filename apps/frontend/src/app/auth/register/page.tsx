@@ -13,7 +13,7 @@ export default function RegisterPage() {
                     <span className="text-neutral-400 text-center block mt-4">
                         Already have an account?{" "}
                         <Link
-                            href="/login"
+                            href="/auth/login"
                             className="text-white underline underline-offset-2"
                         >
                             Login
