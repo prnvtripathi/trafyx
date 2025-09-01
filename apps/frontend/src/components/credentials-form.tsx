@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 type CredentialsFormProps = {
   variant: "login" | "register";
@@ -13,6 +14,7 @@ type CredentialsFormProps = {
 
 export default function CredentialsForm({ variant }: CredentialsFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +34,6 @@ export default function CredentialsForm({ variant }: CredentialsFormProps) {
           },
           onSuccess: () => {
             toast.success("Logged in successfully");
-            // Let Better Auth handle the redirect via callbackURL
           },
           onError: (ctx) => {
             setIsLoading(false);
@@ -57,7 +58,7 @@ export default function CredentialsForm({ variant }: CredentialsFormProps) {
           },
           onSuccess: () => {
             toast.success("Account created successfully");
-            // Since autoSignIn is true by default, user will be signed in and redirected
+            router.push("/dashboard");
           },
           onError: (ctx) => {
             setIsLoading(false);
