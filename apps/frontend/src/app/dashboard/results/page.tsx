@@ -15,8 +15,6 @@ export default function ResultsPage() {
 
     const { data, error, isLoading } = useAPIsWithTestResults(userId as string);
 
-    console.log("data:", data);
-
     if (isLoading) {
         return (
             <Card>
