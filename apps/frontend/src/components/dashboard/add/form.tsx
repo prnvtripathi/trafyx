@@ -206,7 +206,7 @@ export function ApiRequestForm() {
     } = authClient.useSession()
     const userId = session?.user?.id;
     const router = useRouter();
-    const { saveUserAPI, data, error, isSaving: isLoading } = useSaveUserAPI();
+    const { saveUserAPI, isSaving: isLoading } = useSaveUserAPI();
     const [activeTab, setActiveTab] = useState("body");
 
     const INITIAL_FORM_VALUES: FormValues = {
@@ -239,21 +239,20 @@ export function ApiRequestForm() {
         }
 
         try {
-            // Save the API request
-            await saveUserAPI({
+            // Save the API request and wait for the response
+            const response = await saveUserAPI({
                 user_id: userId,
                 ...validationResult.data,
             });
 
-            // Handle response
-            if (data?.success) {
-                toast.success(data?.message || "API request saved successfully!");
-                const apiID = data.api.ID;
-                router.push(`/dashboard/apis/${apiID}`);
+            if (response?.success) {
+                toast.success(response?.message || "API request saved successfully!");
+                const apiId = response?.api?.id;
+                router.push(`/dashboard/apis/${apiId}`);
                 setFormValues(INITIAL_FORM_VALUES); // Reset form on success
-            } else if (error || data?.success === false || data?.error) {
-                console.error("Error saving API:", error);
-                toast.error(data?.message || "Failed to save API request.");
+            } else {
+                console.error("Error in response:", response);
+                toast.error(response?.message || "Failed to save API request.");
             }
 
         } catch (saveError: any) {
