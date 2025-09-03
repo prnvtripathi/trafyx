@@ -16,7 +16,6 @@ export default function UserAPITable() {
     }
 
     const { data, error, isLoading } = useUserAPIs({ userId });
-    console.log("User APIs data:", data);
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error loading APIs: {error.message}</p>;
 

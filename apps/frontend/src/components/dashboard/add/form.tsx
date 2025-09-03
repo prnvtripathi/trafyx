@@ -247,7 +247,6 @@ export function ApiRequestForm() {
 
             // Handle response
             if (data?.success) {
-                console.log("API saved successfully:", data);
                 toast.success(data?.message || "API request saved successfully!");
                 const apiID = data.api.ID;
                 router.push(`/dashboard/apis/${apiID}`);
