@@ -25,15 +25,7 @@ const methodColors = {
     PATCH: "bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/50 dark:text-purple-200 dark:border-purple-700 shadow-purple-200/20 dark:shadow-purple-900/20",
 };
 
-export default function APICard({
-    api,
-    onEdit,
-    onDelete,
-}: {
-    api: UserAPI;
-    onEdit?: (api: UserAPI) => void;
-    onDelete?: (api: UserAPI) => void;
-}) {
+export default function APICard({ api }: { api: UserAPI; }) {
     return (
         <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-1 border-border/50 bg-gradient-to-br from-card via-card to-muted/20 hover:from-card hover:via-accent/30 hover:to-muted/30 flex flex-col gap-1">
             {/* Subtle gradient overlay */}
@@ -70,8 +62,8 @@ export default function APICard({
                     </div>
 
                     <CardAction className="flex items-center gap-2">
-                        {onEdit && <EditAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />}
-                        {onDelete && <DeleteAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />}
+                        <EditAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />
+                        <DeleteAPIButton api={api} variant="icon" className="opacity-0 group-hover:opacity-100 transition-all duration-200" />
                     </CardAction>
                 </div>
             </CardHeader>

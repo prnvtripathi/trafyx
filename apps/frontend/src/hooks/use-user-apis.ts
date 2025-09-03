@@ -76,10 +76,7 @@ export function useEditAPI(apiId: string) {
     any,
     string,
     Partial<UserAPI>
-  >(
-    apiId ? `${BACKEND_URL}/api/${apiId}` : "",
-    editAPI
-  );
+  >(apiId ? `${BACKEND_URL}/api/${apiId}` : "", editAPI);
   return {
     editAPI: trigger,
     data,
@@ -95,10 +92,7 @@ export function useDeleteAPI(apiId: string) {
     any,
     string,
     void
-  >(
-    apiId ? `${BACKEND_URL}/api/${apiId}` : "",
-    deleteAPI
-  );
+  >(apiId ? `${BACKEND_URL}/api/${apiId}` : "", deleteAPI);
   return {
     deleteAPI: trigger,
     data,
@@ -150,4 +144,3 @@ export function useAPIById(apiId: string) {
     isLoading,
   };
 }
-

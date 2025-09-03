@@ -18,9 +18,6 @@ export default function ApiTestResults() {
     const { api_id } = useParams<{ api_id: string }>();
     const { data, error, isLoading } = useTestResults(api_id ?? "");
 
-    console.log("Test Results Data:", data);
-
-
     if (isLoading || !data) {
         return (
             <div className="min-h-screen bg-transparent flex items-center justify-center">
@@ -73,11 +70,6 @@ export default function ApiTestResults() {
         }
         return true;
     });
-
-    console.log("passedTests:", passedTests);
-    console.log("failedTests:", failedTests);
-    console.log("avgDuration:", avgDuration);
-    console.log("filteredResults:", filteredResults);
 
     return (
         <main>
