@@ -26,20 +26,34 @@ import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Moon, Sun, Monitor } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export function AppSidebar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const { toggleSidebar } = useSidebar();
     const pathname = usePathname();
     const router = useRouter();
+    const { theme, setTheme } = useTheme();
 
+    // function to change the theme, on click of the button
+    const handleThemeChange = () => {
+        //    The theme will change in the order: light -> dark -> system
+        if (theme === "light") {
+            setTheme("dark");
+        } else if (theme === "dark") {
+            setTheme("system");
+        } else {
+            setTheme("light");
+        }
+    };
 
     return (
         <Sidebar collapsible="icon" className="border-r-1 border-r-neutral-700/30 dark:border-r-white/20">
             <SidebarHeader>
                 <Link
                     href="/"
-                    className="flex items-center justify-center py-3 gap-2 flex-row w-full"
+                    className="flex items-center justify-center py-1 gap-2 flex-row w-full"
                 >
                     <div className="bg-primary rounded-full shadow-xl text-white p-1">
                         <Cog className=" m-0 h-6 p-0 rounded-full w-full" />
@@ -128,6 +142,18 @@ export function AppSidebar() {
                         </Link>{" "}
                     </SidebarMenuItem> */}
                     <SidebarMenuItem>
+                        <SidebarMenuButton tooltip="Change Theme" onClick={handleThemeChange} className="flex items-center">
+                            {theme === "dark" ? (
+                                <Sun className="h-4 w-4" />
+                            ) : theme === "light" ? (
+                                <Moon className="h-4 w-4" />
+                            ) : (
+                                <Monitor className="h-4 w-4" />
+                            )}
+                            <span>Change Theme</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    {/* <SidebarMenuItem>
                         <SidebarMenuButton
                             tooltip="Settings"
                             isActive={pathname.includes("/dashboard/settings")}
@@ -139,7 +165,7 @@ export function AppSidebar() {
                                 <span>Settings</span>
                             </Link>
                         </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    </SidebarMenuItem> */}
                     <SidebarMenuItem className="border-t border-t-neutral-700/30 dark:border-t-white/20">
                         <SidebarMenuButton
                             tooltip="Expand Sidebar"

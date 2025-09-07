@@ -68,7 +68,6 @@ function ElegantShape({
             'absolute inset-0 rounded-full',
             'bg-gradient-to-r to-transparent',
             gradient,
-            'border-2 border-white/80 backdrop-blur-[2px] dark:border-white/80',
             'shadow-[0_8px_32px_0_rgba(255,255,255,0.4)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.5)]',
             'after:absolute after:inset-0 after:rounded-full',
             'after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.6),transparent_70%)]',
