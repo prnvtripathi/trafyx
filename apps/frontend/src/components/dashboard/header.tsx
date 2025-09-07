@@ -7,7 +7,7 @@ export default async function Header() {
         <>
             <nav className="flex items-center justify-between px-4 py-4 gap-2 w-full">
                 <div className="hidden md:flex md:flex-1 items-center">
-                    <DynamicBreadcrumb separator={"/"} />
+                    <DynamicBreadcrumb separator={"/"} containerClasses="text-sm" />
                 </div>
             </nav>
         </>
