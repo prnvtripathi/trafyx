@@ -27,10 +27,7 @@ const methodColors = {
 
 export default function APICard({ api }: { api: UserAPI; }) {
     return (
-        <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-1 border-border/50 bg-gradient-to-br from-card via-card to-muted/20 hover:from-card hover:via-accent/30 hover:to-muted/30 flex flex-col gap-1">
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-muted/10 pointer-events-none" />
-
+        <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border-border/50 flex flex-col gap-1">
             <CardHeader className="">
                 <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1 space-y-2">
