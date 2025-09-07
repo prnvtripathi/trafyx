@@ -10,7 +10,7 @@ export default function UserAPITable({ userId }: { userId: string }) {
     if (error) return <p>Error loading APIs: {error.message}</p>;
 
     return (
-        <div className="overflow-x-auto space-y-4">
+        <div className="overflow-x-auto space-y-2 py-1">
             {data?.apis?.map((api) => (
                 <APICard key={api.id} api={api} />
             ))}
