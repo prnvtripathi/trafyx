@@ -15,7 +15,7 @@ export default function Layout({
                 <AppSidebar />
 
                 <main className="md:flex-1 space-y-2 overflow-hidden relative z-0">
-                    <div className="flex items-center justify-between border-b">
+                    <div className="flex items-center justify-between">
                         <SidebarTrigger className="flex md:hidden h-full" />
                         <Header />
                     </div>

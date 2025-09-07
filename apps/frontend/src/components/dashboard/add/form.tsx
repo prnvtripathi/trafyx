@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -17,167 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { useSaveUserAPI } from "@/hooks/use-user-apis";
 import { FormValues } from "@/types/api.type";
-
-interface ParamsTableProps {
-    onParamsChange: (queryString: string) => void;
-}
-
-const ParamsTable = ({ onParamsChange }: ParamsTableProps) => {
-    const [params, setParams] = useState([
-        { id: 1, key: "", value: "", enabled: true },
-    ]);
-
-    const updateParam = (id: number, field: string, value: any) => {
-        setParams((prev) => {
-            const updated = prev.map((param) =>
-                param.id === id ? { ...param, [field]: value } : param
-            );
-
-            // Add a new row if the last row has a key or value
-            if (
-                updated[updated.length - 1].key ||
-                updated[updated.length - 1].value
-            ) {
-                updated.push({
-                    id: updated.length + 1,
-                    key: "",
-                    value: "",
-                    enabled: true,
-                });
-            }
-
-            // Remove empty rows except the last one
-            const filtered = updated.filter(
-                (param, index) =>
-                    param.key || param.value || index === updated.length - 1
-            );
-
-            return filtered;
-        });
-    };
-
-    const deleteParam = (id: number) => {
-        setParams((prev) => prev.filter((param) => param.id !== id));
-    };
-
-    useEffect(() => {
-        const queryString = params
-            .filter((param) => param.enabled && param.key)
-            .map(
-                (param) =>
-                    `${encodeURIComponent(param.key)}=${encodeURIComponent(param.value)}`
-            )
-            .join("&");
-
-        onParamsChange(queryString);
-    }, [params, onParamsChange]);
-
-    return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <div className="flex space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                            setParams([
-                                ...params,
-                                { id: params.length + 1, key: "", value: "", enabled: true },
-                            ])
-                        }
-                    >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Add Parameter
-                    </Button>
-                </div>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-500"
-                    onClick={() =>
-                        setParams([{ id: 1, key: "", value: "", enabled: true }])
-                    }
-                    type="button"
-                >
-                    <Trash2 className="h-4 w-4 mr-1" />
-                    Clear All
-                </Button>
-            </div>
-
-            <div className="border rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow className="bg-slate-100 dark:bg-slate-800">
-                            <TableHead className="w-[50px]">Status</TableHead>
-                            <TableHead>Key</TableHead>
-                            <TableHead>Value</TableHead>
-                            <TableHead className="w-[50px]">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {params.map((param, index) => (
-                            <TableRow key={param.id}>
-                                <TableCell>
-                                    <input
-                                        type="checkbox"
-                                        checked={param.enabled}
-                                        onChange={(e) =>
-                                            updateParam(param.id, "enabled", e.target.checked)
-                                        }
-                                        className="rounded border-gray-300"
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Input
-                                        value={param.key}
-                                        onChange={(e) =>
-                                            updateParam(param.id, "key", e.target.value)
-                                        }
-                                        placeholder="Parameter key"
-                                        className="border-0 focus-visible:ring-0"
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Input
-                                        value={param.value}
-                                        onChange={(e) =>
-                                            updateParam(param.id, "value", e.target.value)
-                                        }
-                                        placeholder="Parameter value"
-                                        className="border-0 focus-visible:ring-0"
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    {params.length > 1 && (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="text-red-500 h-8 w-8 p-0"
-                                            onClick={() => deleteParam(param.id)}
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    )}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-        </div>
-    );
-};
 
 // Colors for the method select options
 const methodColors: { [key: string]: string } = {
@@ -195,7 +36,6 @@ const apiRequestSchema = z.object({
     url: z.url("Enter a valid URL"),
     headers: z.string().optional(),
     payload: z.string().optional(),
-    params: z.string().optional(),
     description: z.string().min(1, "Description is required"),
 });
 
@@ -215,7 +55,6 @@ export function ApiRequestForm() {
         url: "",
         headers: "",
         payload: "",
-        params: "",
         description: "",
     };
 
@@ -261,12 +100,6 @@ export function ApiRequestForm() {
         }
     };
 
-
-    // ParamsTable integration (memoized to prevent infinite loop)
-    const handleParamsChange = useCallback((queryString: string) => {
-        setFormValues((prev) => ({ ...prev, params: queryString }));
-    }, []);
-
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -280,15 +113,11 @@ export function ApiRequestForm() {
 
 
     return (
-        <Card className="w-full backdrop-blur-xl bg-sky-200/40 dark:bg-black/40">
-            <CardHeader className="px-6 py-4 border-b">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                        <CardTitle className="text-xl">New Request</CardTitle>
-                    </div>
-                </div>
+        <Card className="w-full max-w-4xl mx-auto my-8">
+            <CardHeader className="border-b">
+                <CardTitle className="text-lg">New Request</CardTitle>
             </CardHeader>
-            <CardContent className="p-6 space-y-6">
+            <CardContent className="px-4 py-2 space-y-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block font-medium mb-1" htmlFor="name">
@@ -302,12 +131,7 @@ export function ApiRequestForm() {
                             onChange={handleChange}
                             required
                         />
-                        <p className="text-xs text-muted-foreground">
-                            A descriptive name for your API request.
-                        </p>
                     </div>
-
-
 
                     <div className="flex items-center space-x-2">
                         <div>
@@ -332,11 +156,14 @@ export function ApiRequestForm() {
                         <div className="flex-grow">
                             <label className="block font-medium mb-1" htmlFor="url">
                                 URL
+                                <span className="text-xs text-muted-foreground ml-2">
+                                    Include query parameters directly in the URL (e.g., https://api.example.com/users?limit=10&page=1)
+                                </span>
                             </label>
                             <Input
                                 id="url"
                                 name="url"
-                                placeholder="Enter request URL"
+                                placeholder="Enter request URL (include query parameters directly in the URL)"
                                 value={formValues.url}
                                 onChange={handleChange}
                                 required
@@ -355,9 +182,7 @@ export function ApiRequestForm() {
                             value={formValues.description}
                             onChange={handleChange}
                         />
-                        <p className="text-xs text-muted-foreground">
-                            Describe what this API request does.
-                        </p>
+
                     </div>
 
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -374,34 +199,31 @@ export function ApiRequestForm() {
                             >
                                 Body
                             </TabsTrigger>
-                            <TabsTrigger
-                                value="params"
-                                className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent"
-                            >
-                                Params
-                            </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="headers" className="mt-4">
                             <label className="block font-medium mb-1" htmlFor="headers">
                                 Headers
+                                <span className="text-xs text-muted-foreground ml-2">
+                                    Include any custom headers as a JSON object.
+                                </span>
                             </label>
                             <Textarea
                                 id="headers"
                                 name="headers"
-                                placeholder='{"Content-Type": "application/json"}'
+                                placeholder='{"Content-Type": "application/json", "Authorization": "Bearer token"}'
                                 className="font-mono h-[120px]"
                                 value={formValues.headers}
                                 onChange={handleChange}
                             />
-                            <p className="text-xs text-muted-foreground">
-                                Enter headers as a JSON object.
-                            </p>
                         </TabsContent>
 
                         <TabsContent value="body" className="mt-4">
                             <label className="block font-medium mb-1" htmlFor="payload">
                                 Body
+                                <span className="text-xs text-muted-foreground ml-2">
+                                    Include the request payload as a JSON object.
+                                </span>
                             </label>
                             <Textarea
                                 id="payload"
@@ -411,15 +233,9 @@ export function ApiRequestForm() {
                                 value={formValues.payload}
                                 onChange={handleChange}
                             />
-                            <p className="text-xs text-muted-foreground">
-                                Enter request body as a JSON object.
-                            </p>
-                        </TabsContent>
-
-                        <TabsContent value="params" className="mt-4">
-                            <ParamsTable onParamsChange={handleParamsChange} />
                         </TabsContent>
                     </Tabs>
+
                     <Button type="submit" disabled={isLoading} className="w-fit">
                         {isLoading ? "Submitting..." : "Submit Request"}
                     </Button>
