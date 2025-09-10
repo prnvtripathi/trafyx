@@ -93,14 +93,14 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
     }
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="py-4 sm:py-6">
             <h2 className="text-xl sm:text-2xl font-bold mb-4">
                 Your Stats
             </h2>
             <div className="mx-auto max-w-7xl">
                 <AnimatePresence>
                     <motion.div
-                        className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8"
+                        className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8"
                         initial="hidden"
                         animate="visible"
                         variants={{
@@ -117,13 +117,9 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                         {/* Total APIs Card */}
                         <motion.div variants={cardVariants}>
                             <Card className="hover:scale-[1.02] transition-transform">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-xs sm:text-sm text-muted-foreground">
-                                        Total APIs
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-lg sm:text-2xl font-bold">{stats?.total_apis}</div>
+                                <CardContent className="flex items-center justify-between py-1 px-2 md:px-4">
+                                    <span className="text-xs sm:text-sm text-muted-foreground">Total APIs</span>
+                                    <span className="text-base sm:text-lg font-bold">{stats?.total_apis}</span>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -131,15 +127,9 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                         {/* Total Test Cases Card */}
                         <motion.div variants={cardVariants}>
                             <Card className="hover:scale-[1.02] transition-transform">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-xs sm:text-sm text-muted-foreground">
-                                        Test Cases
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-lg sm:text-2xl font-bold">
-                                        {stats?.total_test_cases}
-                                    </div>
+                                <CardContent className="flex items-center justify-between py-1 px-2 md:px-4">
+                                    <span className="text-xs sm:text-sm text-muted-foreground">Test Cases</span>
+                                    <span className="text-base sm:text-lg font-bold">{stats?.total_test_cases}</span>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -147,15 +137,11 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                         {/* Success Rate Card */}
                         <motion.div variants={cardVariants}>
                             <Card className="hover:scale-[1.02] transition-transform">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-xs sm:text-sm text-muted-foreground">
-                                        Success Rate
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-lg sm:text-2xl font-bold text-green-600">
+                                <CardContent className="flex items-center justify-between py-1 px-2 md:px-4">
+                                    <span className="text-xs sm:text-sm text-muted-foreground">Success %</span>
+                                    <span className="text-base sm:text-lg font-bold text-green-600">
                                         {stats?.success_rate?.toFixed(2)}%
-                                    </div>
+                                    </span>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -163,15 +149,11 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                         {/* Average Duration Card */}
                         <motion.div variants={cardVariants}>
                             <Card className="hover:scale-[1.02] transition-transform">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-xs sm:text-sm text-muted-foreground">
-                                        Avg Duration
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-lg sm:text-2xl font-bold">
+                                <CardContent className="flex items-center justify-between py-1 px-2 md:px-4">
+                                    <span className="text-xs sm:text-sm text-muted-foreground">Avg Duration</span>
+                                    <span className="text-base sm:text-lg font-bold">
                                         {stats?.average_duration?.toFixed(2)}s
-                                    </div>
+                                    </span>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -180,31 +162,27 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
 
                 {/* Charts Grid */}
                 {showCharts && (
-                    <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
+                    <div className="grid gap-3 sm:gap-4 grid-cols-1 md:grid-cols-2">
                         {/* Test Runs per API Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
+                        <div>
                             <Card className="transition-transform">
-                                <CardHeader>
-                                    <CardTitle className="text-base sm:text-lg">Test Runs per API</CardTitle>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">Test Runs per API</CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-2 sm:p-6">
-                                    <ChartContainer className="h-[180px] sm:h-[250px] lg:h-[300px] w-full" config={{}}>
+                                <CardContent className="p-3 sm:p-4">
+                                    <ChartContainer className="h-[140px] sm:h-[180px] md:h-[200px] lg:h-[220px]" config={{}}>
                                         <ResponsiveContainer width="100%" height="100%">
                                             <BarChart
                                                 data={stats?.api_stats}
                                                 layout="vertical"
-                                                margin={{ right: 8, left: 4, top: 5, bottom: 5 }}
+                                                margin={{ right: 6, left: 4, top: 4, bottom: 4 }}
                                             >
                                                 <CartesianGrid horizontal={false} />
                                                 <YAxis
                                                     dataKey="name"
                                                     type="category"
                                                     tickLine={false}
-                                                    tickMargin={5}
+                                                    tickMargin={3}
                                                     axisLine={false}
                                                     tickFormatter={(value) => value.slice(0, 3)}
                                                     hide
@@ -213,21 +191,21 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                                                 <ChartTooltip content={<ChartTooltipContent />} />
                                                 <Bar
                                                     dataKey="test_runs_count"
-                                                    fill="#a78bfa"
+                                                    fill="var(--color-chart-1)"
                                                     radius={2}
                                                     layout="vertical"
                                                 >
                                                     <LabelList
                                                         dataKey="name"
                                                         position="insideLeft"
-                                                        offset={4}
+                                                        offset={3}
                                                         className="fill-[--color-label]"
                                                         fontSize={8}
                                                     />
                                                     <LabelList
                                                         dataKey="test_runs_count"
                                                         position="right"
-                                                        offset={4}
+                                                        offset={3}
                                                         className="fill-foreground"
                                                         fontSize={8}
                                                     />
@@ -237,125 +215,102 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.8 }}
-                        >
+                        {/* Test Runs Over Time */}
+                        <div>
                             <Card className="transition-transform">
-                                <CardHeader>
-                                    <CardTitle className="text-base sm:text-lg">Test Runs Over Time</CardTitle>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">Test Runs Over Time</CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-2 sm:p-6">
-                                    <ChartContainer className="h-[180px] sm:h-[250px] lg:h-[300px] w-full" config={{}}>
+                                <CardContent className="p-3 sm:p-4">
+                                    <ChartContainer className="h-[140px] sm:h-[180px] md:h-[200px] lg:h-[220px]" config={{}}>
                                         <ResponsiveContainer width="100%" height="100%">
-                                            <LineChart data={stats?.api_stats} margin={{ left: 4, right: 4, top: 5, bottom: 40 }}>
+                                            <LineChart
+                                                data={stats?.api_stats}
+                                                margin={{ left: 4, right: 4, top: 4, bottom: 30 }}
+                                            >
                                                 <XAxis
                                                     dataKey="name"
                                                     fontSize={8}
                                                     angle={-45}
                                                     textAnchor="end"
-                                                    height={50}
+                                                    height={40}
                                                     interval={0}
-                                                    tickFormatter={(value) =>
-                                                        value.length > 6 ? `${value.slice(0, 6)}...` : value
-                                                    }
+                                                    tickFormatter={(v) => (v.length > 6 ? `${v.slice(0, 6)}...` : v)}
                                                 />
                                                 <YAxis fontSize={8} />
                                                 <ChartTooltip content={<ChartTooltipContent />} />
                                                 <Line
                                                     type="monotone"
                                                     dataKey="test_runs_count"
-                                                    stroke="#4f46e5"
-                                                    strokeWidth={1.5}
+                                                    stroke="var(--color-chart-2)"
+                                                    strokeWidth={1.2}
                                                     dot={{ r: 2 }}
-                                                    activeDot={{ r: 4 }}
+                                                    activeDot={{ r: 3 }}
                                                 />
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        {/* Pass/Fail Distribution Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6 }}
-                        >
+                        {/* Overall Test Results */}
+                        <div>
                             <Card className="transition-transform">
-                                <CardHeader>
-                                    <CardTitle className="text-base sm:text-lg">Overall Test Results</CardTitle>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">Overall Test Results</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    <ChartContainer className="h-[250px] sm:h-[300px]" config={{}}>
+                                <CardContent className="p-3 sm:p-4">
+                                    <ChartContainer className="h-[160px] sm:h-[200px] md:h-[220px]" config={{}}>
                                         <PieChart>
                                             <Pie
                                                 data={[
-                                                    {
-                                                        name: "Passed",
-                                                        value: stats?.passed_test_runs,
-                                                        fill: "#10b981",
-                                                    },
-                                                    {
-                                                        name: "Failed",
-                                                        value: stats?.failed_test_runs,
-                                                        fill: "#ef4444",
-                                                    },
+                                                    { name: "Passed", value: stats?.passed_test_runs, fill: "#10b981" }, // green
+                                                    { name: "Failed", value: stats?.failed_test_runs, fill: "#ef4444" }, // red
                                                 ]}
                                                 dataKey="value"
                                                 nameKey="name"
                                                 cx="50%"
                                                 cy="50%"
-                                                outerRadius={80}
-                                                innerRadius={0}
-                                                label={({ name, percent }) =>
-                                                    `${name}: ${(percent * 100).toFixed(0)}%`
-                                                }
+                                                outerRadius={70}
+                                                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                                 labelLine={false}
-                                                fontSize={10}
+                                                fontSize={9}
                                             />
                                             <ChartTooltip content={<ChartTooltipContent />} />
                                         </PieChart>
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
 
-                        {/* Success Rate Distribution Chart */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                        >
+                        {/* API Success Rates */}
+                        <div>
                             <Card className="transition-transform">
-                                <CardHeader>
-                                    <CardTitle className="text-base sm:text-lg">API Success Rates</CardTitle>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-sm font-medium">API Success Rates</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    <ChartContainer className="h-[250px] sm:h-[300px]" config={{}}>
+                                <CardContent className="p-3 sm:p-4">
+                                    <ChartContainer className="h-[160px] sm:h-[200px] md:h-[220px]" config={{}}>
                                         <ResponsiveContainer width="100%" height="100%">
-                                            <BarChart data={stats?.api_stats} margin={{ left: 8, right: 8, bottom: 20 }}>
+                                            <BarChart data={stats?.api_stats} margin={{ left: 6, right: 6, bottom: 20 }}>
                                                 <XAxis
                                                     dataKey="name"
                                                     angle={-45}
                                                     textAnchor="end"
                                                     interval={0}
-                                                    height={70}
-                                                    fontSize={10}
-                                                    tickFormatter={(value) =>
-                                                        value.length > 8 ? `${value.slice(0, 8)}...` : value
-                                                    }
+                                                    height={50}
+                                                    fontSize={9}
+                                                    tickFormatter={(v) => (v.length > 8 ? `${v.slice(0, 8)}...` : v)}
                                                 />
-                                                <YAxis unit="%" fontSize={10} />
+                                                <YAxis unit="%" fontSize={9} />
                                                 <ChartTooltip content={<ChartTooltipContent />} />
                                                 <Bar
                                                     dataKey="success_rate"
-                                                    fill="#10b981"
-                                                    radius={[4, 4, 0, 0]}
+                                                    fill="var(--color-chart-5)"
+                                                    radius={[3, 3, 0, 0]}
                                                     name="Success Rate"
                                                 />
                                             </BarChart>
@@ -363,7 +318,7 @@ export default function Stats({ userId, showCharts = true }: { userId: string, s
                                     </ChartContainer>
                                 </CardContent>
                             </Card>
-                        </motion.div>
+                        </div>
                     </div>
                 )}
             </div>

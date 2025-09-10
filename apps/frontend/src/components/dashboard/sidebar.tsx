@@ -28,6 +28,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "next-themes"
+import { Separator } from "../ui/separator";
 
 export function AppSidebar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -53,7 +54,7 @@ export function AppSidebar() {
             <SidebarHeader>
                 <Link
                     href="/"
-                    className="flex items-center justify-center py-1 gap-2 flex-row w-full"
+                    className="flex items-center justify-start py-2 px-2 gap-2 flex-row w-full"
                 >
                     <div className="bg-primary rounded-full shadow-xl text-white p-1">
                         <Cog className=" m-0 h-6 p-0 rounded-full w-full" />
@@ -73,8 +74,9 @@ export function AppSidebar() {
                     )}
                 </Link>
             </SidebarHeader>
+            <Separator className="mb-3"/>
             <SidebarContent className="px-2">
-                <SidebarMenu className="border-t border-t-neutral-700/30 dark:border-t-white/20">
+                <SidebarMenu className="">
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             tooltip="Add new API"
@@ -130,6 +132,7 @@ export function AppSidebar() {
 
                 </SidebarMenu>
             </SidebarContent>
+            <Separator />
             <SidebarFooter>
                 <SidebarMenu>
                     {/* <SidebarMenuItem className="border-t border-t-neutral-700/30 dark:border-t-white/20">
@@ -166,7 +169,7 @@ export function AppSidebar() {
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem> */}
-                    <SidebarMenuItem className="border-t border-t-neutral-700/30 dark:border-t-white/20">
+                    <SidebarMenuItem className="">
                         <SidebarMenuButton
                             tooltip="Expand Sidebar"
                             onClick={() => {
