@@ -37,7 +37,7 @@ const SignInButton = ({ method }: SignInButtonProps) => {
   return (
     <Button
       variant="outline"
-      className="border-neutral-800 bg-neutral-950 text-white hover:bg-neutral-900 w-32 sm:w-40"
+      className="border-neutral-800 w-32 sm:w-40"
       onClick={handleSocialSignIn}
       disabled={isLoading}
     >

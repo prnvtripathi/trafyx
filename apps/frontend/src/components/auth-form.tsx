@@ -14,7 +14,7 @@ type AuthFormProps = {
 
 export default function AuthForm({ variant }: AuthFormProps) {
   return (
-    <Card className="mx-auto max-w-sm sm:w-96 border-neutral-800 bg-neutral-950 text-white">
+    <Card className="mx-auto max-w-sm sm:w-96 border-none shadow-none">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold tracking-tight">
           {variant === "login" ? "Login" : "Create new account"}
@@ -27,7 +27,7 @@ export default function AuthForm({ variant }: AuthFormProps) {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between gap-2">
             <SignInButton method="github" />
             <SignInButton method="google" />
           </div>
@@ -35,11 +35,7 @@ export default function AuthForm({ variant }: AuthFormProps) {
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-neutral-800" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-neutral-950 px-2 text-neutral-400">
-                Or continue with
-              </span>
-            </div>
+            <div className="flex justify-center w-full border-t border-1" />
           </div>
           <CredentialsForm variant={variant} />
         </div>
