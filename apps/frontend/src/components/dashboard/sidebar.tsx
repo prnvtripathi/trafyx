@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { Moon, Sun, Monitor } from "lucide-react"
+import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Separator } from "../ui/separator";
 
@@ -42,8 +42,6 @@ export function AppSidebar() {
         //    The theme will change in the order: light -> dark -> system
         if (theme === "light") {
             setTheme("dark");
-        } else if (theme === "dark") {
-            setTheme("system");
         } else {
             setTheme("light");
         }
@@ -74,7 +72,7 @@ export function AppSidebar() {
                     )}
                 </Link>
             </SidebarHeader>
-            <Separator className="mb-3"/>
+            <Separator className="mb-3" />
             <SidebarContent className="px-2">
                 <SidebarMenu className="">
                     <SidebarMenuItem>
@@ -148,10 +146,8 @@ export function AppSidebar() {
                         <SidebarMenuButton tooltip="Change Theme" onClick={handleThemeChange} className="flex items-center">
                             {theme === "dark" ? (
                                 <Sun className="h-4 w-4" />
-                            ) : theme === "light" ? (
-                                <Moon className="h-4 w-4" />
                             ) : (
-                                <Monitor className="h-4 w-4" />
+                                <Moon className="h-4 w-4" />
                             )}
                             <span>Change Theme</span>
                         </SidebarMenuButton>
