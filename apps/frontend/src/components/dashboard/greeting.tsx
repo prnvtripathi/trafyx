@@ -30,9 +30,9 @@ export default async function HomePageGreeting() {
     // Render the card
     return (
         <div>
-            <Card className="border-none bg-white/30 dark:bg-black/30 backdrop-blur-3xl shadow-lg">
+            <Card className="border-none shadow-lg">
                 <CardHeader className="flex flex-row items-center">
-                    <Avatar className="size-20 md:size-28 mr-4">
+                    <Avatar className="size-10 md:size-16 mr-4">
                         <AvatarImage src={user?.image || "/noavatar.png"} />
                         <AvatarFallback className="text-3xl md:text-5xl">
                             {user?.name?.[0] || "?"}
