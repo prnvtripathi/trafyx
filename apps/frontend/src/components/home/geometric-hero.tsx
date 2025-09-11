@@ -108,16 +108,14 @@ export default function HeroComponent({
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background dark:bg-black">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-rose-500/20 blur-3xl dark:from-primary/30 dark:to-rose-500/30" />
-
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0 overflow-hidden">
         <ElegantShape
           delay={0.3}
           width={600}
           height={140}
           rotate={12}
-          gradient="from-indigo-500/70"
+          gradient="from-blue-500"
           className="left-[-10%] top-[15%] md:left-[-5%] md:top-[20%]"
         />
 
@@ -144,7 +142,7 @@ export default function HeroComponent({
           width={200}
           height={60}
           rotate={20}
-          gradient="from-amber-500/70 dark:from-amber-400/90"
+          gradient="from-emerald-400"
           className="right-[15%] top-[10%] md:right-[20%] md:top-[15%]"
         />
 
@@ -153,12 +151,12 @@ export default function HeroComponent({
           width={150}
           height={40}
           rotate={-25}
-          gradient="from-cyan-500/70 dark:from-cyan-400/90"
+          gradient="from-blue-400"
           className="left-[20%] top-[5%] md:left-[25%] md:top-[10%]"
         />
       </div>
 
-      <div className="container relative z-10 mx-auto max-w-6xl px-4 md:px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
             custom={0}
@@ -236,7 +234,7 @@ export default function HeroComponent({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80 dark:from-black dark:to-black/80" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
     </div>
   );
 }
