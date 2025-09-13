@@ -4,6 +4,10 @@ import { useState } from "react";
 import { TestCase, NewTestCase } from "@/types/test-case.type";
 import { useAddTestCase, useDeleteTestCase, useUpdateTestCase } from "@/hooks/use-test-cases";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
     Dialog,
     DialogContent,
@@ -12,8 +16,6 @@ import {
     DialogFooter,
     DialogTrigger
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash, Pencil } from "lucide-react";
 import {
     Select,
@@ -76,35 +78,124 @@ export function AddTestCaseButton({ apiId }: { apiId: string }) {
                     Add Test Case
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Add Test Case</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-                    <Input name="name" placeholder="Name" value={form.name || ""} onChange={handleChange} />
-                    <Select value={form.method || ""} onValueChange={handleMethodChange}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Method (GET, POST, etc)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="GET">GET</SelectItem>
-                            <SelectItem value="POST">POST</SelectItem>
-                            <SelectItem value="PUT">PUT</SelectItem>
-                            <SelectItem value="DELETE">DELETE</SelectItem>
-                            <SelectItem value="PATCH">PATCH</SelectItem>
-                            <SelectItem value="OPTIONS">OPTIONS</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Input name="url" placeholder="URL" value={form.url || ""} onChange={handleChange} />
-                    <Input name="expected_outcome" placeholder="Expected Outcome (status code)" type="number" value={form.expected_outcome?.toString() || ""} onChange={handleChange} />
-                    <Textarea name="description" placeholder="Description" value={form.description || ""} onChange={handleChange} />
-                    <Textarea name="headers" placeholder="Headers (JSON)" value={form.headers || ""} onChange={handleChange} />
-                    <Textarea name="payload" placeholder="Payload (JSON)" value={form.payload || ""} onChange={handleChange} />
-                    {error && <div className="text-red-500">{error.message || "Error adding test case"}</div>}
-                    <DialogFooter>
-                        <Button type="submit" disabled={isAdding}>Save</Button>
-                    </DialogFooter>
-                </form>
+                <Card className="bg-transparent border-0 shadow-none">
+                    <CardContent className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="name">Test Case Name</Label>
+                                <Input
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter test case name"
+                                    value={form.name || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className="flex flex-row justify-between gap-4 items-center">
+                                <div className="space-y-2 flex-1">
+                                    <Label htmlFor="expected_outcome">Expected Status Code</Label>
+                                    <Input
+                                        id="expected_outcome"
+                                        name="expected_outcome"
+                                        placeholder="200"
+                                        type="number"
+                                        min="100"
+                                        max="599"
+                                        value={form.expected_outcome?.toString() || ""}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="space-y-1 flex-1">
+                                    <Label htmlFor="method">HTTP Method</Label>
+                                    <Select value={form.method || ""} onValueChange={handleMethodChange}>
+                                        <SelectTrigger className="w-full py-[19px] mt-1">
+                                            <SelectValue placeholder="Select method" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="GET"><span className="font-mono">GET</span></SelectItem>
+                                            <SelectItem value="POST"><span className="font-mono">POST</span></SelectItem>
+                                            <SelectItem value="PUT"><span className="font-mono">PUT</span></SelectItem>
+                                            <SelectItem value="DELETE"><span className="font-mono">DELETE</span></SelectItem>
+                                            <SelectItem value="PATCH"><span className="font-mono">PATCH</span></SelectItem>
+                                            <SelectItem value="OPTIONS"><span className="font-mono">OPTIONS</span></SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="url">Test URL</Label>
+                                <Input
+                                    id="url"
+                                    name="url"
+                                    placeholder="https://api.example.com/endpoint?param=value"
+                                    value={form.url || ""}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Include query parameters directly in the URL
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="headers">Headers (JSON)</Label>
+                                    <Textarea
+                                        id="headers"
+                                        name="headers"
+                                        placeholder='{"Authorization": "Bearer token"}'
+                                        value={form.headers || ""}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="resize-none max-h-32"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="payload">Payload (JSON)</Label>
+                                    <Textarea
+                                        id="payload"
+                                        name="payload"
+                                        placeholder='{"key": "value"}'
+                                        value={form.payload || ""}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="resize-none max-h-32"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="description">Description</Label>
+                                <Textarea
+                                    id="description"
+                                    name="description"
+                                    placeholder="Describe what this test case validates..."
+                                    value={form.description || ""}
+                                    onChange={handleChange}
+                                    rows={2}
+                                    className="resize-none max-h-24"
+                                />
+                            </div>
+
+                            {error && (
+                                <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md">
+                                    {error.message || "Error adding test case"}
+                                </div>
+                            )}
+
+                            <DialogFooter>
+                                <Button type="submit" disabled={isAdding}>
+                                    {isAdding ? "Saving..." : "Save Test Case"}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </CardContent>
+                </Card>
             </DialogContent>
         </Dialog>
     );
@@ -187,35 +278,124 @@ export function EditTestCaseButton({ testCase }: { testCase: TestCase }) {
                     <Pencil className="h-4 w-4" />
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Edit Test Case</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-                    <Input name="name" value={form.name || ""} placeholder="Name" onChange={handleChange} />
-                    <Select value={form.method || ""} onValueChange={handleMethodChange}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Method" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="GET">GET</SelectItem>
-                            <SelectItem value="POST">POST</SelectItem>
-                            <SelectItem value="PUT">PUT</SelectItem>
-                            <SelectItem value="DELETE">DELETE</SelectItem>
-                            <SelectItem value="PATCH">PATCH</SelectItem>
-                            <SelectItem value="OPTIONS">OPTIONS</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Input name="url" value={form.url || ""} placeholder="URL" onChange={handleChange} />
-                    <Input name="expected_outcome" value={form.expected_outcome?.toString() || ""} placeholder="Expected Outcome" type="number" onChange={handleChange} />
-                    <Textarea name="description" value={form.description || ""} placeholder="Description" onChange={handleChange} />
-                    <Textarea name="headers" value={form.headers || ""} placeholder="Headers (JSON)" onChange={handleChange} />
-                    <Textarea name="payload" value={form.payload || ""} placeholder="Payload (JSON)" onChange={handleChange} />
-                    {error && <div className="text-red-500">{error.message || "Error updating test case"}</div>}
-                    <DialogFooter>
-                        <Button type="submit" disabled={isUpdating}>Save Changes</Button>
-                    </DialogFooter>
-                </form>
+                <Card>
+                    <CardContent className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-name">Test Case Name</Label>
+                                <Input
+                                    id="edit-name"
+                                    name="name"
+                                    placeholder="Enter test case name"
+                                    value={form.name || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className="flex flex-row justify-between gap-4 items-center">
+                                <div className="space-y-2 flex-1">
+                                    <Label htmlFor="edit-expected_outcome">Expected Status Code</Label>
+                                    <Input
+                                        id="edit-expected_outcome"
+                                        name="expected_outcome"
+                                        placeholder="200"
+                                        type="number"
+                                        min="100"
+                                        max="599"
+                                        value={form.expected_outcome?.toString() || ""}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="space-y-2 flex-1">
+                                    <Label htmlFor="edit-method">HTTP Method</Label>
+                                    <Select value={form.method || ""} onValueChange={handleMethodChange}>
+                                        <SelectTrigger className="w-full py-[19px] mt-1">
+                                            <SelectValue placeholder="Select method" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="GET"><span className="font-mono">GET</span></SelectItem>
+                                            <SelectItem value="POST"><span className="font-mono">POST</span></SelectItem>
+                                            <SelectItem value="PUT"><span className="font-mono">PUT</span></SelectItem>
+                                            <SelectItem value="DELETE"><span className="font-mono">DELETE</span></SelectItem>
+                                            <SelectItem value="PATCH"><span className="font-mono">PATCH</span></SelectItem>
+                                            <SelectItem value="OPTIONS"><span className="font-mono">OPTIONS</span></SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-url">Test URL</Label>
+                                <Input
+                                    id="edit-url"
+                                    name="url"
+                                    placeholder="https://api.example.com/endpoint?param=value"
+                                    value={form.url || ""}
+                                    onChange={handleChange}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Include query parameters directly in the URL
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="edit-headers">Headers (JSON)</Label>
+                                    <Textarea
+                                        id="edit-headers"
+                                        name="headers"
+                                        placeholder='{"Authorization": "Bearer token"}'
+                                        value={form.headers || ""}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="resize-none max-h-32"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="edit-payload">Payload (JSON)</Label>
+                                    <Textarea
+                                        id="edit-payload"
+                                        name="payload"
+                                        placeholder='{"key": "value"}'
+                                        value={form.payload || ""}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="resize-none max-h-32"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-description">Description</Label>
+                                <Textarea
+                                    id="edit-description"
+                                    name="description"
+                                    placeholder="Describe what this test case validates..."
+                                    value={form.description || ""}
+                                    onChange={handleChange}
+                                    rows={2}
+                                    className="resize-none max-h-24"
+                                />
+                            </div>
+
+                            {error && (
+                                <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md">
+                                    {error.message || "Error updating test case"}
+                                </div>
+                            )}
+
+                            <DialogFooter>
+                                <Button type="submit" disabled={isUpdating}>
+                                    {isUpdating ? "Saving..." : "Save Changes"}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </CardContent>
+                </Card>
             </DialogContent>
         </Dialog>
     );

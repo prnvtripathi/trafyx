@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PencilIcon } from "lucide-react";
 import { useEditAPI } from "@/hooks/use-user-apis";
 import { UserAPI, Method } from "@/types/api.type";
@@ -20,7 +25,6 @@ export default function EditAPIButton({ api, variant = "default", className = ""
         headers: api.headers || "",
         payload: api.payload || "",
         description: api.description || "",
-        params: api.params || "",
     });
     const { editAPI, isEditing } = useEditAPI(api.id);
 
@@ -54,65 +58,86 @@ export default function EditAPIButton({ api, variant = "default", className = ""
                         Update the API information below and click Save to apply changes.
                     </DialogDescription>
                 </DialogHeader>
-                <form className="space-y-3">
-                    <input
-                        type="text"
-                        name="name"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="API Name"
-                        value={form.name}
-                        onChange={handleChange}
-                    />
-                    <select
-                        name="method"
-                        className="w-full border rounded-md px-3 py-2"
-                        value={form.method}
-                        onChange={handleChange}
-                    >
-                        {(["GET", "POST", "PUT", "DELETE", "PATCH"] as Method[]).map(m => (
-                            <option key={m} value={m}>{m}</option>
-                        ))}
-                    </select>
-                    <input
-                        type="text"
-                        name="url"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="API URL"
-                        value={form.url}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="headers"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="Headers (JSON)"
-                        value={form.headers}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="payload"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="Payload (JSON)"
-                        value={form.payload}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="params"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="Params (JSON)"
-                        value={form.params}
-                        onChange={handleChange}
-                    />
-                    <textarea
-                        name="description"
-                        className="w-full border rounded-md px-3 py-2"
-                        placeholder="Description"
-                        value={form.description}
-                        onChange={handleChange}
-                    />
-                </form>
+                <Card className="bg-transparent border-0 shadow-none">
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="name">API Name</Label>
+                                <Input
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter API name"
+                                    value={form.name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="method">HTTP Method</Label>
+                                <Select value={form.method} onValueChange={(value) => setForm({ ...form, method: value as Method })}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select method" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {(["GET", "POST", "PUT", "DELETE", "PATCH"] as Method[]).map(method => (
+                                            <SelectItem key={method} value={method}>
+                                                <span className="font-mono text-sm">{method}</span>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="url">API URL</Label>
+                            <Input
+                                id="url"
+                                name="url"
+                                placeholder="https://api.example.com/endpoint?param1=value1&param2=value2"
+                                value={form.url}
+                                onChange={handleChange}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                Add query parameters directly to the URL (e.g., ?limit=10&page=1)
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="headers">Headers (JSON)</Label>
+                                <Input
+                                    id="headers"
+                                    name="headers"
+                                    placeholder='{"Authorization": "Bearer token"}'
+                                    value={form.headers}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="payload">Payload (JSON)</Label>
+                                <Input
+                                    id="payload"
+                                    name="payload"
+                                    placeholder='{"key": "value"}'
+                                    value={form.payload}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea
+                                id="description"
+                                name="description"
+                                placeholder="Describe what this API does..."
+                                value={form.description}
+                                onChange={handleChange}
+                                rows={3}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
                 <DialogFooter>
                     <Button
                         variant="default"
